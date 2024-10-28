@@ -1,0 +1,138 @@
+/*.doctor-home-container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+  
+  .sidebar h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    cursor: pointer;
+    padding: 10px 0;
+    color: #333;
+  }
+  
+  .sidebar ul li:hover {
+    color: #007bff;
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .dashboard-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .stat-box {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0f7fa;
+    border-radius: 8px;
+  }
+  
+  .stat-box span {
+    font-size: 24px;
+    color: #007bff;
+  }
+  
+  .stat-box p {
+    margin: 5px 0 0;
+    color: #333;
+  }*/
+
+  .doctor-home-container {
+    display: flex;
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+  
+  .sidebar h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    cursor: pointer;
+    padding: 10px 0;
+    color: #333;
+  }
+  
+  .sidebar ul li:hover {
+    color: #007bff;
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .dashboard-stats {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .stat-box {
+    width: 150px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0f7fa;
+    border-radius: 8px;
+  }
+  
+  .stat-box span {
+    font-size: 24px;
+    color: #007bff;
+  }
+  
+  .stat-box p {
+    margin: 5px 0 0;
+    color: #333;
+  }
+  
+  .doctor-photo {
+    width: 200px;
+    padding: 20px;
+  }
+  
+  .doctor-photo img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  
+  
+  

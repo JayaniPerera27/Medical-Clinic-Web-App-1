@@ -1,0 +1,28 @@
+.sidebar {
+    width: 250px; /* Adjust width as needed */
+    /* Other styling properties */
+}
+
+.sidebar h2 {
+    margin: 0;
+    padding: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 15px 0; /* Adjust spacing */
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: black; /* Default link color */
+}
+
+.sidebar a.active {
+    font-weight: bold;
+    color: blue; /* Active link color */
+}
