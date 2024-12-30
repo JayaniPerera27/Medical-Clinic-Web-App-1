@@ -2,6 +2,21 @@ import axios from 'axios';
 
 const API_URL = "http://localhost:8070/api/auth/"; // Replace with your backend URL
 
+import jwt_decode from 'jwt-decode';
+
+const getFullNameFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    const decodedToken = jwt_decode(token); // Decode the token
+    return decodedToken.name; // Extract the name field
+  }
+  return null;
+};
+
+const fullName = getFullNameFromToken();
+console.log("Full Name:", fullName);
+
+
 // Login function
 const login = (email, password) => {
   return axios

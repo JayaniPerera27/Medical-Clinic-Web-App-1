@@ -89,6 +89,7 @@ const User = require('../models/User'); // Assuming you have a User model
 router.post('/signup/doctor', async (req, res) => {
 
     const { fullName, email, medicalLicenseNumber, specialization, yearsOfExperience, phoneNumber, password } = req.body;
+    
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({
