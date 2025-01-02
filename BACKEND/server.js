@@ -73,7 +73,7 @@ const authMiddleware = (roles) => (req, res, next) => {
 
 // Doctor Registration Route with Validation
 app.post('/api/auth/signup/doctor', async (req, res) => {
-    const doctorSchema = Joi.object({
+    /*const doctorSchema = Joi.object({
         fullName: Joi.string().required(),
         email: Joi.string().email().required(),
         phoneNumber: Joi.string().required(),
@@ -81,7 +81,17 @@ app.post('/api/auth/signup/doctor', async (req, res) => {
         medicalLicenseNumber: Joi.string().required(),
         specialization: Joi.string().required(),
         yearsOfExperience: Joi.number().required(),
-    });
+    });*/
+    const doctorSchema = Joi.object({
+      fullName: Joi.string().required(),
+      email: Joi.string().email().required(),
+      phoneNumber: Joi.string().required(),
+      password: Joi.string().min(6).required(),
+      medicalLicenseNumber: Joi.string().required(),
+      specialization: Joi.string().required(),
+      yearsOfExperience: Joi.number().required(),
+  });
+  
 
     const { error } = doctorSchema.validate(req.body);
     if (error) {
