@@ -213,38 +213,57 @@ function DoctorHome() {
         </div>
         <h2>CarePlus</h2>
         <ul>
-          <li>
-            <NavLink to="/doctor-home" activeClassName="active">
-              Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/appointments" activeClassName="active">
-              Appointments
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/patients" activeClassName="active">
-              Patients
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/reports" activeClassName="active">
-              Reports
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/prescriptions" activeClassName="active">
-              Prescriptions
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/settings" activeClassName="active">
-              Settings
-            </NavLink>
-          </li>
-          <li onClick={handleLogout}>Logout</li>
-        </ul>
+  <li>
+    <NavLink
+      to="/doctor-home"
+      className={({ isActive }) => (isActive ? 'active' : '')}
+    >
+      Dashboard
+    </NavLink>
+  </li>
+  <li>
+    <NavLink
+      to="/appointments"
+      className={({ isActive }) => (isActive ? 'active' : '')}
+    >
+      Appointments
+    </NavLink>
+  </li>
+  <li>
+    <NavLink
+      to="/patients"
+      className={({ isActive }) => (isActive ? 'active' : '')}
+    >
+      Patients
+    </NavLink>
+  </li>
+  <li>
+    <NavLink
+      to="/reports"
+      className={({ isActive }) => (isActive ? 'active' : '')}
+    >
+      Reports
+    </NavLink>
+  </li>
+  <li>
+    <NavLink
+      to="/prescriptions"
+      className={({ isActive }) => (isActive ? 'active' : '')}
+    >
+      Prescriptions
+    </NavLink>
+  </li>
+  <li>
+    <NavLink
+      to="/settings"
+      className={({ isActive }) => (isActive ? 'active' : '')}
+    >
+      Settings
+    </NavLink>
+  </li>
+  <li onClick={handleLogout}>Logout</li>
+</ul>
+
       </div>
 
       {/* Dashboard Content */}

@@ -170,8 +170,9 @@ function App() {
   return (
     <Router>
       <Routes>
+      <Route path="/" element={<Navigate to="/login" replace />} />
         {/* Public Routes */}
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
         {/* Protected Routes */}
