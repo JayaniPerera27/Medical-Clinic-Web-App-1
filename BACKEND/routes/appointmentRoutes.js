@@ -1,22 +1,3 @@
-/*const express = require("express");
-const router = express.Router();
-const authMiddleware = require("../middlewares/authMiddleware");
-const Appointment = require("../models/Appointment");
-
-// Fetch appointments for a specific doctor
-router.get("/appointments", authMiddleware, async (req, res) => {
-  try {
-    const doctorId = req.user.userId; // Extracted from the token
-    const appointments = await Appointment.find({ doctorId }).sort({ date: 1, time: 1 });
-    res.status(200).json(appointments);
-  } catch (err) {
-    console.error("Error fetching appointments:", err);
-    res.status(500).json({ message: "Failed to fetch appointments" });
-  }
-});
-
-module.exports = router;*/
-
 const express = require('express');
 const router = express.Router();
 //const { authenticate } = require('../middleware/authMiddleware'); // Middleware to check JWT
