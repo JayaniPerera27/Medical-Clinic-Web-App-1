@@ -1,168 +1,120 @@
-/*const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const mongoose = require("mongoose");
 
-// Define the User schema with additional fields for Doctor
-const UserSchema = new mongoose.Schema(
-  {
-    fullName: {
-      type: String,
-      required: [true, 'Full name is required'],
+const specializations = [
+    "Cardiology",
+    "Dermatology",
+    "Endocrinology",
+    "Gastroenterology",
+    "Hematology",
+    "Neurology",
+    "Oncology",
+    "Ophthalmology",
+    "Orthopedics",
+    "Pediatrics",
+    "Psychiatry",
+    "Pulmonology",
+    "Radiology",
+    "Rheumatology",
+    "Surgery",
+    "Urology",
+    "Nephrology",
+    "Obstetrics and Gynecology",
+    "Anesthesiology",
+    "Pathology",
+    "Other",
+    "None",
+];
+
+const userSchema = new mongoose.Schema(
+    {
+        fullName: { type: String, required: true },
+        email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },
+        phoneNumber: {
+            type: String,
+            required: true,
+            validate: {
+                validator: function (v) {
+                    return /^\d{10}$/.test(v); // Validates that the phone number has exactly 10 digits
+                },
+                message: (props) => `${props.value} is not a valid phone number!`,
+            },
+        },
+        password: {
+            type: String,
+            required: true,
+            validate: {
+                validator: function (v) {
+                    return v && v.length >= 6; // Ensures password is at least 6 characters long
+                },
+                message: (props) => `Password must be at least 6 characters long!`,
+            },
+        },
+        role: {
+            type: String,
+            enum: ["Doctor", "Clinical Staff", "Admin"],
+            required: true,
+        },
+        isBlocked: {
+            type: Boolean,
+            default: false,
+            required: function () {
+                return this.role === "Doctor" || this.role === "Clinical Staff";
+            },
+        },
+        medicalLicenseNumber: {
+            type: String,
+            required: function () {
+                return this.role === "Doctor";
+            },
+        },
+        specialization: {
+            type: String,
+            enum: specializations,
+            required: function () {
+                return this.role === "Doctor";
+            },
+        },
+        yearsOfExperience: {
+            type: Number,
+            required: function () {
+                return this.role === "Doctor";
+            },
+        },
+        availableDays: {
+            type: [String],
+            enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            required: function () {
+                return this.role === "Doctor";
+            },
+        },
+        availableTimes: {
+            type: Map,
+            of: [String], // Array of time ranges for each day
+            validate: {
+                validator: function (v) {
+                    for (let times of v.values()) {
+                        if (
+                            !times.every((time) =>
+                                /^[0-2]?[0-9]:[0-5][0-9] (AM|PM) - [0-2]?[0-9]:[0-5][0-9] (AM|PM)$/.test(time)
+                            )
+                        ) {
+                            return false;
+                        }
+                    }
+                    return true;
+                },
+                message: (props) => `Invalid time range format! Use HH:MM AM - HH:MM PM.`,
+            },
+            required: function () {
+                return this.role === "Doctor";
+            },
+        },
     },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-      match: [/\S+@\S+\.\S+/, 'Please provide a valid email address'],
-    },
-    medicalLicenseNumber: {
-      type: String,
-      required: function () {
-        return this.role === 'Doctor'; // Required only for doctors
-      },
-      sparse: true, // Allows for null values for other roles
-    },
-    specialization: {
-      type: String,
-      required: function () {
-        return this.role === 'Doctor'; // Required only for doctors
-      },
-      sparse: true,
-    },
-    yearsOfExperience: {
-      type: Number,
-      required: function () {
-        return this.role === 'Doctor'; // Required only for doctors
-      },
-      min: [0, 'Years of experience cannot be negative'], // Ensures valid years
-      sparse: true,
-    },
-    staffIdNumber: {
-      type: String,
-      required: function () {
-        return this.role === 'Clinical Staff'; // Required only for clinical staff
-      },
-      sparse: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: [true, 'Phone number is required'],
-      match: [/^\d{10}$/, 'Phone number must be exactly 10 digits'], // Validates 10-digit phone number
-    },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: [6, 'Password must be at least 6 characters long'],
-    },
-    role: {
-      type: String,
-      enum: ['Doctor', 'Clinical Staff', 'Admin'],
-      required: true,
-    },
-  },
-  { timestamps: true }
+    {
+        timestamps: true,
+    }
 );
 
-// Hash the password before saving the user
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
-// Method to match passwords during login
-UserSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-module.exports = mongoose.model('User', UserSchema);*/
-
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-
-// Define the User schema with additional fields for Doctor
-const UserSchema = new mongoose.Schema(
-  {
-    fullName: {
-      type: String,
-      required: [true, 'Full name is required'],
-    },
-    email: {
-      type: String,
-      required: [true, 'Email is required'],
-      unique: true,
-      match: [/\S+@\S+\.\S+/, 'Please provide a valid email address'],
-    },
-    medicalLicenseNumber: {
-      type: String,
-      required: function () {
-        return this.role === 'Doctor'; // Required only for doctors
-      },
-      sparse: true, // Allows for null values for other roles
-    },
-    specialization: {
-      type: String,
-      required: function () {
-        return this.role === 'Doctor'; // Required only for doctors
-      },
-      sparse: true,
-    },
-    yearsOfExperience: {
-      type: Number,
-      required: function () {
-        return this.role === 'Doctor'; // Required only for doctors
-      },
-      min: [0, 'Years of experience cannot be negative'], // Ensures valid years
-      sparse: true,
-    },
-    staffIdNumber: {
-      type: String,
-      required: function () {
-        return this.role === 'Clinical Staff'; // Required only for clinical staff
-      },
-      sparse: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: [true, 'Phone number is required'],
-      match: [/^\d{10}$/, 'Phone number must be exactly 10 digits'], // Validates 10-digit phone number
-    },
-    password: {
-      type: String,
-      required: [true, 'Password is required'],
-      minlength: [6, 'Password must be at least 6 characters long'],
-    },
-    role: {
-      type: String,
-      enum: ['Doctor', 'Clinical Staff', 'Admin'],
-      required: true,
-    },
-  },
-  { timestamps: true }
-);
-
-// Hash the password before saving the user
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
-});
-
-// Method to match passwords during login
-UserSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-// Prevent model overwriting by checking if it's already registered
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
-
-
-
-

@@ -66,10 +66,11 @@ router.get('/doctor/prescriptions', authMiddleware, checkDoctorRole, getPrescrip
 
 module.exports = router;*/
 
-const express = require('express');
+/*onst express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
-const checkDoctorRole = require('../middleware/checkDoctorRole');
+const authMiddleware = require('../middleware/authMiddleware.js');
+const checkDoctorRole = require('../middleware/checkDoctorRole.js');
+
 const {
   getDoctorProfile,
   updateDoctorProfile,
@@ -77,7 +78,7 @@ const {
   getPatientsForDoctor,
   savePrescription,
   getPrescriptionsForDoctor,
-} = require('../controllers/doctorController');
+} = require('../controllers/doctorController.js');
 
 // Fetch doctor profile
 router.get('/doctors/profile', authMiddleware, checkDoctorRole, getDoctorProfile);
@@ -98,7 +99,32 @@ router.put('/doctors/change-password', authMiddleware, changePassword);
 // Get prescriptions for the doctor
 //router.get('/doctors/prescriptions', authMiddleware, checkDoctorRole, getPrescriptionsForDoctor);
 
+module.exports = router;*/
+
+const express = require('express');
+const authMiddleware = require('../middleware/authMiddleware.js');
+const checkDoctorRole = require('../middleware/checkDoctorRole.js');
+const {
+    getDoctorProfile,
+    updateDoctorProfile,
+    changePassword,
+    savePrescription,
+    getPrescriptionsForDoctor,
+} = require('../controllers/doctorController.js');
+
+const router = express.Router();
+
+// Doctor Profile Routes
+router.get('/doctors/profile', authMiddleware(['Doctor']), checkDoctorRole, getDoctorProfile);
+router.put('/doctors/update-profile', authMiddleware(['Doctor']), checkDoctorRole, updateDoctorProfile);
+router.put('/doctors/change-password', authMiddleware(['Doctor']), checkDoctorRole, changePassword);
+
+// Prescription Routes
+router.post('/doctors/prescriptions', authMiddleware(['Doctor']), checkDoctorRole, savePrescription);
+router.get('/doctors/prescriptions', authMiddleware(['Doctor']), checkDoctorRole, getPrescriptionsForDoctor);
+
 module.exports = router;
+
 
 
 
