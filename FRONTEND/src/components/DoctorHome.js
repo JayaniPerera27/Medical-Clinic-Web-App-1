@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import '../styles/DoctorHome.css';
 import doctorPhoto from '../assets/doctorphoto.jpeg';
 import Sidebar from './Sidebar';
-
 
 function DoctorHome() {
   const navigate = useNavigate();
@@ -81,10 +80,7 @@ function DoctorHome() {
           <img src={doctorPhoto} alt="Doctor" />
         </div>
         <h2>CarePlus</h2>
-        <ul>
         <Sidebar />
-</ul>
-
       </div>
 
       {/* Dashboard Content */}
@@ -120,11 +116,6 @@ function DoctorHome() {
 }
 
 export default DoctorHome;
-
-
-
-
-
 
 
 
