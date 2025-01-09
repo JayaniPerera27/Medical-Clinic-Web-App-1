@@ -1,9 +1,9 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom'; // Import useNavigate for programmatic navigation
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../styles/Sidebar.css';
 
 const Sidebar = () => {
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
 
   const sidebarLinks = [
     { path: '/doctor-home', label: 'Dashboard' },
@@ -15,10 +15,8 @@ const Sidebar = () => {
   ];
 
   const handleLogout = () => {
-    // Clear any user-related data (e.g., tokens, user info)
-    localStorage.removeItem('userToken'); // Example: clearing stored token
-    // Redirect to login page
-    navigate('/login');
+    localStorage.removeItem('userToken'); // Clear stored token or other user data
+    navigate('/login'); // Redirect to login page
   };
 
   return (
@@ -35,16 +33,17 @@ const Sidebar = () => {
             </NavLink>
           </li>
         ))}
+        <li>
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
+        </li>
       </ul>
-      <button onClick={handleLogout} className="logout-button">
-        Logout
-      </button>
     </div>
   );
 };
 
 export default Sidebar;
-
 
 
 
