@@ -138,6 +138,7 @@ import AdminHome from './components/AdminHome';
 import Appointments from './components/Appointments';
 import Settings from './components/Settings';
 import Prescriptions from './components/Prescriptions';
+import HomePage from "./components/HomePage";
 import Dashboard from './components/Dashboard';
 
 const decodeToken = (token) => {
@@ -170,7 +171,7 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<HomePage />} />
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
