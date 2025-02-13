@@ -141,6 +141,7 @@ import Prescriptions from './components/Prescriptions';
 import HomePage from "./components/HomePage";
 import AboutUs from "./pages/AboutUs";
 import Dashboard from './components/Dashboard';
+import Services from './pages/Services';
 
 const decodeToken = (token) => {
   try {
@@ -174,6 +175,7 @@ function App() {
       <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutUs />} />
+      <Route path="/services" element={<Services/>}/>
         {/* Public Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

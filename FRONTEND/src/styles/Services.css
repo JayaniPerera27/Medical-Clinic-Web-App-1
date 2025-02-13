@@ -1,0 +1,228 @@
+/* Reset styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+  background: #f5faff;
+}
+
+/* Services Page */
+.services {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background: #f5faff;
+  padding-top: 80px;
+}
+
+/* Navbar */
+.services .navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: linear-gradient(135deg, #0089a7, #005f6b);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.services .logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+}
+
+.services .nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.services .nav-links li {
+  margin: 0 20px;
+}
+
+.services .nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.services .nav-links a:hover {
+  color: #ffd700;
+}
+
+.services .nav-links .signup-btn,
+.services .nav-links .login-btn {
+  background-color: white;
+  color: #0089a7;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.services .nav-links .signup-btn:hover,
+.services .nav-links .login-btn:hover {
+  background-color: #005f6b;
+  color: white;
+}
+
+/* Hero Section */
+.services .hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 42vh; /* Reduced height to avoid too much space */
+  text-align: center;
+  width: 100%;
+  padding: 80px 60px 0; /* Adjusted padding */
+  max-width: 1400px;
+  position: relative;
+}
+
+.services .hero-content {
+  max-width: 60%;
+}
+
+.services .hero-content h1 {
+  font-size: 50px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+}
+
+.services .hero-content h1 span {
+  color: #0089a7;
+}
+
+.services .hero-content p {
+  font-size: 20px;
+  color: #555;
+  margin: 10px 0; /* Reduced margin */
+}
+
+.services .btn-primary {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 14px 30px;
+  background-color: #0089a7;
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: 0.3s;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.services .btn-primary:hover {
+  background-color: #005f6b;
+  transform: scale(1.05);
+}
+
+/* Service Cards Layout */
+.services .services-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center the cards */
+  margin: 40px 0;
+}
+
+.services .service-card {
+  background-color: white;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px;
+  width: 250px; /* Fixed width for cards */
+  transition: 0.3s;
+  text-align: center;
+}
+
+.services .service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.2);
+}
+
+.services .service-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+/* Curved Sections */
+.services .curve-top,
+.services .curve-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.services .curve-top {
+  top: 0;
+}
+
+.services .curve-bottom {
+  bottom: 0;
+}
+
+.services .curve-top svg,
+.services .curve-bottom svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1px);
+  height: 200px;
+}
+
+/* Footer */
+.services .footer {
+  background-color: #333;
+  color: white;
+  padding: 30px 60px;
+  text-align: center;
+  width: 100%;
+}
+
+.services .footer a {
+  color: #ffd700;
+  text-decoration: none;
+}
+
+.services .footer a:hover {
+  color: #0089a7;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .services .hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .services .hero-content {
+    max-width: 80%;
+  }
+
+  .services .services-list {
+    flex-direction: column; /* Stack cards vertically on smaller screens */
+  }
+
+  .services .service-card {
+    width: 90%; /* Reduce width on smaller screens */
+  }
+}
