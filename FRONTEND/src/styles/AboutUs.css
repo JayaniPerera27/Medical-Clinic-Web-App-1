@@ -1,0 +1,209 @@
+/* Reset styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* AboutUs Page */
+.aboutus {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background: #f5faff;
+}
+
+/* Navbar */
+.aboutus .navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: linear-gradient(135deg, #0089a7, #005f6b);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.aboutus .logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+}
+
+.aboutus .nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.aboutus .nav-links li {
+  margin: 0 20px;
+}
+
+.aboutus .nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.aboutus .nav-links a:hover {
+  color: #ffd700;
+}
+
+.aboutus .nav-links .signup-btn,
+.aboutus .nav-links .login-btn {
+  background-color: white;
+  color: #0089a7;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.aboutus .nav-links .signup-btn:hover,
+.aboutus .nav-links .login-btn:hover {
+  background-color: #005f6b;
+  color: white;
+}
+
+/* About Section */
+.aboutus .about-hero {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  text-align: center;
+  width: 100%;
+  padding: 120px 60px 0;
+  max-width: 1400px;
+  position: relative;
+}
+
+.aboutus .about-content {
+  max-width: 60%;
+}
+
+.aboutus .about-content h1 {
+  font-size: 50px;
+  font-weight: bold;
+  color: #333;
+  line-height: 1.2;
+}
+
+.aboutus .about-content h1 span {
+  color: #0089a7;
+}
+
+.aboutus .about-content p {
+  font-size: 20px;
+  color: #555;
+  margin: 20px 0;
+}
+
+.aboutus .btn-primary {
+  display: inline-block;
+  margin-top: 25px;
+  padding: 14px 30px;
+  background-color: #0089a7;
+  color: white;
+  font-size: 20px;
+  text-decoration: none;
+  border-radius: 30px;
+  transition: 0.3s;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.aboutus .btn-primary:hover {
+  background-color: #005f6b;
+  transform: scale(1.05);
+}
+
+/* Info Section */
+.aboutus .about-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+  width: 100%;
+  padding: 40px;
+}
+
+.aboutus .info-box {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.aboutus .info-box:hover {
+  transform: translateY(-5px);
+}
+
+.aboutus .info-box h3 {
+  color: #007b9e;
+  font-size: 1.5rem;
+}
+
+.aboutus .info-box p {
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Curved Sections */
+.aboutus .curve-top,
+.aboutus .curve-bottom {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.aboutus .curve-top {
+  top: 0;
+}
+
+.aboutus .curve-bottom {
+  bottom: 0;
+}
+
+.aboutus .curve-top svg,
+.aboutus .curve-bottom svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1px);
+  height: 200px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .aboutus .about-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .aboutus .about-content {
+    max-width: 80%;
+  }
+
+  .aboutus .about-info {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
