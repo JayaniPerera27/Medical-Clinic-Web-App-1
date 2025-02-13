@@ -6,11 +6,11 @@ const AboutUs = () => {
   return (
     <div className="aboutus">
       {/* Curved Top Section */}
-      <div className="curve-top">
+      {/* <div className="curve-top">
         <svg viewBox="0 0 1440 320">
           <path fill="#0089a7" fillOpacity="1" d="M0,160L1440,320L1440,0L0,0Z"></path>
         </svg>
-      </div>
+      </div> */}
 
       {/* Navbar */}
       <nav className="navbar">
