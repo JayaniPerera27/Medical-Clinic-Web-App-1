@@ -135,7 +135,7 @@ import Signup from './components/Signup';
 import DoctorHome from './components/DoctorHome';
 import ClinicalHome from './components/ClinicalHome';
 import AdminHome from './components/AdminHome';
-import Appointments from './components/Appointments';
+
 import Settings from './components/Settings';
 import Prescriptions from './components/Prescriptions';
 import HomePage from "./components/HomePage";
