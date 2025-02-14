@@ -22,19 +22,43 @@ router.put('/doctors/change-password', authMiddleware(['Doctor']), checkDoctorRo
 router.post('/doctors/prescriptions', authMiddleware(['Doctor']), checkDoctorRole, savePrescription);
 router.get('/doctors/prescriptions', authMiddleware(['Doctor']), checkDoctorRole, getPrescriptionsForDoctor);
 
-// Get appointments for the logged-in doctor
 router.get("/doctor-appointments", authenticate, async (req, res) => {
     try {
-        const doctorName = req.user.fullName; // Extracted from JWT token
+        if (!req.user || !req.user.name) {
+            return res.status(401).json({ success: false, message: "Unauthorized: Doctor name not found in token" });
+        }
 
-        const appointments = await Appointment.find({ doctorName });
+        let doctorName = req.user.name; // Extract doctor name from JWT token
+        console.log("Doctor Name from Token:", doctorName);
+
+        // Clean the doctor's name and add "Dr. " back if it's missing
+        const cleanedDoctorName = doctorName.replace(/^Dr\.\s*/i, "").trim();
+        const doctorNameWithDr = "Dr. " + cleanedDoctorName;
+        console.log("Doctor Name with Dr.:", doctorNameWithDr);
+
+        // Match both possible names (with and without "Dr. ")
+        const appointments = await Appointment.find({
+            $or: [
+                { doctorName: { $regex: new RegExp(`^${doctorName}$`, "i") } },  // Original name
+                { doctorName: { $regex: new RegExp(`^${doctorNameWithDr}$`, "i") } } // Name with "Dr."
+            ]
+        });
+
+        if (!appointments.length) {
+            return res.status(404).json({ success: false, message: "No appointments found for this doctor" });
+        }
 
         res.json({ success: true, appointments });
+
     } catch (error) {
         console.error("Error fetching appointments:", error);
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
+
+
+
+
 
 module.exports = router;
 
