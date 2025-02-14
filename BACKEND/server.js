@@ -28,12 +28,12 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routers
 const userRouter = require('./routes/userRouter');
 const doctorRoutes = require('./routes/doctorRoutes');
-const appointmentRoutes = require('./routes/appointmentRoutes');
+
 
 
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
-app.use('/api', appointmentRoutes);
+
 
 
 // Example route for Doctor Dashboard
