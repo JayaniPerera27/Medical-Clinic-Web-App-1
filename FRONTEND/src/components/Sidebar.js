@@ -8,7 +8,7 @@ const Sidebar = () => {
 
   const sidebarLinks = [
     { path: '/doctor-home', label: 'Dashboard' },
-    { path: '/appointments', label: 'Appointments' },
+    { path: '/doctor-appointments', label: 'Appointments' },
     { path: '/patients', label: 'Patients' },
     { path: '/reports', label: 'Reports' },
     { path: '/prescriptions', label: 'Prescriptions' },

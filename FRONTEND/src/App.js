@@ -142,6 +142,8 @@ import HomePage from "./components/HomePage";
 import AboutUs from "./pages/AboutUs";
 import Dashboard from './components/Dashboard';
 import Services from './pages/Services';
+import DoctorAppointments from "./components/DoctorAppointments";
+
 
 const decodeToken = (token) => {
   try {
@@ -190,13 +192,13 @@ function App() {
           }
         />
         <Route
-          path="/appointments"
-          element={
-            <ProtectedRoute>
-              <Appointments />
-            </ProtectedRoute>
-          }
-        />
+  path="/doctor-appointments"
+  element={
+    <ProtectedRoute>
+      <DoctorAppointments /> 
+    </ProtectedRoute>
+  }
+/>
         <Route
           path="/settings"
           element={
