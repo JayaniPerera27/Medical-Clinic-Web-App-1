@@ -143,7 +143,7 @@ import AboutUs from "./pages/AboutUs";
 import Dashboard from './components/Dashboard';
 import Services from './pages/Services';
 import DoctorAppointments from "./components/DoctorAppointments";
-
+import ClinicalSetting from './components/ClinicalSetting'; // Import the ClinicalSetting component
 
 const decodeToken = (token) => {
   try {
@@ -228,6 +228,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+                <Route
+          path="/clinical-settings"
+          element={
+            <ProtectedRoute>
+              <ClinicalSetting />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/admin-home"
           element={
@@ -241,12 +249,22 @@ function App() {
         <Route
           path="*"
           element={
-            <div style={{ textAlign: 'center', marginTop: '50px' }}>
+            <div style={{ textAlign: "center", marginTop: "50px" }}>
               <h1>404: Page Not Found</h1>
               <p>The page you are looking for does not exist.</p>
-              <a href="/" style={{ color: 'blue', textDecoration: 'underline' }}>
+              <button
+                onClick={() => (window.location.href = "/")}
+                style={{
+                  padding: "10px 20px",
+                  backgroundColor: "#007BFF",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                }}
+              >
                 Go to Home
-              </a>
+              </button>
             </div>
           }
         />
