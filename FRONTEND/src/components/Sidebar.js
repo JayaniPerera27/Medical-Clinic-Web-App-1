@@ -1,6 +1,9 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FaHome, FaCalendarAlt, FaUser, FaFileAlt, FaPrescriptionBottle, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { 
+  FaHome, FaCalendarAlt, FaUser, 
+  FaFileAlt, FaPrescriptionBottle, FaCog, FaSignOutAlt 
+} from "react-icons/fa";
 import "../styles/Sidebar.css";
 
 const Sidebar = () => {
@@ -17,7 +20,7 @@ const Sidebar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userToken");
-    navigate("/"); // Redirect to home page instead of login
+    navigate("/");
   };
 
   return (
@@ -48,12 +51,3 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
-
-
-
-
-
-
-
-
-
