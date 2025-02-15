@@ -6,8 +6,6 @@ import Sidebar from './Sidebar';
 
 function DoctorHome() {
   const navigate = useNavigate();
-
-  // State for dashboard data
   const [dashboardData, setDashboardData] = useState({
     totalAppointments: 0,
     totalPatients: 0,
@@ -17,7 +15,6 @@ function DoctorHome() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // API base URL
   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8070';
 
   useEffect(() => {
@@ -29,11 +26,9 @@ function DoctorHome() {
       }
 
       try {
-        // Decode the JWT token to get the doctor's name
-        const tokenPayload = JSON.parse(atob(token.split('.')[1])); // Decode the token
+        const tokenPayload = JSON.parse(atob(token.split('.')[1])); // Decode JWT token
         setDoctorName(tokenPayload.name);
 
-        // Fetch dashboard data
         const response = await fetch(`${API_BASE_URL}/api/doctor/dashboard`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -61,32 +56,18 @@ function DoctorHome() {
     fetchDashboardData();
   }, [navigate, API_BASE_URL]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
-  };
-
-  const today = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
-    day: 'numeric',
-  });
-
   return (
     <div className="doctor-home-container">
       {/* Sidebar Section */}
-      <div className="sidebar">
-        <div className="doctor-photo">
-          <img src={doctorPhoto} alt="Doctor" />
-        </div>
-        <h2>CarePlus</h2>
-        <Sidebar />
-      </div>
+      <Sidebar />
 
-      {/* Dashboard Content */}
+      {/* Main Content */}
       <div className="dashboard-content">
         <h1>Welcome, Dr. {doctorName || 'Doctor'}</h1>
-        <p>Today is {today}</p>
+        <p>Today is {new Date().toLocaleDateString('en-US', {
+          weekday: 'long', month: 'long', day: 'numeric'
+        })}</p>
+
         {loading ? (
           <div className="loading">Loading...</div>
         ) : error ? (
@@ -116,6 +97,3 @@ function DoctorHome() {
 }
 
 export default DoctorHome;
-
-
-
