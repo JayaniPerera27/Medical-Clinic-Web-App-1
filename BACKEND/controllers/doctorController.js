@@ -126,7 +126,6 @@ const getDoctorAppointments = async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 };
-// Get All Patients Who Have Appointments with the Logged-in Doctor
 const getDoctorPatients = async (req, res) => {
     try {
         if (!req.user || !req.user.name) {
@@ -134,22 +133,40 @@ const getDoctorPatients = async (req, res) => {
         }
 
         let doctorName = req.user.name;
+        console.log("Doctor Name from Token:", doctorName);
+
+        // Clean the doctor's name and add "Dr. " back if missing
         const cleanedDoctorName = doctorName.replace(/^Dr\.\s*/i, "").trim();
         const doctorNameWithDr = "Dr. " + cleanedDoctorName;
+        console.log("Doctor Name with Dr.:", doctorNameWithDr);
 
-        // Get distinct patient names who have appointments with this doctor
+        // Find all appointments for the doctor and select only patient details
         const appointments = await Appointment.find({
             $or: [
                 { doctorName: { $regex: new RegExp(`^${doctorName}$`, "i") } },
                 { doctorName: { $regex: new RegExp(`^${doctorNameWithDr}$`, "i") } }
             ]
-        }).distinct("patientName");
+        }).select("patientName patientEmail");
 
         if (!appointments.length) {
             return res.status(404).json({ success: false, message: "No patients found for this doctor" });
         }
 
-        res.json({ success: true, patients: appointments });
+        console.log("Appointments Found:", appointments);
+
+        // Extract unique patients based on name and email
+        const uniquePatients = [];
+        const patientSet = new Set();
+
+        appointments.forEach(({ patientName, patientEmail }) => {
+            const key = `${patientName}-${patientEmail}`;
+            if (!patientSet.has(key)) {
+                uniquePatients.push({ fullName: patientName, email: patientEmail });
+                patientSet.add(key);
+            }
+        });
+
+        res.json({ success: true, patients: uniquePatients });
 
     } catch (error) {
         console.error("Error fetching patients:", error);
