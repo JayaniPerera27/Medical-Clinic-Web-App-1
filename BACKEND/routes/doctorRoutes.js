@@ -5,8 +5,11 @@ const {
     getDoctorProfile,
     updateDoctorProfile,
     changePassword,
-    savePrescription,
-    getPrescriptionsForDoctor,
+    getDoctorPatients, 
+    addPrescription, 
+    getPrescriptionsForPatient, 
+    updatePrescription, 
+    deletePrescription 
 } = require('../controllers/doctorController.js');
 
 const { getDoctorAppointments } = require("../controllers/doctorController");
@@ -21,11 +24,19 @@ router.get('/doctors/profile', authMiddleware(['Doctor']), checkDoctorRole, getD
 router.put('/doctors/update-profile', authMiddleware(['Doctor']), checkDoctorRole, updateDoctorProfile);
 router.put('/doctors/change-password', authMiddleware(['Doctor']), checkDoctorRole, changePassword);
 
-// Prescription Routes
-router.post('/doctors/prescriptions', authMiddleware(['Doctor']), checkDoctorRole, savePrescription);
-router.get('/doctors/prescriptions', authMiddleware(['Doctor']), checkDoctorRole, getPrescriptionsForDoctor);
 
 router.get("/doctor-appointments", authenticate, getDoctorAppointments);
+
+// Prescription Routes
+router.get("/patients", authenticate, getDoctorPatients);
+//router.post("/prescriptions", authMiddleware, addPrescription);             // Add a prescription
+router.get("/prescriptions/:patientName", authenticate, getPrescriptionsForPatient); // Get prescriptions for a patient
+router.put("/prescriptions/:prescriptionId", authenticate, updatePrescription); // Update prescription
+router.delete("/prescriptions/:prescriptionId", authenticate, deletePrescription); // Delete prescription
+
+router.post("/prescriptions/add", authenticate,addPrescription);
+
+
 
 
 
