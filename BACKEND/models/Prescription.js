@@ -1,11 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const PrescriptionSchema = new mongoose.Schema({
-  doctorName: { type: String, required: true },
-  patientName: { type: String, required: true },
-  content: { type: String, required: true },
-  date: { type: Date, default: Date.now },
+    patientName: { type: String, required: true },
+    doctorName: { type: String, required: true },
+    date: { type: String, required: true },
+    medicines: [
+        {
+            name: { type: String, required: true },
+            dosage: { type: String, required: true },
+            instructions: { type: String, required: true }
+        }
+    ]
 });
 
-const Prescription = mongoose.model('Prescription', PrescriptionSchema);
-module.exports = Prescription;
+module.exports = mongoose.model("Prescription", PrescriptionSchema);
