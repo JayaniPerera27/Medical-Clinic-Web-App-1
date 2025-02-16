@@ -28,7 +28,7 @@ router.put('/doctors/change-password', authMiddleware(['Doctor']), checkDoctorRo
 router.get("/doctor-appointments", authenticate, getDoctorAppointments);
 
 // Prescription Routes
-router.get("/patients", authenticate, getDoctorPatients);
+router.get("/doctors/patients", authenticate, getDoctorPatients);
 //router.post("/prescriptions", authMiddleware, addPrescription);             // Add a prescription
 router.get("/prescriptions/:patientName", authenticate, getPrescriptionsForPatient); // Get prescriptions for a patient
 router.put("/prescriptions/:prescriptionId", authenticate, updatePrescription); // Update prescription

@@ -1,91 +1,159 @@
-import React, { useEffect, useState } from 'react';
-import Sidebar from '../components/Sidebar';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Sidebar from "./Sidebar"; // Import Sidebar
 import "../styles/Prescriptions.css";
 
 const Prescriptions = () => {
-  const [patients, setPatients] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState(null);
-  const [prescription, setPrescription] = useState('');
+    const [patients, setPatients] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedPatient, setSelectedPatient] = useState(null);
+    const [prescription, setPrescription] = useState({
+        patientName: "",
+        date: new Date().toISOString().split("T")[0],
+        medicines: "",
+    });
 
-  // Fetch patients
-  useEffect(() => {
-    const fetchPatients = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await fetch('http://localhost:8070/api/doctor/patients', {
-          headers: { Authorization: `Bearer ${token}` },
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const response = await axios.get("http://localhost:8070/api/doctors/patients", {
+                    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                });
+    
+                console.log("API Response:", response.data); // Check the response
+    
+                if (response.data.success) {
+                    console.log("Patients Data:", response.data.patients); // Verify the data being set
+                    setPatients(response.data.patients);
+                }
+            } catch (error) {
+                console.error("Error fetching patients:", error);
+            }
+        };
+    
+        fetchPatients();
+    }, []);
+    
+    
+
+    // Filter patients based on search input
+    const filteredPatients = patients.filter((patient) =>
+        patient.fullName.toLowerCase().includes(searchTerm.toLowerCase()) // ✅ Fix: Use fullName
+    );
+
+    // Handle patient selection
+    const selectPatient = (patient) => {
+        setSelectedPatient(patient);
+        setPrescription({
+            ...prescription,
+            patientName: patient.fullName, // ✅ Fix: Use fullName
+            date: new Date().toISOString().split("T")[0],
         });
-        const data = await response.json();
-        setPatients(data);
-      } catch (error) {
-        console.error('Error fetching patients:', error);
-      }
+
+        // Fetch previous prescriptions
+        axios
+            .get(`http://localhost:8070/api/doctors/prescriptions/${patient.fullName}`, { // ✅ Fix: Use fullName
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            })
+            .then((response) => {
+                if (response.data.success) {
+                    setPrescription({ ...response.data.prescriptions[0] }); // Load first prescription
+                }
+            })
+            .catch((error) => {
+                console.log("No previous prescription found:", error);
+            });
     };
 
-    fetchPatients();
-  }, []);
+    // Handle input changes
+    const handleInputChange = (e) => {
+        setPrescription({ ...prescription, [e.target.name]: e.target.value });
+    };
 
-  // Handle prescription submission
-  const handleSubmit = async () => {
-    const token = localStorage.getItem('token');
-    const doctorName = localStorage.getItem('doctorName'); // Assume stored in token/session
-    try {
-      const response = await fetch('http://localhost:8070/api/doctor/prescriptions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          patientName: selectedPatient.fullName,
-          doctorName,
-          content: prescription,
-        }),
-      });
+    // Save prescription to database
+    const savePrescription = async () => {
+        try {
+            await axios.post("http://localhost:8070/api/doctors/prescriptions/add", prescription, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            });
+            alert("Prescription saved successfully!");
+        } catch (error) {
+            console.error("Error saving prescription:", error);
+        }
+    };
 
-      if (response.ok) {
-        alert('Prescription saved successfully');
-        setPrescription('');
-      } else {
-        alert('Failed to save prescription');
-      }
-    } catch (error) {
-      console.error('Error saving prescription:', error);
-    }
-  };
+    // Update prescription
+    const updatePrescription = async () => {
+        try {
+            await axios.put(`http://localhost:8070/api/doctors/prescriptions/${prescription._id}`, prescription, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            });
+            alert("Prescription updated successfully!");
+        } catch (error) {
+            console.error("Error updating prescription:", error);
+        }
+    };
 
-  return (
-    <div className="prescriptions-page">
-      <Sidebar />
-      <div className="prescriptions-content">
-        <h2>Prescriptions</h2>
-        <h3>Total Patients: {patients.length}</h3>
-        <div className="patients-list">
-          {patients.map((patient) => (
-            <div
-              key={patient._id}
-              className={`patient-item ${selectedPatient?._id === patient._id ? 'active' : ''}`}
-              onClick={() => setSelectedPatient(patient)}
-            >
-              <img src={patient.photo || 'default-avatar.png'} alt="Avatar" />
-              <p>{patient.fullName}</p>
+    // Delete prescription
+    const deletePrescription = async () => {
+        try {
+            await axios.delete(`http://localhost:8070/api/doctors/prescriptions/${prescription._id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+            });
+            alert("Prescription deleted successfully!");
+            setPrescription({ patientName: selectedPatient.fullName, date: "", medicines: "" }); // ✅ Fix: Use fullName
+        } catch (error) {
+            console.error("Error deleting prescription:", error);
+        }
+    };
+
+    return (
+        <div className="prescriptions-page">
+            <Sidebar /> {/* Add Sidebar */}
+            <div className="prescriptions-container">
+                <h2>Prescriptions</h2>
+
+                {/* Search Bar */}
+                <input
+                    type="text"
+                    placeholder="Search patients by name..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-bar"
+                />
+
+                {/* Patients List */}
+                <div className="patients-list">
+                    {filteredPatients.map((patient) => (
+                        <div key={patient.email} className="patient-card" onClick={() => selectPatient(patient)}>
+                            <h4>{patient.fullName}</h4> {/* ✅ Fix: Use fullName */}
+                            <p>{patient.email}</p>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Prescription Form */}
+                {selectedPatient && (
+                    <div className="prescription-form">
+                        <h3>Prescription for {prescription.patientName}</h3>
+                        <p>Date: {prescription.date}</p>
+                        <textarea
+                            name="medicines"
+                            value={prescription.medicines}
+                            onChange={handleInputChange}
+                            placeholder="Enter prescribed medicines..."
+                        ></textarea>
+
+                        <div className="button-group">
+                            <button onClick={savePrescription}>Save</button>
+                            <button onClick={updatePrescription}>Update</button>
+                            <button onClick={deletePrescription} className="delete-btn">Delete</button>
+                        </div>
+                    </div>
+                )}
             </div>
-          ))}
         </div>
-        {selectedPatient && (
-          <div className="prescription-form">
-            <h3>Write Prescription for {selectedPatient.fullName}</h3>
-            <textarea
-              placeholder="Enter prescription details..."
-              value={prescription}
-              onChange={(e) => setPrescription(e.target.value)}
-            ></textarea>
-            <button onClick={handleSubmit}>Submit Prescription</button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Prescriptions;

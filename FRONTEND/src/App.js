@@ -137,11 +137,11 @@ import ClinicalHome from './components/ClinicalHome';
 import AdminHome from './components/AdminHome';
 
 import Settings from './components/Settings';
-import Prescriptions from './components/Prescriptions';
 import HomePage from "./components/HomePage";
 import AboutUs from "./pages/AboutUs";
 import Dashboard from './components/Dashboard';
 import Services from './pages/Services';
+import Prescriptions from "./components/Prescriptions";
 
 import DoctorAppointments from "./components/DoctorAppointments";
 
