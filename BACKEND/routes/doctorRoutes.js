@@ -30,7 +30,7 @@ router.get("/doctor-appointments", authenticate, getDoctorAppointments);
 // Prescription Routes
 router.get("/doctors/patients", authenticate, getDoctorPatients);
 //router.post("/prescriptions", authMiddleware, addPrescription);             // Add a prescription
-router.get("/prescriptions/:patientName", authenticate, getPrescriptionsForPatient); // Get prescriptions for a patient
+router.get("/prescriptions/:patientUsername", authenticate, getPrescriptionsForPatient); // Get prescriptions for a patient
 router.put("/prescriptions/:prescriptionId", authenticate, updatePrescription); // Update prescription
 router.delete("/prescriptions/:prescriptionId", authenticate, deletePrescription); // Delete prescription
 
