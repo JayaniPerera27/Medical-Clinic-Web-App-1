@@ -140,13 +140,13 @@ const getDoctorPatients = async (req, res) => {
         const doctorNameWithDr = "Dr. " + cleanedDoctorName;
         console.log("Doctor Name with Dr.:", doctorNameWithDr);
 
-        // Find all appointments for the doctor and select only patient details
+        // Find all appointments for the specific doctor
         const appointments = await Appointment.find({
             $or: [
                 { doctorName: { $regex: new RegExp(`^${doctorName}$`, "i") } },
                 { doctorName: { $regex: new RegExp(`^${doctorNameWithDr}$`, "i") } }
             ]
-        }).select("patientName patientEmail");
+        }).select("patientName patientEmail patientUsername");
 
         if (!appointments.length) {
             return res.status(404).json({ success: false, message: "No patients found for this doctor" });
@@ -154,14 +154,18 @@ const getDoctorPatients = async (req, res) => {
 
         console.log("Appointments Found:", appointments);
 
-        // Extract unique patients based on name and email
+        // Extract unique patients based on patientUsername (to avoid duplicates)
         const uniquePatients = [];
         const patientSet = new Set();
 
-        appointments.forEach(({ patientName, patientEmail }) => {
-            const key = `${patientName}-${patientEmail}`;
+        appointments.forEach(({ patientName, patientEmail, patientUsername }) => {
+            const key = patientUsername; // Use patientUsername to ensure uniqueness
             if (!patientSet.has(key)) {
-                uniquePatients.push({ fullName: patientName, email: patientEmail });
+                uniquePatients.push({ 
+                    username: patientUsername, 
+                    fullName: patientName, 
+                    email: patientEmail 
+                });
                 patientSet.add(key);
             }
         });
@@ -174,52 +178,53 @@ const getDoctorPatients = async (req, res) => {
     }
 };
 
+
+
 const addPrescription = async (req, res) => {
     try {
-        //console.log(" Received POST request for adding prescription");
-        //console.log("Request Headers:", req.headers);
-        //console.log("Request Body:", req.body);
-
         if (!req.user) {
-           /// console.log(" No user found in request");
             return res.status(401).json({ message: "Unauthorized" });
         }
 
-        const { patientName, doctorName, date, medicines } = req.body;
+        const { patientName, patientUsername, doctorName, date, medicines } = req.body;
 
-        if (!patientName || !doctorName || !date || !medicines || medicines.length === 0) {
-            console.log(" Missing required fields");
+        if (!patientName || !patientUsername || !doctorName || !date || !medicines || medicines.length === 0) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
         const newPrescription = new Prescription({
             patientName,
+            patientUsername, // ✅ Storing patient's unique username
             doctorName,
             date,
             medicines
         });
 
         await newPrescription.save();
-        console.log(" Prescription saved successfully:", newPrescription);
-
         res.status(201).json({
             message: "Prescription added successfully",
             prescription: newPrescription
         });
 
     } catch (error) {
-        console.error(" Error adding prescription:", error);
+        console.error("Error adding prescription:", error);
         res.status(500).json({ message: "Server error", error: error.message });
     }
 };
 
-
-// Get Prescriptions for a Patient
 const getPrescriptionsForPatient = async (req, res) => {
-    const { patientName } = req.params;
+    const { patientUsername } = req.params; 
 
     try {
-        const prescriptions = await Prescription.find({ doctorId: req.user.id, patientName });
+        console.log("Doctor Name from Token:", req.user.name); // Log doctor's name
+        console.log("Patient Username from Params:", patientUsername); // Log patient's username
+
+        const prescriptions = await Prescription.find({
+            doctorName: req.user.name,
+            patientUsername
+        });
+
+        console.log("Prescriptions Found:", prescriptions); // Log prescriptions result
 
         if (!prescriptions.length) {
             return res.status(404).json({ message: "No prescriptions found for this patient" });
@@ -232,6 +237,7 @@ const getPrescriptionsForPatient = async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 };
+
 
 // Update Prescription
 const updatePrescription = async (req, res) => {

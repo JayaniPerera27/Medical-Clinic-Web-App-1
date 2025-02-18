@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const PrescriptionSchema = new mongoose.Schema({
     patientName: { type: String, required: true },
+    patientUsername: { type: String,required: true},
     doctorName: { type: String, required: true },
     date: { type: String, required: true },
     medicines: [

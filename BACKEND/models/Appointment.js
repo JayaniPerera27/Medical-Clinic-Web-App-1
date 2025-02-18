@@ -6,7 +6,9 @@ const appointmentSchema = new mongoose.Schema({
     time: String,
     patientName: String,
     patientEmail: String,
-    patientPhone: String
+    patientPhone: String,
+    patientUsername: String
+
 });
 
 module.exports = mongoose.model("Appointment", appointmentSchema);

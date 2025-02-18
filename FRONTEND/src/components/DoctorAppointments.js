@@ -87,6 +87,7 @@ const DoctorAppointments = () => {
                                                     <thead>
                                                         <tr>
                                                             <th>Patient Name</th>
+                                                            <th>User Name</th>
                                                             <th>Email</th>
                                                             <th>Phone</th>
                                                             <th>Time</th>
@@ -96,8 +97,10 @@ const DoctorAppointments = () => {
                                                         {dayAppointments.map((appointment) => (
                                                             <tr key={appointment._id}>
                                                                 <td>{appointment.patientName}</td>
+                                                                <td>{appointment.patientUsername}</td>
                                                                 <td>{appointment.patientEmail}</td>
                                                                 <td>{appointment.patientPhone}</td>
+
                                                                 <td className="time-badge">{appointment.time}</td>
                                                             </tr>
                                                         ))}
