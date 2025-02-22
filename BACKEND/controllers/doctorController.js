@@ -188,13 +188,13 @@ const addPrescription = async (req, res) => {
 
         const { patientName, patientUsername, doctorName, date, medicines } = req.body;
 
-        if (!patientName || !patientUsername || !doctorName || !date || !medicines || medicines.length === 0) {
+        if ( !patientUsername || !doctorName || !date || !medicines || medicines.length === 0) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
         const newPrescription = new Prescription({
             patientName,
-            patientUsername, // ✅ Storing patient's unique username
+            patientUsername, 
             doctorName,
             date,
             medicines
@@ -202,6 +202,7 @@ const addPrescription = async (req, res) => {
 
         await newPrescription.save();
         res.status(201).json({
+            success: true, 
             message: "Prescription added successfully",
             prescription: newPrescription
         });
@@ -239,24 +240,24 @@ const getPrescriptionsForPatient = async (req, res) => {
 };
 
 
-// Update Prescription
-const updatePrescription = async (req, res) => {
-    const { prescriptionId } = req.params;
-    const { medicines } = req.body;
+// // Update Prescription
+// const updatePrescription = async (req, res) => {
+//     const { prescriptionId } = req.params;
+//     const { medicines } = req.body;
 
-    try {
-        const prescription = await Prescription.findByIdAndUpdate(prescriptionId, { medicines }, { new: true });
+//     try {
+//         const prescription = await Prescription.findByIdAndUpdate(prescriptionId, { medicines }, { new: true });
 
-        if (!prescription) {
-            return res.status(404).json({ message: "Prescription not found" });
-        }
+//         if (!prescription) {
+//             return res.status(404).json({ message: "Prescription not found" });
+//         }
 
-        res.json({ message: "Prescription updated successfully", prescription });
-    } catch (error) {
-        console.error("Error updating prescription:", error);
-        res.status(500).json({ message: "Failed to update prescription" });
-    }
-};
+//         res.json({ message: "Prescription updated successfully", prescription });
+//     } catch (error) {
+//         console.error("Error updating prescription:", error);
+//         res.status(500).json({ message: "Failed to update prescription" });
+//     }
+// };
 
 // Delete Prescription
 const deletePrescription = async (req, res) => {
@@ -282,6 +283,6 @@ module.exports = {
     getDoctorPatients,
     addPrescription,
     getPrescriptionsForPatient,
-    updatePrescription,
+    //updatePrescription,
     deletePrescription
 };

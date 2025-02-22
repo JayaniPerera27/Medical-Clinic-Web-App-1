@@ -25,7 +25,7 @@
 }
 
 .today-box {
-  background: #ffeb3b;
+  background: linear-gradient(135deg, rgb(88, 184, 225), rgb(99, 152, 209));
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

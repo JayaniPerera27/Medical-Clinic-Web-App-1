@@ -1,56 +1,93 @@
+/* Main container */
 .prescriptions-page {
   display: flex;
+  flex-direction: column; /* Ensure the container aligns to the top */
+  min-height: 100vh;
+  background-color: #f8f9fa;
 }
 
+/* Prescriptions container */
 .prescriptions-container {
   flex: 1;
   padding: 20px;
-  max-width: 800px;
-  margin: auto;
+  max-width: 1500px; /* Increased width to make the container wider */
+  margin: 20px auto 0; /* Set margin to top and center horizontally */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Heading */
+.prescriptions-container h2 {
+  text-align: left; /* Align to the left */
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+/* Search Bar */
 .search-bar {
-  width: 100%;
+  width: 100%; /* Adjusted to match the container width */
   padding: 10px;
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 16px;
 }
 
-.patients-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+/* Patients Table */
+.patients-table {
+  width: 100%; /* Adjusted to match the container width */
+  border-collapse: collapse;
+  margin-top: 0; /* Remove margin-top to move the table up */
+  background: white;
 }
 
-.patient-card {
-  cursor: pointer;
-  padding: 10px;
-  border: 1px solid #007bff;
-  border-radius: 5px;
-  background-color: #f1f1f1;
-  width: 150px;
+.patients-table th,
+.patients-table td {
+  padding: 12px;
+  border: 1px solid #ddd;
   text-align: center;
 }
 
-.prescription-form {
-  border: 2px solid #ddd;
-  padding: 15px;
+.patients-table th {
+  background: linear-gradient(135deg, rgb(88, 184, 225), rgb(99, 152, 209));
+  color: white;
+  font-weight: bold;
+}
+
+.patients-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Buttons in table */
+.patients-table button {
+  padding: 8px 12px;
+  border: none;
+  background-color: rgb(58, 183, 87);
+  color: white;
+  font-size: 14px;
   border-radius: 5px;
-  background: #fafafa;
-  margin-top: 20px;
+  cursor: pointer;
 }
 
-.medicine-item input {
-  margin-right: 5px;
+.patients-table button:hover {
+  background-color: #218838;
 }
 
-.add-medicine-btn {
-  margin-top: 10px;
-}
+/* Responsive Design */
+@media (max-width: 768px) {
+  .prescriptions-container {
+    padding: 10px;
+    max-width: 100%; /* Ensure the container width adjusts on smaller screens */
+  }
 
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
+  .search-bar {
+    font-size: 14px;
+  }
+
+  .patients-table th,
+  .patients-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
 }

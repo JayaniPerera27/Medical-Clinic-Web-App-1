@@ -1,6 +1,6 @@
 /* Sidebar container */
 .sidebar {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: linear-gradient(135deg, rgb(88, 184, 225), rgb(99, 152, 209));
   padding: 20px;
   height: 100vh;
   width: 270px;

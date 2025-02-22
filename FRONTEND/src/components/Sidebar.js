@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { 
   FaHome, FaCalendarAlt,  
-  FaFileAlt, FaPrescriptionBottle, FaCog, FaSignOutAlt 
+   FaPrescriptionBottle, FaCog, FaSignOutAlt 
 } from "react-icons/fa";
 import "../styles/Sidebar.css";
 
@@ -13,7 +13,7 @@ const Sidebar = () => {
     { path: "/doctor-home", label: "Dashboard", icon: <FaHome /> },
     { path: "/doctor-appointments", label: "Appointments", icon: <FaCalendarAlt /> },
     // { path: "/patients", label: "Patients", icon: <FaUser /> },
-    { path: "/reports", label: "Reports", icon: <FaFileAlt /> },
+    //{ path: "/reports", label: "Reports", icon: <FaFileAlt /> },
     { path: "/prescriptions", label: "Prescriptions", icon: <FaPrescriptionBottle /> },
     { path: "/settings", label: "Settings", icon: <FaCog /> },
   ];
