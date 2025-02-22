@@ -39,6 +39,8 @@ const daysOfWeek = [
   "Sunday",
 ];
 
+
+
 function Signup() {
   const [formData, setFormData] = useState({
     email: "",

@@ -142,6 +142,8 @@ import AboutUs from "./pages/AboutUs";
 import Dashboard from './components/Dashboard';
 import Services from './pages/Services';
 import Prescriptions from "./components/Prescriptions";
+import NewPrescription from "./components/NewPrescription";
+import OldPrescriptions from "./components/OldPrescriptions";
 
 import DoctorAppointments from "./components/DoctorAppointments";
 
@@ -221,7 +223,8 @@ function App() {
     </ProtectedRoute>
   }
 />
-
+<Route path="/new-prescription/:username" element={<NewPrescription />} />
+<Route path="/old-prescriptions/:username" element={<OldPrescriptions />} />
 
 
         {/* Additional Routes */}

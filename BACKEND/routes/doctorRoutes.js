@@ -8,7 +8,7 @@ const {
     getDoctorPatients, 
     addPrescription, 
     getPrescriptionsForPatient, 
-    updatePrescription, 
+    //updatePrescription, 
     deletePrescription 
 } = require('../controllers/doctorController.js');
 
@@ -31,15 +31,10 @@ router.get("/doctor-appointments", authenticate, getDoctorAppointments);
 router.get("/doctors/patients", authenticate, getDoctorPatients);
 //router.post("/prescriptions", authMiddleware, addPrescription);             // Add a prescription
 router.get("/prescriptions/:patientUsername", authenticate, getPrescriptionsForPatient); // Get prescriptions for a patient
-router.put("/prescriptions/:prescriptionId", authenticate, updatePrescription); // Update prescription
+//router.put("/prescriptions/:prescriptionId", authenticate, updatePrescription); // Update prescription
 router.delete("/prescriptions/:prescriptionId", authenticate, deletePrescription); // Delete prescription
 
 router.post("/prescriptions/add", authenticate,addPrescription);
-
-
-
-
-
 
 
 

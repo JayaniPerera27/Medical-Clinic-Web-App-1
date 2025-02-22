@@ -1,0 +1,90 @@
+/* Old Prescriptions List */
+.prescriptions-page {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.prescriptions-container {
+  flex: 1;
+  padding: 20px;
+  max-width: 1500px;
+  margin: auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.prescriptions-container h2 {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.prescription-form {
+  margin-top: 20px;
+  padding: 20px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.prescription-form p {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.medicines-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.medicine-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.medicine-item input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.delete-prescription-btn {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-prescription-btn:hover {
+  background-color: #c82333;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .prescriptions-container {
+    padding: 10px;
+  }
+
+  .prescription-form {
+    padding: 10px;
+  }
+
+  .medicine-item {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .medicine-item input {
+    width: 100%;
+  }
+}
