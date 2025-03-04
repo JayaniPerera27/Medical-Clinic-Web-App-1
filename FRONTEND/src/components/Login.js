@@ -87,7 +87,7 @@ function Login() {
           />
           <label htmlFor="clinical">Clinical Staff</label>
 
-          <input
+          {/* <input
             type="radio"
             id="admin"
             name="role"
@@ -95,7 +95,7 @@ function Login() {
             checked={role === "Admin"}
             onChange={() => setRole("Admin")}
           />
-          <label htmlFor="admin">Admin</label>
+          <label htmlFor="admin">Admin</label> */}
         </div>
 
         <input

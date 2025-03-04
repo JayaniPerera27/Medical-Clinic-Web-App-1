@@ -167,7 +167,7 @@ function Signup() {
           />
           <label htmlFor="clinical">Clinical Staff</label>
 
-          <input
+          {/* <input
             type="radio"
             id="admin"
             name="role"
@@ -175,7 +175,7 @@ function Signup() {
             checked={formData.role === "Admin"}
             onChange={handleChange}
           />
-          <label htmlFor="admin">Admin</label>
+          <label htmlFor="admin">Admin</label> */}
         </div>
 
         {/* Form Fields */}
