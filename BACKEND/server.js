@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
+
 dotenv.config();
 
 const app = express();
@@ -33,6 +34,7 @@ const doctorRoutes = require('./routes/doctorRoutes');
 
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
+
 
 
 
