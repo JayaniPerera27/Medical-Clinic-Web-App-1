@@ -221,40 +221,6 @@ function Settings() {
               required
             />
           </div>
-          <div className="form-group">
-            <label>Available Days</label>
-            <div className="checkbox-group">
-              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
-                (day) => (
-                  <label key={day}>
-                    <input
-                      type="checkbox"
-                      name="availableDays"
-                      value={day}
-                      checked={formData.availableDays.includes(day)}
-                      onChange={handleDaysChange}
-                    />
-                    {day}
-                  </label>
-                )
-              )}
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Available Times</label>
-            {formData.availableDays.map((day) => (
-              <div key={day}>
-                <label>{day}</label>
-                <input
-                  type="text"
-                  name={day}
-                  value={formData.availableTimes[day] || ''}
-                  onChange={handleTimesChange}
-                  placeholder="e.g., 9:00 AM - 5:00 PM"
-                />
-              </div>
-            ))}
-          </div>
           <button type="submit" className="save-button">
             Save Changes
           </button>
