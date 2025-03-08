@@ -8,7 +8,7 @@ import "../styles/Sidebar.css";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-
+  
   const sidebarLinks = [
     { path: "/doctor-home", label: "Dashboard", icon: <FaHome /> },
     { path: "/doctor-appointments", label: "Appointments", icon: <FaCalendarAlt /> },
