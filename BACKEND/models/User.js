@@ -80,38 +80,6 @@ const userSchema = new mongoose.Schema(
                 return this.role === "Doctor";
             },
         },
-        availableDays: {
-            type: [String],
-            enum: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            required: function () {
-                return this.role === "Doctor";
-            },
-        },
-        availableTimes: {
-            type: Map,
-            of: [String], // Array of time ranges for each day
-            validate: {
-                validator: function (v) {
-                    for (let times of v.values()) {
-                        if (
-                            !times.every((time) =>
-                                /^[0-2]?[0-9]:[0-5][0-9] (AM|PM) - [0-2]?[0-9]:[0-5][0-9] (AM|PM)$/.test(time)
-                            )
-                        ) {
-                            return false;
-                        }
-                    }
-                    return true;
-                },
-                message: (props) => `Invalid time range format! Use HH:MM AM - HH:MM PM.`,
-            },
-            required: function () {
-                return this.role === "Doctor";
-            },
-        },
-    },
-    {
-        timestamps: true,
     }
 );
 
