@@ -10,8 +10,7 @@ function Settings() {
     phoneNumber: '',
     specialization: '',
     yearsOfExperience: '',
-    availableDays: [],
-    availableTimes: {},
+    
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -47,8 +46,7 @@ function Settings() {
             phoneNumber: data.phoneNumber || '',
             specialization: data.specialization || '',
             yearsOfExperience: data.yearsOfExperience || '',
-            availableDays: data.availableDays || [],
-            availableTimes: data.availableTimes || {},
+            
           });
         } else {
           throw new Error('Failed to fetch profile');
@@ -70,23 +68,7 @@ function Settings() {
     }));
   };
 
-  const handleDaysChange = (e) => {
-    const { value, checked } = e.target;
-    setFormData((prevState) => {
-      const updatedDays = checked
-        ? [...prevState.availableDays, value]
-        : prevState.availableDays.filter((day) => day !== value);
-      return { ...prevState, availableDays: updatedDays };
-    });
-  };
-
-  const handleTimesChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      availableTimes: { ...prevState.availableTimes, [name]: value },
-    }));
-  };
+  
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
