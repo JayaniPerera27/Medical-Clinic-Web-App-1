@@ -15,6 +15,7 @@ const Availability = () => {
 
   useEffect(() => {
     fetchAvailability();
+    
   }, []);
 
   // ✅ ( + ) Fetch doctor's availability
