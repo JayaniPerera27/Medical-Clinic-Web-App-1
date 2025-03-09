@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const Appointment = require("../models/Appointment");
 const Prescription = require("../models/Prescription");
