@@ -40,7 +40,6 @@ const reportsRoutes = require("./routes/reports");
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
 app.use("/api/patients", patientRoutes);
-app.use("/api/appointments", appointmentRoutes);
 app.use("/api/bills", billRoutes);
 app.use("/api/clinical-staff", clinicalStaffRoutes);
 app.use("/api/bill-history", billHistoryRoutes);
