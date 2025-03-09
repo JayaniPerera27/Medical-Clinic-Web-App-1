@@ -231,38 +231,18 @@ function Signup() {
               ))}
             </select>
 
-            <input
-              type="number"
-              placeholder="Years of Experience"
-              name="yearsOfExperience"
-              value={formData.yearsOfExperience}
-              onChange={handleChange}
-              required
-            />
+                <input
+                  type="number"
+                  placeholder="Years of Experience"
+                  name="yearsOfExperience"
+                  value={formData.yearsOfExperience}
+                  onChange={handleChange}
+                  required
+                />
+              </>
+            )}
 
-            <div className="checkbox-group">
-              <label>Available Days and Times:</label>
-              {daysOfWeek.map((day) => (
-                <div key={day} className="day-time">
-                  <input
-                    type="checkbox"
-                    value={day}
-                    checked={formData.availableDays.includes(day)}
-                    onChange={handleCheckboxChange}
-                  />
-                  <label>{day}</label>
-                  <input
-                    type="text"
-                    placeholder="Available Time (e.g., 09:00 AM - 11:00 AM)"
-                    value={formData.availableTimes[day] || ""}
-                    onChange={(e) => handleTimeChange(e, day)}
-                    disabled={!formData.availableDays.includes(day)}
-                  />
-                </div>
-              ))}
-            </div>
-          </>
-        )}
+            
 
         {/* Password Fields */}
         <input
