@@ -81,8 +81,7 @@ exports.signup = async (req, res) => {
             medicalLicenseNumber, 
             specialization, 
             yearsOfExperience, 
-            availableDays, 
-            availableTimes 
+
         } = req.body;
 
         // Log payload
@@ -90,7 +89,7 @@ exports.signup = async (req, res) => {
 
         // Validate role-specific fields
         if (role === 'Doctor') {
-            if (!medicalLicenseNumber || !specialization || !yearsOfExperience || !availableDays || !availableTimes) {
+            if (!medicalLicenseNumber || !specialization || !yearsOfExperience ) {
                 return res.status(400).json({
                     message: "Missing required fields for Doctor role",
                 });
@@ -116,8 +115,7 @@ exports.signup = async (req, res) => {
             medicalLicenseNumber: role === 'Doctor' ? medicalLicenseNumber : undefined,
             specialization: role === 'Doctor' ? specialization : undefined,
             yearsOfExperience: role === 'Doctor' ? yearsOfExperience : undefined,
-            availableDays: role === 'Doctor' ? availableDays : undefined,
-            availableTimes: role === 'Doctor' ? availableTimes : undefined,
+            
         });
 
         await newUser.save();
