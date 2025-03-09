@@ -144,6 +144,7 @@ import Services from './pages/Services';
 import Prescriptions from "./components/Prescriptions";
 import NewPrescription from "./components/NewPrescription";
 import OldPrescriptions from "./components/OldPrescriptions";
+import Availability from "./components/Availability";
 
 import DoctorAppointments from "./components/DoctorAppointments";
 
@@ -214,6 +215,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+<Route
+  path="/availability"
+  element={
+    <ProtectedRoute>
+      <Availability />
+    </ProtectedRoute>
+  }
+/>
+
 
 <Route
   path="/prescriptions"
