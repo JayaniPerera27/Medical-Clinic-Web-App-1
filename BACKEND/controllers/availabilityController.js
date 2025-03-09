@@ -40,3 +40,32 @@ exports.getAvailability = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+
+// Delete a specific availability slot
+exports.deleteAvailability = async (req, res) => {
+    try {
+        const { slotId } = req.params;
+
+        const doctor = await User.findById(req.user.id);
+
+        if (!doctor || doctor.role !== "Doctor") {
+            return res.status(403).json({ message: "Only doctors can delete availability slots." });
+        }
+
+        // Filter out the slot that matches the provided slotId
+        const updatedAvailability = doctor.availability.filter(slot => slot._id.toString() !== slotId);
+
+        // Check if any slots were actually removed
+        if (updatedAvailability.length === doctor.availability.length) {
+            return res.status(404).json({ message: "Availability slot not found" });
+        }
+
+        doctor.availability = updatedAvailability;
+        await doctor.save();
+
+        res.status(200).json({ message: "Availability slot deleted successfully", availability: doctor.availability });
+    } catch (error) {
+        console.error("Error deleting availability:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
