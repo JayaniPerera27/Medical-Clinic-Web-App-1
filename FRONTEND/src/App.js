@@ -135,6 +135,10 @@ import Signup from './components/Signup';
 import DoctorHome from './components/DoctorHome';
 import ClinicalHome from './components/ClinicalHome';
 import AdminHome from './components/AdminHome';
+import ClinicalSettings from './components/ClinicalSettings';
+import Bill from "./components/Bill";
+import BillHistory from "./components/BillHistory";
+import ClinicalReports from "./components/ClinicalReports";
 
 import Settings from './components/Settings';
 import HomePage from "./components/HomePage";
@@ -255,7 +259,38 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+       <Route
+          path="/clinical-settings"
+          element={
+            <ProtectedRoute>
+              <ClinicalSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/billing"
+          element={
+            <ProtectedRoute>
+              <Bill />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bill-history"
+          element={
+            <ProtectedRoute>
+              <BillHistory />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/clinical-reports"
+          element={
+            <ProtectedRoute>
+              <ClinicalReports />
+            </ProtectedRoute>
+          }
+        />
         {/* 404 Route */}
         <Route
           path="*"
