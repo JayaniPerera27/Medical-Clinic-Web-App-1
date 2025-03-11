@@ -23,8 +23,7 @@ const getDoctorProfile = async (req, res) => {
             medicalLicenseNumber: doctor.medicalLicenseNumber,
             specialization: doctor.specialization,
             yearsOfExperience: doctor.yearsOfExperience,
-            availableDays: doctor.availableDays,
-            availableTimes: doctor.availableTimes,
+            doctorFee: doctor.doctorFee,
         });
     } catch (error) {
         console.error('Error fetching doctor profile:', error);
@@ -34,7 +33,7 @@ const getDoctorProfile = async (req, res) => {
 
 // Update Doctor Profile
 const updateDoctorProfile = async (req, res) => {
-    const { fullName, email, phoneNumber, specialization, yearsOfExperience, availableDays, availableTimes } = req.body;
+    const { fullName, email, phoneNumber, specialization, yearsOfExperience, doctorFee } = req.body;
 
     try {
         const doctor = await User.findOne({ _id: req.user.id, role: 'Doctor' });
@@ -46,8 +45,7 @@ const updateDoctorProfile = async (req, res) => {
         doctor.phoneNumber = phoneNumber || doctor.phoneNumber;
         doctor.specialization = specialization || doctor.specialization;
         doctor.yearsOfExperience = yearsOfExperience || doctor.yearsOfExperience;
-        doctor.availableDays = availableDays || doctor.availableDays;
-        doctor.availableTimes = availableTimes || doctor.availableTimes;
+        doctor.doctorFee = doctorFee || doctor.doctorFee;
 
         const updatedDoctor = await doctor.save();
 
@@ -59,8 +57,7 @@ const updateDoctorProfile = async (req, res) => {
                 phoneNumber: updatedDoctor.phoneNumber,
                 specialization: updatedDoctor.specialization,
                 yearsOfExperience: updatedDoctor.yearsOfExperience,
-                availableDays: updatedDoctor.availableDays,
-                availableTimes: updatedDoctor.availableTimes,
+                doctorFee: updatedDoctor.doctorFee,
             },
         });
     } catch (error) {
@@ -68,6 +65,7 @@ const updateDoctorProfile = async (req, res) => {
         res.status(500).json({ message: 'Failed to update profile' });
     }
 };
+
 
 // Change Password
 const changePassword = async (req, res) => {

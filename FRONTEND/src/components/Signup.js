@@ -29,18 +29,6 @@ const specializations = [
   "None",
 ];
 
-const daysOfWeek = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
-
-
-
 function Signup() {
   const [formData, setFormData] = useState({
     email: "",
@@ -52,8 +40,7 @@ function Signup() {
     medicalLicenseNumber: "",
     specialization: "",
     yearsOfExperience: "",
-    availableDays: [],
-    availableTimes: {},
+    doctorFee: "",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -63,27 +50,6 @@ function Signup() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleCheckboxChange = (e) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      availableDays: prevData.availableDays.includes(value)
-        ? prevData.availableDays.filter((item) => item !== value)
-        : [...prevData.availableDays, value],
-    }));
-  };
-
-  const handleTimeChange = (e, day) => {
-    const { value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      availableTimes: {
-        ...prevData.availableTimes,
-        [day]: value,
-      },
-    }));
   };
 
   const handleSignup = async (e) => {
@@ -98,7 +64,6 @@ function Signup() {
       return;
     }
 
-    // Determine the endpoint based on role
     let endpoint = "http://localhost:8070/api/auth/signup";
     if (role === "Doctor") {
       endpoint = "http://localhost:8070/api/auth/signup/doctors";
@@ -108,14 +73,12 @@ function Signup() {
       endpoint = "http://localhost:8070/api/auth/signup/admin";
     }
 
-    // Prepare the payload based on the role
     let payload = { ...rest, role, password };
     if (role !== "Doctor") {
       delete payload.medicalLicenseNumber;
       delete payload.specialization;
       delete payload.yearsOfExperience;
-      delete payload.availableDays;
-      delete payload.availableTimes;
+      delete payload.doctorFee;
     }
 
     setIsSubmitting(true);
@@ -145,7 +108,6 @@ function Signup() {
       <h2>Create an Account</h2>
 
       <form onSubmit={handleSignup}>
-        {/* Role Selection */}
         <div className="role-selection">
           <input
             type="radio"
@@ -166,19 +128,8 @@ function Signup() {
             onChange={handleChange}
           />
           <label htmlFor="clinical">Clinical Staff</label>
-
-          {/* <input
-            type="radio"
-            id="admin"
-            name="role"
-            value="Admin"
-            checked={formData.role === "Admin"}
-            onChange={handleChange}
-          />
-          <label htmlFor="admin">Admin</label> */}
         </div>
 
-        {/* Form Fields */}
         <input
           type="text"
           placeholder="Full Name"
@@ -240,31 +191,17 @@ function Signup() {
               required
             />
 
-            <div className="checkbox-group">
-              <label>Available Days and Times:</label>
-              {daysOfWeek.map((day) => (
-                <div key={day} className="day-time">
-                  <input
-                    type="checkbox"
-                    value={day}
-                    checked={formData.availableDays.includes(day)}
-                    onChange={handleCheckboxChange}
-                  />
-                  <label>{day}</label>
-                  <input
-                    type="text"
-                    placeholder="Available Time (e.g., 09:00 AM - 11:00 AM)"
-                    value={formData.availableTimes[day] || ""}
-                    onChange={(e) => handleTimeChange(e, day)}
-                    disabled={!formData.availableDays.includes(day)}
-                  />
-                </div>
-              ))}
-            </div>
+            <input
+              type="number"
+              placeholder="Doctor Fee"
+              name="doctorFee"
+              value={formData.doctorFee}
+              onChange={handleChange}
+              required
+            />
           </>
         )}
 
-        {/* Password Fields */}
         <input
           type="password"
           placeholder="Password"
