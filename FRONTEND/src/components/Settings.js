@@ -10,6 +10,7 @@ function Settings() {
     phoneNumber: '',
     specialization: '',
     yearsOfExperience: '',
+    doctorFee: '',
     
   });
 
@@ -46,6 +47,7 @@ function Settings() {
             phoneNumber: data.phoneNumber || '',
             specialization: data.specialization || '',
             yearsOfExperience: data.yearsOfExperience || '',
+            doctorFee: data.doctorFee || '',
             
           });
         } else {
@@ -199,6 +201,16 @@ function Settings() {
               type="number"
               name="yearsOfExperience"
               value={formData.yearsOfExperience}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Doctor Fee</label>
+            <input
+              type="number"
+              name="doctorFee"
+              value={formData.doctorFee}
               onChange={handleChange}
               required
             />
