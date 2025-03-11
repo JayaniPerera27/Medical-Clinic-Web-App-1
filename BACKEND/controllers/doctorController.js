@@ -66,6 +66,7 @@ const updateDoctorProfile = async (req, res) => {
     }
 };
 
+
 // Change Password
 const changePassword = async (req, res) => {
     const { oldPassword, newPassword } = req.body;
