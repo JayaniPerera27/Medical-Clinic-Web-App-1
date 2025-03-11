@@ -1,12 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User.js');
+const User = require('../models/user.js');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
 const { JWT_SECRET } = process.env;
-
 
 // Controller for logging in
 exports.login = async (req, res) => {
@@ -31,20 +30,14 @@ exports.login = async (req, res) => {
         }
 
         // Generate a JWT token
-        /*const jwtToken = jwt.sign(
-            { userId: user._id, role: user.role }, // Add any relevant user info to the payload
-            JWT_SECRET, 
-            { expiresIn: '1h' } // Set token expiration time
+        const token = jwt.sign(
+            { userId: user._id, role: user.role, name: user.fullName },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
         );
 
-        // Send the token in the response
-        res.status(200).json({ token: jwtToken, role: user.role });
-    } */
-        const token = jwt.sign({ userId: user._id, role: user.role, name: user.fullName }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
         return res.json({ token, role: user.role, name: user.fullName, message: "Login successful" });
-    } 
-        catch (error) {
+    } catch (error) {
         res.status(500).json({ message: "Error logging in", error: error.message });
     }
 };
@@ -68,7 +61,6 @@ const authMiddleware = (roles) => (req, res, next) => {
 
 exports.authMiddleware = authMiddleware;
 
-
 // Controller for signing up
 exports.signup = async (req, res) => {
     try {
@@ -81,7 +73,7 @@ exports.signup = async (req, res) => {
             medicalLicenseNumber, 
             specialization, 
             yearsOfExperience, 
-
+            doctorFee
         } = req.body;
 
         // Log payload
@@ -89,7 +81,7 @@ exports.signup = async (req, res) => {
 
         // Validate role-specific fields
         if (role === 'Doctor') {
-            if (!medicalLicenseNumber || !specialization || !yearsOfExperience ) {
+            if (!medicalLicenseNumber || !specialization || !yearsOfExperience || doctorFee === undefined) {
                 return res.status(400).json({
                     message: "Missing required fields for Doctor role",
                 });
@@ -115,7 +107,7 @@ exports.signup = async (req, res) => {
             medicalLicenseNumber: role === 'Doctor' ? medicalLicenseNumber : undefined,
             specialization: role === 'Doctor' ? specialization : undefined,
             yearsOfExperience: role === 'Doctor' ? yearsOfExperience : undefined,
-            
+            doctorFee: role === 'Doctor' ? parseFloat(doctorFee) : undefined
         });
 
         await newUser.save();

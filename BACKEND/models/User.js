@@ -69,10 +69,14 @@ const userSchema = new mongoose.Schema({
             return this.role === "Doctor";
         },
     },
+    doctorFee: {
+        type: Number,
+        required: function () {
+            return this.role === "Doctor";
+        },
+    },
     availability: [availabilitySchema] // Array of availability objects
 });
 
-//const User = mongoose.model("User", userSchema);
-const User = mongoose.models.User || mongoose.model('User', userSchema);
-
+const User = mongoose.model("User", userSchema);
 module.exports = User;
