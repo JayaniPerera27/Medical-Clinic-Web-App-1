@@ -69,6 +69,12 @@ const userSchema = new mongoose.Schema({
             return this.role === "Doctor";
         },
     },
+    doctorFee: {
+        type: Number,
+        required: function () {
+            return this.role === "Doctor";
+        },
+    },
     availability: [availabilitySchema] // Array of availability objects
 });
 

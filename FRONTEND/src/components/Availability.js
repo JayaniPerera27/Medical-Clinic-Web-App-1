@@ -1,64 +1,71 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/Availability.css";
-import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
+import { FaTrash, FaEdit, FaPlus, FaSave, FaTimes } from "react-icons/fa";
 
 const API_BASE_URL = "http://localhost:8070/api/availability"; // Backend API
 
 const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const Availability = () => {
-  const [availability, setAvailability] = useState([]);
+  const [availability, setAvailability] = useState({});
   const [newSlot, setNewSlot] = useState({ day: "", startTime: "", endTime: "", maxPatients: "" });
   const [editingSlot, setEditingSlot] = useState(null);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchAvailability();
-    
   }, []);
 
-  // ✅ ( + ) Fetch doctor's availability
   const fetchAvailability = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/get`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setAvailability(response.data.availability || []);
+
+      if (response.data && response.data.availability) {
+        // Grouping availability slots by day
+        const groupedAvailability = response.data.availability.reduce((acc, slot) => {
+          if (!acc[slot.day]) acc[slot.day] = [];
+          acc[slot.day].push(slot);
+          return acc;
+        }, {});
+
+        // Ensure all days are represented, even if empty
+        const completeAvailability = daysOfWeek.reduce((acc, day) => {
+          acc[day] = groupedAvailability[day] || [];
+          return acc;
+        }, {});
+
+        setAvailability(completeAvailability);
+      } else {
+        setAvailability({});
+      }
     } catch (error) {
       console.error("Error fetching availability:", error);
     }
   };
 
-  // ✅ Handle input change
   const handleSlotChange = (field, value) => {
-    setNewSlot((prevSlot) => ({ ...prevSlot, [field]: value }));
+    setNewSlot((prev) => ({ ...prev, [field]: value }));
   };
 
-  // ✅ ( + ) Add or update availability slot
   const handleSaveAvailability = async () => {
+    if (!newSlot.day || !newSlot.startTime || !newSlot.endTime || !newSlot.maxPatients) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
     try {
-      if (!newSlot.day || !newSlot.startTime || !newSlot.endTime || !newSlot.maxPatients) {
-        alert("Please fill in all fields.");
-        return;
-      }
-
       if (editingSlot) {
-        // ✅ Update existing slot
-        await axios.put(
-          `${API_BASE_URL}/update/${editingSlot._id}`,
-          newSlot,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        await axios.put(`${API_BASE_URL}/update/${editingSlot._id}`, newSlot, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       } else {
-        // ✅ Add new slot
-        await axios.post(
-          `${API_BASE_URL}/set`,
-          newSlot,
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
+        await axios.post(`${API_BASE_URL}/set`, newSlot, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
       }
-
       fetchAvailability();
       setNewSlot({ day: "", startTime: "", endTime: "", maxPatients: "" });
       setEditingSlot(null);
@@ -67,7 +74,6 @@ const Availability = () => {
     }
   };
 
-  // ✅ ( + ) Delete slot
   const handleDeleteAvailability = async (slotId) => {
     try {
       await axios.delete(`${API_BASE_URL}/delete/${slotId}`, {
@@ -79,7 +85,6 @@ const Availability = () => {
     }
   };
 
-  // ✅ ( + ) Start editing a slot
   const handleEditAvailability = (slot) => {
     setNewSlot(slot);
     setEditingSlot(slot);
@@ -88,27 +93,25 @@ const Availability = () => {
   return (
     <div className="availability-container">
       <h2>Doctor Availability</h2>
-
-      {/* ✅ ( + ) Availability List */}
       <div className="availability-list">
-        {availability.length > 0 ? (
-          availability.map((slot) => (
-            <div key={slot._id} className="availability-slot">
-              <h3>{slot.day}</h3>
-              <p>{slot.startTime} - {slot.endTime} ({slot.maxPatients} patients)</p>
-              <div className="action-buttons">
-                <FaEdit className="edit-icon" onClick={() => handleEditAvailability(slot)} />
-                <FaTrash className="delete-icon" onClick={() => handleDeleteAvailability(slot._id)} />
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No availability set.</p>
-        )}
+        {daysOfWeek.map((day) => (
+          <div key={day} className="day-section">
+            <h3>{day}</h3>
+            {availability[day] && availability[day].length > 0 ? (
+              availability[day].map((slot) => (
+                <div key={slot._id} className="availability-slot">
+                  <p>{slot.startTime} - {slot.endTime} ({slot.maxPatients} patients)</p>
+                  <FaEdit className="edit-icon" onClick={() => handleEditAvailability(slot)} />
+                  <FaTrash className="delete-icon" onClick={() => handleDeleteAvailability(slot._id)} />
+                </div>
+              ))
+            ) : (
+              <p>No availability set for {day}.</p>
+            )}
+          </div>
+        ))}
       </div>
-
-      {/* ✅ ( + ) Add / Edit Availability Section */}
-      <h3>{editingSlot ? "Edit Availability" : "Add Availability"}</h3>
+      <h3>{editingSlot ? "Edit Time Slot" : "Add New Time Slot"}</h3>
       <div className="availability-form">
         <select value={newSlot.day} onChange={(e) => handleSlotChange("day", e.target.value)}>
           <option value="">Select Day</option>
@@ -116,30 +119,11 @@ const Availability = () => {
             <option key={day} value={day}>{day}</option>
           ))}
         </select>
-        <input
-          type="time"
-          value={newSlot.startTime}
-          onChange={(e) => handleSlotChange("startTime", e.target.value)}
-          placeholder="Start Time"
-        />
-        <input
-          type="time"
-          value={newSlot.endTime}
-          onChange={(e) => handleSlotChange("endTime", e.target.value)}
-          placeholder="End Time"
-        />
-        <select value={newSlot.maxPatients} onChange={(e) => handleSlotChange("maxPatients", e.target.value)}>
-          <option value="">Max Patients</option>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-            <option key={num} value={num}>{num}</option>
-          ))}
-        </select>
+        <input type="time" value={newSlot.startTime} onChange={(e) => handleSlotChange("startTime", e.target.value)} />
+        <input type="time" value={newSlot.endTime} onChange={(e) => handleSlotChange("endTime", e.target.value)} />
+        <input type="number" value={newSlot.maxPatients} onChange={(e) => handleSlotChange("maxPatients", e.target.value)} placeholder="Max Patients" />
       </div>
-
-      {/* ✅ Save / Update Button */}
-      <button onClick={handleSaveAvailability}>
-        {editingSlot ? "Update Availability" : "Save Availability"}
-      </button>
+      <button onClick={handleSaveAvailability}>{editingSlot ? "Update" : "Add"} Time Slot</button>
     </div>
   );
 };
