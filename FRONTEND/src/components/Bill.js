@@ -98,7 +98,7 @@ function Bill() {
         }
     } catch (error) {
         console.error("❌ Error saving fee:", error.response?.data || error.message);
-        alert("✅ Fee saved successfully!");
+        alert("❌ Failed to save fee. Please try again.");
     }
 };
 

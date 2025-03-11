@@ -1,14 +1,12 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const appointmentSchema = new mongoose.Schema({
-    doctorName: String,
-    date: String,
-    time: String,
     patientName: String,
     patientEmail: String,
-    patientPhone: String,
-    patientUsername: String
-
+    phoneNumber: String,
+    appointmentTime: String,
+    appointmentDay: String,
+    doctorId: { type: mongoose.Schema.Types.ObjectId, ref: 'Doctor' } // Ensure this exists
 });
 
-module.exports = mongoose.model("Appointment", appointmentSchema);
+module.exports = mongoose.model('Appointment', appointmentSchema);
