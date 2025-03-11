@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Bill = require("../models/Bill");
 const BillHistory = require("../models/BillHistory"); // Import BillHistory model
-const User = require("../models/User");  // ✅ Use User model instead
+const User = require("../models/user.js");  // ✅ Use User model instead
 
 // ✅ Route to save a fee (No changes made)
 router.post("/save-fee", async (req, res) => {
