@@ -1,116 +1,125 @@
 .availability-container {
   max-width: 800px;
-  margin: auto;
+  margin: 40px auto;
   padding: 20px;
-  background: #f9f9f9;
-  border-radius: 10px;
+  background: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  border-radius: 8px;
+  text-align: center;
 }
 
-h2,
-h3 {
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.availability-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.availability-table th,
+.availability-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
   text-align: center;
+}
+
+.availability-table th {
+  background: #f4f4f4;
   color: #333;
 }
 
-.availability-list {
-  margin-top: 20px;
+.availability-table tr:nth-child(even) {
+  background: #f9f9f9;
 }
 
-.day-group {
-  margin-bottom: 15px;
-  padding: 10px;
-  background: #e8f0fe;
-  border-radius: 8px;
-}
-
-.day-group h3 {
-  color: #0056b3;
-  margin-bottom: 5px;
-}
-
-.availability-slot {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #ffffff;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.availability-slot p {
-  margin: 0;
-  color: #666;
-  font-size: 14px;
+.availability-table tr:hover {
+  background: #e0f7fa;
 }
 
 .action-buttons {
   display: flex;
+  justify-content: center;
   gap: 10px;
-}
-
-.edit-icon,
-.delete-icon {
-  cursor: pointer;
-  font-size: 18px;
-  transition: color 0.3s ease;
-}
-
-.edit-icon {
-  color: #28a745;
-}
-
-.delete-icon {
-  color: #dc3545;
-}
-
-.edit-icon:hover {
-  color: #218838;
-}
-
-.delete-icon:hover {
-  color: #c82333;
-}
-
-.availability-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.availability-form select,
-.availability-form input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 14px;
 }
 
 button {
-  width: 100%;
-  background: #007bff;
-  color: #fff;
-  padding: 12px;
-  font-size: 16px;
+  padding: 8px 12px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
+  font-size: 14px;
 }
 
-button:hover {
-  background: #0056b3;
+.edit-btn {
+  background: #f0ad4e;
+  color: white;
+}
+
+.delete-btn {
+  background: #d9534f;
+  color: white;
+}
+
+.save-btn {
+  background: #5cb85c;
+  color: white;
 }
 
 .cancel-btn {
-  background: #dc3545;
+  background: #777;
+  color: white;
 }
 
-.cancel-btn:hover {
-  background: #c82333;
+button:hover {
+  opacity: 0.8;
+}
+
+.add-availability {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+}
+
+.add-availability h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.add-availability select,
+.add-availability input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.add-btn,
+.update-btn {
+  background: #0275d8;
+  color: white;
+  width: 100%;
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .availability-container {
+    width: 90%;
+  }
+
+  .availability-table th,
+  .availability-table td {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
