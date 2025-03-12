@@ -10,6 +10,7 @@ function ClinicalHome() {
   const location = useLocation();
   const [clinicalStaffName, setClinicalStaffName] = useState("");
   const [notifications, setNotifications] = useState(3);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -27,9 +28,29 @@ function ClinicalHome() {
     navigate("/");
   };
 
+  const handleSidebarToggle = () => {
+    setSidebarVisible(!sidebarVisible);
+  };
+
   return (
     <div className="clinical-home-container">
-      <ClinicalSidebar handleLogout={handleLogout} location={location} />
+      {/* Sidebar toggle button for mobile */}
+      <button className="sidebar-toggle" onClick={handleSidebarToggle}>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      
+      {/* Sidebar with collapsible class */}
+      <div 
+        className={`sidebar-wrapper ${sidebarVisible ? 'sidebar-visible' : ''}`}
+        onMouseEnter={() => setSidebarVisible(true)}
+        onMouseLeave={() => setSidebarVisible(false)}
+      >
+        <ClinicalSidebar handleLogout={handleLogout} location={location} />
+      </div>
       
       <main className="main-content">
         <header className="header">

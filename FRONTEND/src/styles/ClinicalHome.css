@@ -1,9 +1,10 @@
-/* ClinicalHome.css - Updated Modern Styles */
+/* ClinicalHome.css - Updated with Collapsible Sidebar */
 
 .clinical-home-container {
   display: flex;
   height: 100vh;
   background: rgba(255, 255, 255, 0.9);
+  position: relative;
 }
 
 .background-video {
@@ -16,11 +17,48 @@
   z-index: -1;
 }
 
+/* Sidebar wrapper styles - collapsible */
+.sidebar-wrapper {
+  position: absolute;
+  left: -260px; /* Initially hidden - width of sidebar */
+  top: 0;
+  height: 100%;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+.sidebar-wrapper:hover,
+.sidebar-visible {
+  left: 0;
+}
+
+/* Sidebar toggle button for mobile */
+.sidebar-toggle {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #007bff;
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1001;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  display: none; /* Hidden by default, shown on mobile */
+}
+
 .main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   padding: 20px;
+  padding-left: 30px; /* Extra space for the collapsed sidebar */
+  width: 100%;
   overflow-y: auto;
 }
 
@@ -210,6 +248,23 @@ li:hover, .selected {
 
 /* Add responsive adjustments */
 @media (max-width: 768px) {
+  .sidebar-toggle {
+    display: flex; /* Show on mobile */
+  }
+  
+  .sidebar-wrapper {
+    left: -100%; /* Completely hidden on mobile when not active */
+  }
+  
+  .sidebar-visible {
+    left: 0;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .main-content {
+    padding-left: 20px;
+  }
+  
   .profile-name {
     display: none;
   }
@@ -225,4 +280,29 @@ li:hover, .selected {
   .notification-icon {
     margin-right: 10px;
   }
+}
+.container {
+  display: flex;
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+}
+
+.sidebar {
+  width: 250px; /* Adjust the sidebar width */
+  background-color: #333; /* Example background color */
+  color: white;
+  height: 100vh; /* Make sidebar full height */
+  position: fixed; /* Fix it to the left */
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.main-content {
+  flex-grow: 1; /* Takes remaining space */
+  width: calc(100% - 250px); /* Reduce width by sidebar width */
+  margin-left: 250px; /* Prevent overlap */
+  padding: 20px; /* Add some padding */
+  background-color: #f4f4f4; /* Example background */
+  overflow: auto; /* Prevent content overflow */
 }
