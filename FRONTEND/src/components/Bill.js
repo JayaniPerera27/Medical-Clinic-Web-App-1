@@ -8,6 +8,7 @@ const Bill = () => {
   const [doctors, setDoctors] = useState([]);
   const [prescriptions, setPrescriptions] = useState([]);
   const [fees, setFees] = useState({});
+  const [patientNames, setPatientNames] = useState({}); // Store actual patient names
   const clinicalFee = 2000;
 
   useEffect(() => {
@@ -15,16 +16,15 @@ const Bill = () => {
     axios
       .get(`${API_BASE_URL}/api/users/prescribing-doctors`)
       .then((response) => setDoctors(response.data))
-      .catch((error) =>
-        console.error("Error fetching prescribing doctors:", error)
-      );
+      .catch((error) => console.error("Error fetching prescribing doctors:", error));
 
-    // Fetch prescriptions and doctor fees automatically
+    // Fetch prescriptions and fetch doctor fees & patient names
     axios
       .get(`${API_BASE_URL}/api/prescriptions`)
-      .then((response) => {
+      .then(async (response) => {
         setPrescriptions(response.data);
         fetchDoctorFees(response.data);
+        fetchPatientNames(response.data);
       })
       .catch((error) => console.error("Error fetching prescriptions:", error));
   }, []);
@@ -36,9 +36,7 @@ const Bill = () => {
     for (const prescription of prescriptionsData) {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/api/users/doctor-fee/${encodeURIComponent(
-            prescription.doctorName.trim()
-          )}`
+          `${API_BASE_URL}/api/users/doctor-fee/${encodeURIComponent(prescription.doctorName.trim())}`
         );
         updatedFees[prescription._id] = {
           doctorFee: response.data.doctorFee || 0,
@@ -69,8 +67,29 @@ const Bill = () => {
     setFees(updatedFees);
   };
 
+  // Fetch patient names for all prescriptions
+  const fetchPatientNames = async (prescriptionsData) => {
+    const updatedNames = {};
+
+    for (const prescription of prescriptionsData) {
+      if (!prescription.patientUsername) continue; // Skip if no username
+
+      try {
+        const response = await axios.get(`${API_BASE_URL}/api/get-patient-name/${encodeURIComponent(prescription.patientUsername)}`);
+        updatedNames[prescription._id] = response.data.fullName; // Store patient name
+      } catch (error) {
+        console.error(`❌ Error fetching name for ${prescription.patientUsername}:`, error);
+        updatedNames[prescription._id] = "Unknown"; // Fallback if name fetching fails
+      }
+    }
+
+    setPatientNames(updatedNames);
+  };
+
   // Save billing data
-  const handleSaveFee = async (prescriptionId, patientName, doctorName) => {
+  const handleSaveFee = async (prescriptionId, doctorName) => {
+    const patientName = patientNames[prescriptionId] || "Unknown Patient";
+
     const billData = {
       patientName,
       doctorName,
@@ -111,7 +130,7 @@ const Bill = () => {
         <tbody>
           {prescriptions.map((prescription) => (
             <tr key={prescription._id}>
-              <td>{prescription.patientName}</td>
+              <td>{patientNames[prescription._id] || "Loading..."}</td>
               <td>{prescription.doctorName}</td>
               <td>{fees[prescription._id]?.doctorFee || "-"}</td>
               <td>{fees[prescription._id]?.clinicFee || clinicalFee}</td>
@@ -123,13 +142,7 @@ const Bill = () => {
               </td>
               <td>
                 <button
-                  onClick={() =>
-                    handleSaveFee(
-                      prescription._id,
-                      prescription.patientName,
-                      prescription.doctorName
-                    )
-                  }
+                  onClick={() => handleSaveFee(prescription._id, prescription.doctorName)}
                 >
                   Save Fee
                 </button>

@@ -43,7 +43,7 @@ const fetchPrescribingDoctors = require("./routes/fetchPrescribingDoctors");
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
 app.use("/api/patients", patientRoutes);
-app.use("/api/bills", billRoutes);
+app.use("/api", billRoutes);
 app.use("/api/clinical-staff", clinicalStaffRoutes);
 app.use("/api/bill-history", billHistoryRoutes);
 app.use("/api/reports", reportsRoutes);
