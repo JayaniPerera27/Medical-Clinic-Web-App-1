@@ -69,8 +69,11 @@ const userSchema = new mongoose.Schema({
             return this.role === "Doctor";
         },
     },
-    availability: [availabilitySchema] // Array of availability objects
-});
+    availability: [availabilitySchema], // Array of availability objects
+        // ✅ Add doctorFee to store consultation fee
+        doctorFee: { type: Number, required: function () { return this.role === "Doctor"; }, default: 0 }
+    });
+
 
 //const User = mongoose.model("User", userSchema);
 const User = mongoose.models.User || mongoose.model('User', userSchema);

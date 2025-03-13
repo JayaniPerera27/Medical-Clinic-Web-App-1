@@ -12,46 +12,62 @@ const Bill = () => {
 
   useEffect(() => {
     // Fetch doctors who have prescribed medicines
-    axios.get(`${API_BASE_URL}/api/users/prescribing-doctors`)
+    axios
+      .get(`${API_BASE_URL}/api/users/prescribing-doctors`)
       .then((response) => setDoctors(response.data))
-      .catch((error) => console.error("Error fetching prescribing doctors:", error));
+      .catch((error) =>
+        console.error("Error fetching prescribing doctors:", error)
+      );
 
-    // Fetch prescriptions and initialize fees
-    axios.get(`${API_BASE_URL}/api/prescriptions`)
+    // Fetch prescriptions and doctor fees automatically
+    axios
+      .get(`${API_BASE_URL}/api/prescriptions`)
       .then((response) => {
         setPrescriptions(response.data);
-        const initialFees = {};
-        response.data.forEach((prescription) => {
-          initialFees[prescription._id] = {
-            doctorFee: 0,
-            reportFee: prescription.medicines.some(med => med.instructions.toLowerCase().includes("get reports")) ? 1500 : 0,
-            clinicFee: clinicalFee,
-          };
-        });
-        setFees(initialFees);
+        fetchDoctorFees(response.data);
       })
       .catch((error) => console.error("Error fetching prescriptions:", error));
   }, []);
 
-  // Fetch doctor fee by doctor name
-  const handleDoctorFeeFetch = async (doctorName, prescriptionId) => {
-    try {
-      const encodedDoctorName = encodeURIComponent(doctorName.trim());
-      const response = await axios.get(`${API_BASE_URL}/api/users/doctor-fee/${encodedDoctorName}`);
-  
-      setFees((prevFees) => ({
-        ...prevFees,
-        [prescriptionId]: {
-          ...prevFees[prescriptionId],
+  // Fetch doctor fees for all prescriptions
+  const fetchDoctorFees = async (prescriptionsData) => {
+    const updatedFees = {};
+
+    for (const prescription of prescriptionsData) {
+      try {
+        const response = await axios.get(
+          `${API_BASE_URL}/api/users/doctor-fee/${encodeURIComponent(
+            prescription.doctorName.trim()
+          )}`
+        );
+        updatedFees[prescription._id] = {
           doctorFee: response.data.doctorFee || 0,
-        },
-      }));
-    } catch (error) {
-      console.error("Error fetching doctor fee:", error.response?.data || error.message);
+          reportFee: prescription.medicines.some((med) =>
+            med.instructions.toLowerCase().includes("get reports")
+          )
+            ? 1500
+            : 0,
+          clinicFee: clinicalFee,
+        };
+      } catch (error) {
+        console.error(
+          `❌ Error fetching doctor fee for ${prescription.doctorName}:`,
+          error.response?.data || error.message
+        );
+        updatedFees[prescription._id] = {
+          doctorFee: 0,
+          reportFee: prescription.medicines.some((med) =>
+            med.instructions.toLowerCase().includes("get reports")
+          )
+            ? 1500
+            : 0,
+          clinicFee: clinicalFee,
+        };
+      }
     }
+
+    setFees(updatedFees);
   };
-  
-  
 
   // Save billing data
   const handleSaveFee = async (prescriptionId, patientName, doctorName) => {
@@ -97,12 +113,7 @@ const Bill = () => {
             <tr key={prescription._id}>
               <td>{prescription.patientName}</td>
               <td>{prescription.doctorName}</td>
-              <td>
-                {fees[prescription._id]?.doctorFee || "-"} 
-                <button onClick={() => handleDoctorFeeFetch(prescription.doctorName, prescription._id)}>
-                  Fetch Fee
-                </button>
-              </td>
+              <td>{fees[prescription._id]?.doctorFee || "-"}</td>
               <td>{fees[prescription._id]?.clinicFee || clinicalFee}</td>
               <td>{fees[prescription._id]?.reportFee || "-"}</td>
               <td>
@@ -111,7 +122,15 @@ const Bill = () => {
                   (parseFloat(fees[prescription._id]?.reportFee) || 0)}
               </td>
               <td>
-                <button onClick={() => handleSaveFee(prescription._id, prescription.patientName, prescription.doctorName)}>
+                <button
+                  onClick={() =>
+                    handleSaveFee(
+                      prescription._id,
+                      prescription.patientName,
+                      prescription.doctorName
+                    )
+                  }
+                >
                   Save Fee
                 </button>
               </td>
