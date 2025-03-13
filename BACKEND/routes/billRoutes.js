@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const Bill = require("../models/Bill");
-const BillHistory = require("../models/BillHistory"); // Import BillHistory model
-const User = require("../models/User");  // ✅ Use User model instead
+const BillHistory = require("../models/BillHistory");
+const User = require("../models/User");
 
-// ✅ Route to save a fee (No changes made)
+// ✅ Route to save a fee
 router.post("/save-fee", async (req, res) => {
     try {
         const { patientId, patientName, username, doctorId, doctorFee, reportFee, clinicFee } = req.body;
@@ -16,9 +16,9 @@ router.post("/save-fee", async (req, res) => {
         const totalFee = Number(doctorFee) + Number(reportFee) + Number(clinicFee);
 
         const newBill = new Bill({
-            patientId,  // ✅ Ensure patientId is saved
+            patientId,
             patientName,
-            username,   // ✅ Ensure username is saved
+            username,
             doctorId,
             doctorFee: Number(doctorFee),
             reportFee: Number(reportFee),
@@ -35,13 +35,10 @@ router.post("/save-fee", async (req, res) => {
     }
 });
 
-
-
-
-// ✅ Route to move all bills to bill history
+// ✅ Route to move all bills to history
 router.post("/move-to-history", async (req, res) => {
     try {
-        const allBills = await Bill.find().populate("doctorId", "name"); // ✅ Ensure doctor name is populated
+        const allBills = await Bill.find().populate("doctorId", "fullName"); // ✅ Fetch doctor name
 
         if (allBills.length === 0) {
             return res.status(400).json({ message: "No bills found to move." });
@@ -49,12 +46,12 @@ router.post("/move-to-history", async (req, res) => {
 
         const historyEntries = allBills.map((bill) => ({
             patientName: bill.patientName,
-            doctorName: bill.doctorId , // ✅ Assign correct doctor name
+            doctorName: bill.doctorId.fullName, // ✅ Ensure doctor name is assigned
             doctorFee: bill.doctorFee,
             reportFee: bill.reportFee,
             clinicFee: bill.clinicFee,
             totalFee: bill.totalFee,
-            date: new Date(), // ✅ Fix date format issue
+            date: new Date(),
         }));
 
         await BillHistory.insertMany(historyEntries);
@@ -67,34 +64,28 @@ router.post("/move-to-history", async (req, res) => {
     }
 });
 
-
-// Route to fetch all billing history, grouped by patientName
+// ✅ Route to fetch all billing history, grouped by patientName
 router.get("/history", async (req, res) => {
     try {
-        const bills = await Bill.find().populate({
-            path: "doctorId",
-            select: "fullName specialization",
-            match: { role: "Doctor" }  // ✅ Ensures only users with role = "Doctor" are included
-        });
-        
+        const bills = await Bill.find().populate("doctorId", "fullName specialization");
 
         if (bills.length === 0) {
             return res.status(200).json({});
         }
 
-        // Group bills by patientName
+        // ✅ Group bills by patientName
         const groupedBills = bills.reduce((acc, bill) => {
             if (!acc[bill.patientName]) {
                 acc[bill.patientName] = [];
             }
             acc[bill.patientName].push({
                 billId: bill._id,
-                doctorName: bill.doctorId, // ✅ Fix doctorName
+                doctorName: bill.doctorId.fullName, // ✅ Ensure doctor name is displayed
                 doctorFee: bill.doctorFee,
                 reportFee: bill.reportFee,
                 clinicFee: bill.clinicFee,
                 totalFee: bill.totalFee,
-                date: bill.createdAt,
+                date: bill.date,
             });
             return acc;
         }, {});
@@ -105,6 +96,5 @@ router.get("/history", async (req, res) => {
         res.status(500).json({ message: "Failed to fetch billing history" });
     }
 });
-
 
 module.exports = router;

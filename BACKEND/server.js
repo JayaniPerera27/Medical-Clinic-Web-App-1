@@ -36,6 +36,7 @@ const clinicalStaffRoutes = require("./routes/clinicalStaffRoutes");
 const billHistoryRoutes = require("./routes/billHistory");
 const reportsRoutes = require("./routes/reports");
 const appointmentRoutes = require("./routes/appointment");
+const prescriptionsRoutes = require("./routes/prescriptions"); // Prescriptions
 
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
@@ -45,7 +46,7 @@ app.use("/api/clinical-staff", clinicalStaffRoutes);
 app.use("/api/bill-history", billHistoryRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/appointments", appointmentRoutes);
-
+app.use("/api/prescriptions", prescriptionsRoutes);  // Ensure this is included
 app.use("/api/availability", availabilityRoutes); 
 
 

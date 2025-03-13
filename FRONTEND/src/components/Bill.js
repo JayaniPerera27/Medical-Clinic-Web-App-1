@@ -2,186 +2,138 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/Bill.css";
 
-function Bill() {
+const API_BASE_URL = "http://localhost:8070";
+
+const Bill = () => {
+  const [doctors, setDoctors] = useState([]);
+  const [patients, setPatients] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [selectedPatientId, setSelectedPatientId] = useState("");
+  const [selectedDoctorId, setSelectedDoctorId] = useState("");
+  const [clinicalFee, setClinicalFee] = useState(2000);
   const [fees, setFees] = useState({});
-  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8070";
-  const [selectedPatientId, setSelectedPatientId] = useState(null);
-  const [selectedPatientName, setSelectedPatientName] = useState(null);
-  const [selectedDoctorId, setSelectedDoctorId] = useState(null);
-  const [currentUsername, setCurrentUsername] = useState("");
-  
-    // ✅ Fetch username from localStorage when component mounts
-    useEffect(() => {
-      const storedUsername = localStorage.getItem("username");
-      if (storedUsername) {
-        setCurrentUsername(storedUsername);
-      }
-    }, []);
 
   useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await axios.get(`${API_BASE_URL}/api/appointments`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
+    axios.get(`${API_BASE_URL}/api/users/doctors`)
+      .then((response) => setDoctors(response.data))
+      .catch((error) => console.error("Error fetching doctors:", error));
 
-        const data = response.data;
-        setAppointments(data);
+    axios.get(`${API_BASE_URL}/api/appointments/patients`)
+      .then((response) => setPatients(response.data))
+      .catch((error) => console.error("Error fetching patients:", error));
 
-        // Initialize fees with empty values
+    axios.get(`${API_BASE_URL}/api/appointments`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
+      .then((response) => {
+        setAppointments(response.data);
         const initialFees = {};
-        data.forEach((appointment) => {
+        response.data.forEach((appointment) => {
           initialFees[appointment._id] = {
             doctorFee: "",
             reportFee: "",
-            clinicFee: "",
+            clinicFee: clinicalFee,
           };
         });
         setFees(initialFees);
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      }
-    };
+      })
+      .catch((error) => console.error("Error fetching appointments:", error));
 
-    fetchAppointments();
+    axios.get(`${API_BASE_URL}/api/prescriptions`)
+      .then((response) => setPrescriptions(response.data))
+      .catch((error) => console.error("Error fetching prescriptions:", error));
   }, []);
 
-  const handleFeeChange = (appointmentId, field, value) => {
-    setFees((prevFees) => ({
-      ...prevFees,
-      [appointmentId]: {
-        ...prevFees[appointmentId],
-        [field]: value, // Keep as string to allow empty values
-      },
-    }));
+  const handleDoctorChange = async (doctorId) => {
+    setSelectedDoctorId(doctorId);
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/users/doctor-fee/${doctorId}`);
+      const doctorFee = response.data.fee || 0;
+      const reportResponse = await axios.get(`${API_BASE_URL}/api/reports/${selectedPatientId}`);
+      const reportFee = reportResponse.data.hasReport ? 1500 : 0;
+      setFees((prevFees) => ({
+        ...prevFees,
+        [selectedPatientId]: {
+          doctorFee,
+          reportFee,
+          clinicFee: clinicalFee,
+        },
+      }));
+    } catch (error) {
+      console.error("Error fetching doctor fee or report fee:", error);
+    }
   };
 
-
-  const handleSaveFee = async (appointmentId, patientName, doctorId) => {
-    const appointmentFees = fees[appointmentId] || {};
-    const doctorFee = Number(appointmentFees.doctorFee) || 0;
-    const reportFee = Number(appointmentFees.reportFee) || 0;
-    const clinicFee = Number(appointmentFees.clinicFee) || 0;
-
-    // 🛠️ Debugging Logs
-    console.log("🔍 Debugging Values:");
-    console.log("Appointment ID (Patient ID):", appointmentId);
-    console.log("Patient Name:", patientName);
-    console.log("Doctor ID:", doctorId);  // ❌ Check why this is undefined
-    console.log("Current Username:", currentUsername); // ❌ Check why this is empty
-    console.log("Doctor Fee:", doctorFee);
-    console.log("Report Fee:", reportFee);
-    console.log("Clinic Fee:", clinicFee);
-
-
+  const handleSaveFee = async (appointmentId, patientId, doctorId) => {
+    const billData = {
+      patientId,
+      doctorId,
+      doctorFee: fees[appointmentId]?.doctorFee || 0,
+      clinicalFee: fees[appointmentId]?.clinicFee || clinicalFee,
+      reportFee: fees[appointmentId]?.reportFee || 0,
+      totalFee:
+        (parseFloat(fees[appointmentId]?.doctorFee) || 0) +
+        (parseFloat(fees[appointmentId]?.clinicFee) || 0) +
+        (parseFloat(fees[appointmentId]?.reportFee) || 0),
+    };
 
     try {
-        const payload = {
-            patientId: appointmentId,
-            patientName,
-            username: currentUsername,  // ✅ Fix: Ensure username is sent
-            doctorId,
-            doctorFee,
-            reportFee,
-            clinicFee,
-        };
-
-        console.log("📤 Sending API Request:", payload);
-
-        const response = await axios.post(`${API_BASE_URL}/api/bills/save-fee`, payload);
-
-        alert("✅ Fee saved successfully!");
-
-        if (typeof fetchBills === "function") {
-            fetchBills();
-        }
+      await axios.post(`${API_BASE_URL}/api/billing/create`, billData);
+      alert("✅ Bill generated successfully!");
     } catch (error) {
-        console.error("❌ Error saving fee:", error.response?.data || error.message);
-        alert("❌ Failed to save fee. Please try again.");
+      console.error("❌ Error generating bill:", error.response?.data || error.message);
+      alert("❌ Failed to generate bill.");
     }
-};
-
+  };
 
   return (
-    <div className="billing-container">
-      <div className="billing-tables">
-        <div className="appointment-table">
-          <h3>Patients with Appointments</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Patient Name</th>
-                <th>Doctor Name</th>
-                <th>Doctor Fee</th>
-                <th>Report Fee</th>
-                <th>Clinic Fee</th>
-                <th>Total Fee</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((appointment) => {
-                const appointmentFees = fees[appointment._id] || { doctorFee: "", reportFee: "", clinicFee: "" };
-
-                const doctorName = appointment.doctorName;
-                const totalFee =
-                  appointmentFees.doctorFee ||
-                  appointmentFees.reportFee ||
-                  appointmentFees.clinicFee
-                    ? (parseFloat(appointmentFees.doctorFee) || 0) +
-                      (parseFloat(appointmentFees.reportFee) || 0) +
-                      (parseFloat(appointmentFees.clinicFee) || 0)
-                    : "";
-
-                return (
-                  <tr key={appointment._id}>
-                    <td>{appointment.patientName}</td>
-                    <td>{doctorName}</td>
-                    <td>
-                      <input
-                        type="number"
-                        value={appointmentFees.doctorFee}
-                        onChange={(e) => handleFeeChange(appointment._id, "doctorFee", e.target.value)}
-                        placeholder="Enter Fee"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={appointmentFees.reportFee}
-                        onChange={(e) => handleFeeChange(appointment._id, "reportFee", e.target.value)}
-                        placeholder="Enter Fee"
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        value={appointmentFees.clinicFee}
-                        onChange={(e) => handleFeeChange(appointment._id, "clinicFee", e.target.value)}
-                        placeholder="Enter Fee"
-                      />
-                    </td>
-                    <td>{totalFee}</td>
-                    <td>
-                      <button onClick={() => handleSaveFee(appointment._id, appointment.patientName, appointment.doctorId)}>
-                        Save Fee
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-              {appointments.length === 0 && (
-                <tr>
-                  <td colSpan="7">No appointments found.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+    <div className="bill-container">
+      <h2>Generate Bill</h2>
+      <div className="form-group">
+        <label>Patient:</label>
+        <select onChange={(e) => setSelectedPatientId(e.target.value)}>
+          <option value="">Select Patient</option>
+          {patients.map((patient) => (
+            <option key={patient._id} value={patient._id}>{patient.name}</option>
+          ))}
+        </select>
       </div>
+      <h3>Appointments & Prescriptions</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Doctor</th>
+            <th>Doctor Fee</th>
+            <th>Clinic Fee</th>
+            <th>Report Fee</th>
+            <th>Total Fee</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {prescriptions.map((prescription) => (
+            <tr key={prescription._id}>
+              <td>{prescription.patientName}</td>
+              <td>{prescription.doctorName}</td>
+              <td>{fees[prescription._id]?.doctorFee || "-"}</td>
+              <td>{fees[prescription._id]?.clinicFee || clinicalFee}</td>
+              <td>{fees[prescription._id]?.reportFee || "-"}</td>
+              <td>
+                {(parseFloat(fees[prescription._id]?.doctorFee) || 0) +
+                 (parseFloat(fees[prescription._id]?.clinicFee) || clinicalFee) +
+                 (parseFloat(fees[prescription._id]?.reportFee) || 0)}
+              </td>
+              <td>
+                <button onClick={() => handleSaveFee(prescription._id, prescription.patientId, prescription.doctorId)}>Save Fee</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
 export default Bill;
