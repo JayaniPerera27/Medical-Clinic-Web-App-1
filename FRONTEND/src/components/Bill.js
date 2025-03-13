@@ -6,76 +6,65 @@ const API_BASE_URL = "http://localhost:8070";
 
 const Bill = () => {
   const [doctors, setDoctors] = useState([]);
-  const [patients, setPatients] = useState([]);
-  const [appointments, setAppointments] = useState([]);
   const [prescriptions, setPrescriptions] = useState([]);
-  const [selectedPatientId, setSelectedPatientId] = useState("");
-  const [selectedDoctorId, setSelectedDoctorId] = useState("");
-  const [clinicalFee, setClinicalFee] = useState(2000);
   const [fees, setFees] = useState({});
+  const clinicalFee = 2000;
 
   useEffect(() => {
-    axios.get(`${API_BASE_URL}/api/users/doctors`)
+    // Fetch doctors who have prescribed medicines
+    axios.get(`${API_BASE_URL}/api/users/prescribing-doctors`)
       .then((response) => setDoctors(response.data))
-      .catch((error) => console.error("Error fetching doctors:", error));
+      .catch((error) => console.error("Error fetching prescribing doctors:", error));
 
-    axios.get(`${API_BASE_URL}/api/appointments/patients`)
-      .then((response) => setPatients(response.data))
-      .catch((error) => console.error("Error fetching patients:", error));
-
-    axios.get(`${API_BASE_URL}/api/appointments`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
+    // Fetch prescriptions and initialize fees
+    axios.get(`${API_BASE_URL}/api/prescriptions`)
       .then((response) => {
-        setAppointments(response.data);
+        setPrescriptions(response.data);
         const initialFees = {};
-        response.data.forEach((appointment) => {
-          initialFees[appointment._id] = {
-            doctorFee: "",
-            reportFee: "",
+        response.data.forEach((prescription) => {
+          initialFees[prescription._id] = {
+            doctorFee: 0,
+            reportFee: prescription.medicines.some(med => med.instructions.toLowerCase().includes("get reports")) ? 1500 : 0,
             clinicFee: clinicalFee,
           };
         });
         setFees(initialFees);
       })
-      .catch((error) => console.error("Error fetching appointments:", error));
-
-    axios.get(`${API_BASE_URL}/api/prescriptions`)
-      .then((response) => setPrescriptions(response.data))
       .catch((error) => console.error("Error fetching prescriptions:", error));
   }, []);
 
-  const handleDoctorChange = async (doctorId) => {
-    setSelectedDoctorId(doctorId);
+  // Fetch doctor fee by doctor name
+  const handleDoctorFeeFetch = async (doctorName, prescriptionId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/api/users/doctor-fee/${doctorId}`);
-      const doctorFee = response.data.fee || 0;
-      const reportResponse = await axios.get(`${API_BASE_URL}/api/reports/${selectedPatientId}`);
-      const reportFee = reportResponse.data.hasReport ? 1500 : 0;
+      const encodedDoctorName = encodeURIComponent(doctorName.trim());
+      const response = await axios.get(`${API_BASE_URL}/api/users/doctor-fee/${encodedDoctorName}`);
+  
       setFees((prevFees) => ({
         ...prevFees,
-        [selectedPatientId]: {
-          doctorFee,
-          reportFee,
-          clinicFee: clinicalFee,
+        [prescriptionId]: {
+          ...prevFees[prescriptionId],
+          doctorFee: response.data.doctorFee || 0,
         },
       }));
     } catch (error) {
-      console.error("Error fetching doctor fee or report fee:", error);
+      console.error("Error fetching doctor fee:", error.response?.data || error.message);
     }
   };
+  
+  
 
-  const handleSaveFee = async (appointmentId, patientId, doctorId) => {
+  // Save billing data
+  const handleSaveFee = async (prescriptionId, patientName, doctorName) => {
     const billData = {
-      patientId,
-      doctorId,
-      doctorFee: fees[appointmentId]?.doctorFee || 0,
-      clinicalFee: fees[appointmentId]?.clinicFee || clinicalFee,
-      reportFee: fees[appointmentId]?.reportFee || 0,
+      patientName,
+      doctorName,
+      doctorFee: fees[prescriptionId]?.doctorFee || 0,
+      clinicalFee: fees[prescriptionId]?.clinicFee || clinicalFee,
+      reportFee: fees[prescriptionId]?.reportFee || 0,
       totalFee:
-        (parseFloat(fees[appointmentId]?.doctorFee) || 0) +
-        (parseFloat(fees[appointmentId]?.clinicFee) || 0) +
-        (parseFloat(fees[appointmentId]?.reportFee) || 0),
+        (parseFloat(fees[prescriptionId]?.doctorFee) || 0) +
+        (parseFloat(fees[prescriptionId]?.clinicFee) || clinicalFee) +
+        (parseFloat(fees[prescriptionId]?.reportFee) || 0),
     };
 
     try {
@@ -90,16 +79,7 @@ const Bill = () => {
   return (
     <div className="bill-container">
       <h2>Generate Bill</h2>
-      <div className="form-group">
-        <label>Patient:</label>
-        <select onChange={(e) => setSelectedPatientId(e.target.value)}>
-          <option value="">Select Patient</option>
-          {patients.map((patient) => (
-            <option key={patient._id} value={patient._id}>{patient.name}</option>
-          ))}
-        </select>
-      </div>
-      <h3>Appointments & Prescriptions</h3>
+      <h3>Prescriptions & Billing</h3>
       <table>
         <thead>
           <tr>
@@ -117,16 +97,23 @@ const Bill = () => {
             <tr key={prescription._id}>
               <td>{prescription.patientName}</td>
               <td>{prescription.doctorName}</td>
-              <td>{fees[prescription._id]?.doctorFee || "-"}</td>
+              <td>
+                {fees[prescription._id]?.doctorFee || "-"} 
+                <button onClick={() => handleDoctorFeeFetch(prescription.doctorName, prescription._id)}>
+                  Fetch Fee
+                </button>
+              </td>
               <td>{fees[prescription._id]?.clinicFee || clinicalFee}</td>
               <td>{fees[prescription._id]?.reportFee || "-"}</td>
               <td>
                 {(parseFloat(fees[prescription._id]?.doctorFee) || 0) +
-                 (parseFloat(fees[prescription._id]?.clinicFee) || clinicalFee) +
-                 (parseFloat(fees[prescription._id]?.reportFee) || 0)}
+                  (parseFloat(fees[prescription._id]?.clinicFee) || clinicalFee) +
+                  (parseFloat(fees[prescription._id]?.reportFee) || 0)}
               </td>
               <td>
-                <button onClick={() => handleSaveFee(prescription._id, prescription.patientId, prescription.doctorId)}>Save Fee</button>
+                <button onClick={() => handleSaveFee(prescription._id, prescription.patientName, prescription.doctorName)}>
+                  Save Fee
+                </button>
               </td>
             </tr>
           ))}
