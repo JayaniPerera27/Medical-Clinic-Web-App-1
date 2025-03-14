@@ -14,21 +14,25 @@ const Availability = () => {
         maxPatients: "",
     });
     const [editingSlotId, setEditingSlotId] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     useEffect(() => {
         fetchAvailability();
     }, []);
 
     const fetchAvailability = async () => {
-        console.log("Fetching availability...");
+        setLoading(true);
+        setError("");
         try {
             const response = await axios.get(`${API_BASE_URL}/get`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
-            console.log("Fetched availability:", response.data);
             setAvailability(response.data.availability || []);
-        } catch (error) {
-            console.error("Error fetching availability:", error);
+        } catch (err) {
+            setError("Failed to fetch availability. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -42,57 +46,57 @@ const Availability = () => {
             return;
         }
 
-        // Find if the day already exists in availability
-        const existingDay = availability.find(daySlot => daySlot.day === newSlot.day);
-
-        const updatedAvailability = existingDay
-            ? availability.map(daySlot =>
-                daySlot.day === newSlot.day
-                    ? { ...daySlot, timeSlots: [...daySlot.timeSlots, { 
-                        startTime: newSlot.startTime, 
-                        endTime: newSlot.endTime, 
-                        maxPatients: newSlot.maxPatients }] }
-                    : daySlot
-            )
-            : [...availability, {
-                day: newSlot.day,
-                timeSlots: [{
-                    startTime: newSlot.startTime,
-                    endTime: newSlot.endTime,
-                    maxPatients: newSlot.maxPatients
-                }]
-            }];
-
-        console.log("Adding availability with updated data:", updatedAvailability);
-
+        setLoading(true);
+        setError("");
         try {
-            const response = await axios.post(`${API_BASE_URL}/set`, { availability: updatedAvailability }, {
+            const existingDay = availability.find(daySlot => daySlot.day === newSlot.day);
+            const updatedAvailability = existingDay
+                ? availability.map(daySlot =>
+                    daySlot.day === newSlot.day
+                        ? { ...daySlot, timeSlots: [...daySlot.timeSlots, { 
+                            startTime: newSlot.startTime, 
+                            endTime: newSlot.endTime, 
+                            maxPatients: newSlot.maxPatients }] }
+                        : daySlot
+                )
+                : [...availability, {
+                    day: newSlot.day,
+                    timeSlots: [{
+                        startTime: newSlot.startTime,
+                        endTime: newSlot.endTime,
+                        maxPatients: newSlot.maxPatients
+                    }]
+                }];
+
+            await axios.post(`${API_BASE_URL}/set`, { availability: updatedAvailability }, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
-            console.log("Availability added successfully:", response.data);
 
             fetchAvailability();
             setNewSlot({ day: "", startTime: "", endTime: "", maxPatients: "" });
         } catch (error) {
-            console.error("Error adding availability:", error.response ? error.response.data : error);
+            setError("Failed to add availability. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
-    const deleteAvailability = async (day, slotId) => {
-        console.log(`Deleting availability: Day=${day}, Slot ID=${slotId}`);
+    const deleteAvailability = async (slotId) => {
+        setLoading(true);
+        setError("");
         try {
-            await axios.delete(`${API_BASE_URL}/delete/${day}/${slotId}`, {
+            await axios.delete(`${API_BASE_URL}/delete/${slotId}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
-            console.log("Deleted availability successfully.");
             fetchAvailability();
         } catch (error) {
-            console.error("Error deleting availability:", error);
+            setError("Failed to delete availability. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleEditClick = (day, slot) => {
-        console.log("Editing slot:", slot);
         setEditingSlotId(slot._id);
         setNewSlot({ ...slot, day });
     };
@@ -103,8 +107,8 @@ const Availability = () => {
             return;
         }
 
-        console.log("Updating availability with data:", newSlot);
-
+        setLoading(true);
+        setError("");
         try {
             await axios.put(`${API_BASE_URL}/update/${editingSlotId}`, {
                 day: newSlot.day,
@@ -115,12 +119,13 @@ const Availability = () => {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             });
 
-            console.log("Updated availability successfully.");
             fetchAvailability();
             setEditingSlotId(null);
             setNewSlot({ day: "", startTime: "", endTime: "", maxPatients: "" });
         } catch (error) {
-            console.error("Error updating availability:", error);
+            setError("Failed to update availability. Please try again.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -128,6 +133,9 @@ const Availability = () => {
         <div className="availability-container">
             <Sidebar />
             <h2>Doctor Availability</h2>
+
+            {loading && <p>Loading...</p>}
+            {error && <p className="error-message">{error}</p>}
 
             <table className="availability-table">
                 <thead>
@@ -157,7 +165,7 @@ const Availability = () => {
                                             <td><input type="time" name="endTime" value={newSlot.endTime} onChange={handleInputChange} /></td>
                                             <td><input type="number" name="maxPatients" value={newSlot.maxPatients} onChange={handleInputChange} /></td>
                                             <td>
-                                                <button className="save-btn" onClick={updateAvailability}>Save</button>
+                                                <button className="save-btn" onClick={updateAvailability} disabled={loading}>Save</button>
                                                 <button className="cancel-btn" onClick={() => setEditingSlotId(null)}>Cancel</button>
                                             </td>
                                         </>
@@ -169,7 +177,7 @@ const Availability = () => {
                                             <td>{slot.maxPatients}</td>
                                             <td>
                                                 <button className="edit-btn" onClick={() => handleEditClick(daySlot.day, slot)}>Edit</button>
-                                                <button className="delete-btn" onClick={() => deleteAvailability(daySlot.day, slot._id)}>Delete</button>
+                                                <button className="delete-btn" onClick={() => deleteAvailability(slot._id)} disabled={loading}>Delete</button>
                                             </td>
                                         </>
                                     )}
@@ -195,7 +203,7 @@ const Availability = () => {
                 <input type="time" name="startTime" value={newSlot.startTime} onChange={handleInputChange} />
                 <input type="time" name="endTime" value={newSlot.endTime} onChange={handleInputChange} />
                 <input type="number" name="maxPatients" placeholder="Max Patients" value={newSlot.maxPatients} onChange={handleInputChange} />
-                <button className="add-btn" onClick={addAvailability}>Add</button>
+                <button className="add-btn" onClick={addAvailability} disabled={loading}>Add</button>
             </div>
         </div>
     );
