@@ -144,6 +144,10 @@ import Services from './pages/Services';
 import Prescriptions from "./components/Prescriptions";
 import NewPrescription from "./components/NewPrescription";
 import OldPrescriptions from "./components/OldPrescriptions";
+<<<<<<< HEAD
+=======
+import Availability from "./components/Availability";
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 
 import DoctorAppointments from "./components/DoctorAppointments";
 
@@ -216,6 +220,19 @@ function App() {
         />
 
 <Route
+<<<<<<< HEAD
+=======
+  path="/availability"
+  element={
+    <ProtectedRoute>
+      <Availability />
+    </ProtectedRoute>
+  }
+/>
+
+
+<Route
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
   path="/prescriptions"
   element={
     <ProtectedRoute>

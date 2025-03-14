@@ -10,8 +10,13 @@ function Settings() {
     phoneNumber: '',
     specialization: '',
     yearsOfExperience: '',
+<<<<<<< HEAD
     availableDays: [],
     availableTimes: {},
+=======
+    doctorFee: '',
+    
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -47,8 +52,13 @@ function Settings() {
             phoneNumber: data.phoneNumber || '',
             specialization: data.specialization || '',
             yearsOfExperience: data.yearsOfExperience || '',
+<<<<<<< HEAD
             availableDays: data.availableDays || [],
             availableTimes: data.availableTimes || {},
+=======
+            doctorFee: data.doctorFee || '',
+            
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
           });
         } else {
           throw new Error('Failed to fetch profile');
@@ -70,6 +80,7 @@ function Settings() {
     }));
   };
 
+<<<<<<< HEAD
   const handleDaysChange = (e) => {
     const { value, checked } = e.target;
     setFormData((prevState) => {
@@ -87,6 +98,9 @@ function Settings() {
       availableTimes: { ...prevState.availableTimes, [name]: value },
     }));
   };
+=======
+  
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -222,6 +236,7 @@ function Settings() {
             />
           </div>
           <div className="form-group">
+<<<<<<< HEAD
             <label>Available Days</label>
             <div className="checkbox-group">
               {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
@@ -254,6 +269,16 @@ function Settings() {
                 />
               </div>
             ))}
+=======
+            <label>Doctor Fee</label>
+            <input
+              type="number"
+              name="doctorFee"
+              value={formData.doctorFee}
+              onChange={handleChange}
+              required
+            />
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
           </div>
           <button type="submit" className="save-button">
             Save Changes

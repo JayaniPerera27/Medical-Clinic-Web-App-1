@@ -7,7 +7,10 @@ dotenv.config();
 
 const { JWT_SECRET } = process.env;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 // Controller for logging in
 exports.login = async (req, res) => {
     try {
@@ -31,6 +34,7 @@ exports.login = async (req, res) => {
         }
 
         // Generate a JWT token
+<<<<<<< HEAD
         /*const jwtToken = jwt.sign(
             { userId: user._id, role: user.role }, // Add any relevant user info to the payload
             JWT_SECRET, 
@@ -45,6 +49,16 @@ exports.login = async (req, res) => {
         return res.json({ token, role: user.role, name: user.fullName, message: "Login successful" });
     } 
         catch (error) {
+=======
+        const token = jwt.sign(
+            { userId: user._id, role: user.role, name: user.fullName },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        return res.json({ token, role: user.role, name: user.fullName, message: "Login successful" });
+    } catch (error) {
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
         res.status(500).json({ message: "Error logging in", error: error.message });
     }
 };
@@ -68,7 +82,10 @@ const authMiddleware = (roles) => (req, res, next) => {
 
 exports.authMiddleware = authMiddleware;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 // Controller for signing up
 exports.signup = async (req, res) => {
     try {
@@ -81,8 +98,12 @@ exports.signup = async (req, res) => {
             medicalLicenseNumber, 
             specialization, 
             yearsOfExperience, 
+<<<<<<< HEAD
             availableDays, 
             availableTimes 
+=======
+            doctorFee
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
         } = req.body;
 
         // Log payload
@@ -90,7 +111,11 @@ exports.signup = async (req, res) => {
 
         // Validate role-specific fields
         if (role === 'Doctor') {
+<<<<<<< HEAD
             if (!medicalLicenseNumber || !specialization || !yearsOfExperience || !availableDays || !availableTimes) {
+=======
+            if (!medicalLicenseNumber || !specialization || !yearsOfExperience || doctorFee === undefined) {
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
                 return res.status(400).json({
                     message: "Missing required fields for Doctor role",
                 });
@@ -116,8 +141,12 @@ exports.signup = async (req, res) => {
             medicalLicenseNumber: role === 'Doctor' ? medicalLicenseNumber : undefined,
             specialization: role === 'Doctor' ? specialization : undefined,
             yearsOfExperience: role === 'Doctor' ? yearsOfExperience : undefined,
+<<<<<<< HEAD
             availableDays: role === 'Doctor' ? availableDays : undefined,
             availableTimes: role === 'Doctor' ? availableTimes : undefined,
+=======
+            doctorFee: role === 'Doctor' ? parseFloat(doctorFee) : undefined
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
         });
 
         await newUser.save();

@@ -2,6 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+<<<<<<< HEAD
+=======
+const availabilityRoutes = require("./routes/availabilityRoutes");
+
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 
 dotenv.config();
 
@@ -34,6 +39,10 @@ const doctorRoutes = require('./routes/doctorRoutes');
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
 
+<<<<<<< HEAD
+=======
+app.use("/api/availability", availabilityRoutes); 
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 
 
 // Example route for Doctor Dashboard

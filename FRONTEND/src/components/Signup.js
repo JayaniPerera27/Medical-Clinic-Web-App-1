@@ -29,6 +29,7 @@ const specializations = [
   "None",
 ];
 
+<<<<<<< HEAD
 const daysOfWeek = [
   "Monday",
   "Tuesday",
@@ -41,6 +42,8 @@ const daysOfWeek = [
 
 
 
+=======
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 function Signup() {
   const [formData, setFormData] = useState({
     email: "",
@@ -52,8 +55,12 @@ function Signup() {
     medicalLicenseNumber: "",
     specialization: "",
     yearsOfExperience: "",
+<<<<<<< HEAD
     availableDays: [],
     availableTimes: {},
+=======
+    doctorFee: "",
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -65,6 +72,7 @@ function Signup() {
     setFormData({ ...formData, [name]: value });
   };
 
+<<<<<<< HEAD
   const handleCheckboxChange = (e) => {
     const { value } = e.target;
     setFormData((prevData) => ({
@@ -86,6 +94,8 @@ function Signup() {
     }));
   };
 
+=======
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
@@ -98,7 +108,10 @@ function Signup() {
       return;
     }
 
+<<<<<<< HEAD
     // Determine the endpoint based on role
+=======
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
     let endpoint = "http://localhost:8070/api/auth/signup";
     if (role === "Doctor") {
       endpoint = "http://localhost:8070/api/auth/signup/doctors";
@@ -108,14 +121,21 @@ function Signup() {
       endpoint = "http://localhost:8070/api/auth/signup/admin";
     }
 
+<<<<<<< HEAD
     // Prepare the payload based on the role
+=======
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
     let payload = { ...rest, role, password };
     if (role !== "Doctor") {
       delete payload.medicalLicenseNumber;
       delete payload.specialization;
       delete payload.yearsOfExperience;
+<<<<<<< HEAD
       delete payload.availableDays;
       delete payload.availableTimes;
+=======
+      delete payload.doctorFee;
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
     }
 
     setIsSubmitting(true);
@@ -145,7 +165,10 @@ function Signup() {
       <h2>Create an Account</h2>
 
       <form onSubmit={handleSignup}>
+<<<<<<< HEAD
         {/* Role Selection */}
+=======
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
         <div className="role-selection">
           <input
             type="radio"
@@ -166,6 +189,7 @@ function Signup() {
             onChange={handleChange}
           />
           <label htmlFor="clinical">Clinical Staff</label>
+<<<<<<< HEAD
 
           {/* <input
             type="radio"
@@ -179,6 +203,10 @@ function Signup() {
         </div>
 
         {/* Form Fields */}
+=======
+        </div>
+
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
         <input
           type="text"
           placeholder="Full Name"
@@ -240,6 +268,7 @@ function Signup() {
               required
             />
 
+<<<<<<< HEAD
             <div className="checkbox-group">
               <label>Available Days and Times:</label>
               {daysOfWeek.map((day) => (
@@ -265,6 +294,19 @@ function Signup() {
         )}
 
         {/* Password Fields */}
+=======
+            <input
+              type="number"
+              placeholder="Doctor Fee"
+              name="doctorFee"
+              value={formData.doctorFee}
+              onChange={handleChange}
+              required
+            />
+          </>
+        )}
+
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
         <input
           type="password"
           placeholder="Password"
@@ -300,4 +342,8 @@ function Signup() {
   );
 }
 
+<<<<<<< HEAD
 export default Signup;
+=======
+export default Signup;
+>>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
