@@ -7,6 +7,7 @@ const availabilityRoutes = require("./routes/availabilityRoutes");
 
 dotenv.config();
 
+const patientRoutes = require("./routes/patientRoutes");
 const app = express();
 
 // Middleware
@@ -30,7 +31,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routers
 const userRouter = require('./routes/userRouter');
 const doctorRoutes = require('./routes/doctorRoutes');
-const patientRoutes = require("./routes/patientRoutes");
+
 const billRoutes = require("./routes/billRoutes");
 const clinicalStaffRoutes = require("./routes/clinicalStaffRoutes");
 const billHistoryRoutes = require("./routes/billHistory");
@@ -42,7 +43,7 @@ const fetchPrescribingDoctors = require("./routes/fetchPrescribingDoctors");
 
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
-app.use("/api/patients", patientRoutes);
+app.use("/api", patientRoutes);
 app.use("/api", billRoutes);
 app.use("/api/clinical-staff", clinicalStaffRoutes);
 app.use("/api/bill-history", billHistoryRoutes);

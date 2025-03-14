@@ -24,25 +24,25 @@ router.get("/patients", authenticate, async (req, res) => {
 });
 
 // 🔹 Fetch patient full name using username from prescriptions collection
-router.get("/get-patient-name/:username", authenticate, async (req, res) => {
+router.get("/get-patient-name/:username", async (req, res) => {
   try {
     const { username } = req.params;
-    console.log(`🔍 Searching for ${username} in prescriptions...`);
+    console.log("🔎 Searching for patient:", username);
 
     const prescription = await Prescription.findOne({ patientUsername: username });
 
     if (!prescription) {
-      console.log("❌ No matching patient found in prescriptions.");
-      return res.status(404).json({ message: `Patient '${username}' not found in prescriptions` });
+      console.log("❌ No prescription found for:", username);
+      return res.status(404).json({ message: "Patient not found" });
     }
 
-    console.log(`✅ Found patient: ${prescription.patientName}`);
+    console.log("✅ Found prescription:", prescription);
     res.json({ fullName: prescription.patientName });
-
   } catch (error) {
-    console.error("❌ Error fetching patient name:", error);
-    res.status(500).json({ message: "Failed to fetch patient name", error });
+    console.error("🔥 Error:", error);
+    res.status(500).json({ message: "Failed to fetch patient name" });
   }
 });
+
 
 module.exports = router;
