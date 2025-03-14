@@ -10,13 +10,8 @@ function Settings() {
     phoneNumber: '',
     specialization: '',
     yearsOfExperience: '',
-<<<<<<< HEAD
-    availableDays: [],
-    availableTimes: {},
-=======
     doctorFee: '',
     
->>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
   });
 
   const [passwordData, setPasswordData] = useState({
@@ -52,13 +47,8 @@ function Settings() {
             phoneNumber: data.phoneNumber || '',
             specialization: data.specialization || '',
             yearsOfExperience: data.yearsOfExperience || '',
-<<<<<<< HEAD
-            availableDays: data.availableDays || [],
-            availableTimes: data.availableTimes || {},
-=======
             doctorFee: data.doctorFee || '',
             
->>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
           });
         } else {
           throw new Error('Failed to fetch profile');
@@ -80,27 +70,7 @@ function Settings() {
     }));
   };
 
-<<<<<<< HEAD
-  const handleDaysChange = (e) => {
-    const { value, checked } = e.target;
-    setFormData((prevState) => {
-      const updatedDays = checked
-        ? [...prevState.availableDays, value]
-        : prevState.availableDays.filter((day) => day !== value);
-      return { ...prevState, availableDays: updatedDays };
-    });
-  };
-
-  const handleTimesChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      availableTimes: { ...prevState.availableTimes, [name]: value },
-    }));
-  };
-=======
   
->>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
@@ -236,40 +206,6 @@ function Settings() {
             />
           </div>
           <div className="form-group">
-<<<<<<< HEAD
-            <label>Available Days</label>
-            <div className="checkbox-group">
-              {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
-                (day) => (
-                  <label key={day}>
-                    <input
-                      type="checkbox"
-                      name="availableDays"
-                      value={day}
-                      checked={formData.availableDays.includes(day)}
-                      onChange={handleDaysChange}
-                    />
-                    {day}
-                  </label>
-                )
-              )}
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Available Times</label>
-            {formData.availableDays.map((day) => (
-              <div key={day}>
-                <label>{day}</label>
-                <input
-                  type="text"
-                  name={day}
-                  value={formData.availableTimes[day] || ''}
-                  onChange={handleTimesChange}
-                  placeholder="e.g., 9:00 AM - 5:00 PM"
-                />
-              </div>
-            ))}
-=======
             <label>Doctor Fee</label>
             <input
               type="number"
@@ -278,7 +214,6 @@ function Settings() {
               onChange={handleChange}
               required
             />
->>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
           </div>
           <button type="submit" className="save-button">
             Save Changes
@@ -333,6 +268,3 @@ function Settings() {
 }
 
 export default Settings;
-
-
-

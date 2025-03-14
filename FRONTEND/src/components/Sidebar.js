@@ -1,11 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { 
-<<<<<<< HEAD
-  FaHome, FaCalendarAlt,  
-=======
   FaHome,FaClock, FaCalendarAlt,  
->>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
    FaPrescriptionBottle, FaCog, FaSignOutAlt 
 } from "react-icons/fa";
 import "../styles/Sidebar.css";
@@ -15,10 +11,7 @@ const Sidebar = () => {
 
   const sidebarLinks = [
     { path: "/doctor-home", label: "Dashboard", icon: <FaHome /> },
-<<<<<<< HEAD
-=======
     { path: "/availability", label: "Availability", icon: <FaClock /> },
->>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
     { path: "/doctor-appointments", label: "Appointments", icon: <FaCalendarAlt /> },
     // { path: "/patients", label: "Patients", icon: <FaUser /> },
     //{ path: "/reports", label: "Reports", icon: <FaFileAlt /> },

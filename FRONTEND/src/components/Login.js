@@ -105,10 +105,7 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-<<<<<<< HEAD
-=======
         
->>>>>>> f7e57e764d6f620bc3b99a73dbf28cd960ccae6c
         <input
           type={showPassword ? "text" : "password"}
           placeholder="Password"
@@ -140,5 +137,3 @@ function Login() {
 }
 
 export default Login;
-
-
