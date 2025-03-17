@@ -1,50 +1,45 @@
 const Bill = require("../models/Bill");
-const Patient = require("../models/Patient");
-const Appointment = require("../models/Appointment");
 
 // Get all bills
 const getAllBills = async (req, res) => {
-  try {
-    const bills = await Bill.find();
-    res.json(bills);
-  } catch (error) {
-    res.status(500).json({ message: "Error retrieving bills", error: error.message });
-  }
+    try {
+        const bills = await Bill.find().populate("doctorId", "fullName specialization");
+        res.status(200).json(bills);
+    } catch (error) {
+        res.status(500).json({ message: "Error retrieving bills", error: error.message });
+    }
 };
 
 // Save bill details
 const saveBillDetails = async (req, res) => {
-  try {
-    console.log("Received request body:", req.body); // Log request body for debugging
+    try {
+        console.log("Received request body:", req.body);
 
-    const { patientId, patientName, username, appointmentDoctor, doctorFee, reportFee, clinicFee } = req.body;
+        const { patientId, patientName, username, doctorId, doctorFee, reportFee, clinicFee } = req.body;
 
-    // Check if any required field is missing
-    if (!patientId || !patientName || !username || !appointmentDoctor || doctorFee == null || reportFee == null || clinicFee == null) {
-      console.log("Missing fields:", { patientId, patientName, username, appointmentDoctor, doctorFee, reportFee, clinicFee });
-      return res.status(400).json({ message: "All fields are required" });
+        if (!patientId || !patientName || !username || !doctorId || doctorFee == null || reportFee == null || clinicFee == null) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
+
+        const totalFee = Number(doctorFee) + Number(reportFee) + Number(clinicFee);
+
+        const newBill = new Bill({
+            patientId,
+            patientName,
+            username,
+            doctorId,
+            doctorFee: Number(doctorFee),
+            reportFee: Number(reportFee),
+            clinicFee: Number(clinicFee),
+            totalFee,
+        });
+
+        await newBill.save();
+        res.status(201).json({ message: "Bill saved successfully", bill: newBill });
+    } catch (error) {
+        console.error("Error saving bill:", error.message);
+        res.status(500).json({ message: "Error saving bill", error: error.message });
     }
-
-    const totalFee = doctorFee + reportFee + clinicFee;
-
-    const newBill = new Bill({
-      patientId,
-      patientName,
-      username,
-      appointmentDoctor,
-      doctorFee,
-      reportFee,
-      clinicFee,
-      totalFee
-    });
-
-    await newBill.save();
-    res.status(201).json({ message: "Bill saved successfully", bill: newBill });
-
-  } catch (error) {
-    console.error("Error saving bill:", error.message);
-    res.status(500).json({ message: "Error saving bill", error: error.message });
-  }
 };
 
-module.exports = { getAllBills,saveBillDetails }; 
+module.exports = { getAllBills, saveBillDetails };

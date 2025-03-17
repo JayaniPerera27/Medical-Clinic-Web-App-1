@@ -31,7 +31,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routers
 const userRouter = require('./routes/userRouter');
 const doctorRoutes = require('./routes/doctorRoutes');
-
 const billRoutes = require("./routes/billRoutes");
 const clinicalStaffRoutes = require("./routes/clinicalStaffRoutes");
 const billHistoryRoutes = require("./routes/billHistory");
@@ -44,7 +43,7 @@ const fetchPrescribingDoctors = require("./routes/fetchPrescribingDoctors");
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
 app.use("/api", patientRoutes);
-app.use("/api", billRoutes);
+app.use("/api/billing", billRoutes);
 app.use("/api/clinical-staff", clinicalStaffRoutes);
 app.use("/api/bill-history", billHistoryRoutes);
 app.use("/api/reports", reportsRoutes);

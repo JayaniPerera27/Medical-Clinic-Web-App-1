@@ -1,231 +1,96 @@
-/* You no longer need the BillHistory.css file as we've implemented Tailwind classes directly in the component. 
-   If your project doesn't use Tailwind CSS, here's the equivalent modern CSS: */
+/* General Layout */
+.bill-history-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f9fafb;
+}
 
-   .flex {
-    display: flex;
+.sidebar-container {
+  width: 25%;
+}
+
+.bill-history-content {
+  flex: 1;
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.bill-history-title {
+  font-size: 1.875rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+/* Table Styling */
+.bill-history-table-container {
+  overflow-x: auto;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.bill-history-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bill-history-table th {
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: #f9fafb;
+  color: #6b7280;
+}
+
+.bill-history-table td {
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.bill-history-table tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Loading Spinner */
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 8rem;
+}
+
+.spinner {
+  width: 3rem;
+  height: 3rem;
+  border-top: 2px solid #2563eb;
+  border-right: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
-  
-  .flex-1 {
-    flex: 1 1 0%;
+  to {
+    transform: rotate(360deg);
   }
-  
-  .h-screen {
-    height: 100vh;
-  }
-  
-  .bg-gray-50 {
-    background-color: #f9fafb;
-  }
-  
-  .overflow-auto {
-    overflow: auto;
-  }
-  
-  .p-6 {
-    padding: 1.5rem;
-  }
-  
-  .max-w-7xl {
-    max-width: 80rem;
-  }
-  
-  .mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .text-3xl {
-    font-size: 1.875rem;
-    line-height: 2.25rem;
-  }
-  
-  .font-bold {
-    font-weight: 700;
-  }
-  
-  .text-gray-800 {
-    color: #1f2937;
-  }
-  
-  .mb-6 {
-    margin-bottom: 1.5rem;
-  }
-  
-  .bg-white {
-    background-color: #ffffff;
-  }
-  
-  .shadow {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  }
-  
-  .rounded-lg {
-    border-radius: 0.5rem;
-  }
-  
-  .p-6 {
-    padding: 1.5rem;
-  }
-  
-  .text-center {
-    text-align: center;
-  }
-  
-  .text-gray-500 {
-    color: #6b7280;
-  }
-  
-  .space-y-8 > * + * {
-    margin-top: 2rem;
-  }
-  
-  .overflow-hidden {
-    overflow: hidden;
-  }
-  
-  .bg-blue-600 {
-    background-color: #2563eb;
-  }
-  
-  .px-6 {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  
-  .py-4 {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-  
-  .text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-  
-  .font-semibold {
-    font-weight: 600;
-  }
-  
-  .text-white {
-    color: #ffffff;
-  }
-  
-  .overflow-x-auto {
-    overflow-x: auto;
-  }
-  
-  .min-w-full {
-    min-width: 100%;
-  }
-  
-  .divide-y > * + * {
-    border-top-width: 1px;
-  }
-  
-  .divide-gray-200 {
-    border-color: #e5e7eb;
-  }
-  
-  .bg-gray-50 {
-    background-color: #f9fafb;
-  }
-  
-  .text-left {
-    text-align: left;
-  }
-  
-  .text-xs {
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
-  
-  .font-medium {
-    font-weight: 500;
-  }
-  
-  .uppercase {
-    text-transform: uppercase;
-  }
-  
-  .tracking-wider {
-    letter-spacing: 0.05em;
-  }
-  
-  .whitespace-nowrap {
-    white-space: nowrap;
-  }
-  
-  .text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  
-  .text-gray-900 {
-    color: #111827;
-  }
-  
-  .hover\:bg-gray-50:hover {
-    background-color: #f9fafb;
-  }
-  
-  /* Loading spinner */
-  .animate-spin {
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
-  .h-12 {
-    height: 3rem;
-  }
-  
-  .w-12 {
-    width: 3rem;
-  }
-  
-  .border-t-2 {
-    border-top-width: 2px;
-  }
-  
-  .border-b-2 {
-    border-bottom-width: 2px;
-  }
-  
-  .border-blue-500 {
-    border-color: #3b82f6;
-  }
-  
-  /* Error message */
-  .bg-red-50 {
-    background-color: #fef2f2;
-  }
-  
-  .border-red-200 {
-    border-color: #fecaca;
-  }
-  
-  .text-red-700 {
-    color: #b91c1c;
-  }
-  
-  .px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  .py-3 {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-  }
-  
-  .rounded-md {
-    border-radius: 0.375rem;
-  }
-  
+}
+
+/* Error Message */
+.error-message {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}

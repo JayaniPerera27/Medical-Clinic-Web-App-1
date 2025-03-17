@@ -1,101 +1,162 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import "../styles/ClinicalHome.css";
 import axios from "axios";
-import Bill from "./Bill";
-import ClinicalSidebar from "./ClinicalSidebar";
+import "../styles/Bill.css";
 
-function ClinicalHome() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [clinicalStaffName, setClinicalStaffName] = useState("");
-  const [notifications, setNotifications] = useState(3);
-  const [sidebarVisible, setSidebarVisible] = useState(false);
+const API_BASE_URL = "http://localhost:8070";
+
+const Bill = () => {
+  const [prescriptions, setPrescriptions] = useState([]);
+  const [fees, setFees] = useState({});
+  const [patientNames, setPatientNames] = useState({});
+  const clinicalFee = 2000;
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      navigate("/");
-      return;
+    fetchPrescriptions();
+  }, []);
+
+  const fetchPrescriptions = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/api/prescriptions`);
+      const prescriptionsData = response.data;
+      setPrescriptions(prescriptionsData);
+
+      // Fetch doctor fees and patient names in parallel
+      await Promise.all([
+        fetchDoctorFees(prescriptionsData),
+        fetchPatientNames(prescriptionsData),
+      ]);
+    } catch (error) {
+      console.error("❌ Error fetching prescriptions:", error.response?.data || error.message);
     }
-
-    const tokenPayload = JSON.parse(atob(token.split(".")[1]));
-    setClinicalStaffName(tokenPayload.name);
-  }, [navigate]);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
   };
 
-  const handleSidebarToggle = () => {
-    setSidebarVisible(!sidebarVisible);
+  const fetchDoctorFees = async (prescriptionsData) => {
+    const updatedFees = {};
+
+    await Promise.all(
+      prescriptionsData.map(async (prescription) => {
+        try {
+          const response = await axios.get(
+            `${API_BASE_URL}/api/users/doctor-fee/${encodeURIComponent(prescription.doctorName.trim())}`
+          );
+
+          updatedFees[prescription._id] = {
+            doctorFee: response.data.doctorFee || 0,
+            reportFee: prescription.medicines.some((med) =>
+              med.instructions.toLowerCase().includes("get reports")
+            )
+              ? 1500
+              : 0,
+            clinicFee: clinicalFee,
+          };
+        } catch (error) {
+          console.error(`❌ Error fetching doctor fee for ${prescription.doctorName}:`, error);
+          updatedFees[prescription._id] = {
+            doctorFee: 0,
+            reportFee: prescription.medicines.some((med) =>
+              med.instructions.toLowerCase().includes("get reports")
+            )
+              ? 1500
+              : 0,
+            clinicFee: clinicalFee,
+          };
+        }
+      })
+    );
+
+    setFees(updatedFees);
+  };
+
+  const fetchPatientNames = async (prescriptionsData) => {
+    const updatedNames = {};
+
+    await Promise.all(
+      prescriptionsData.map(async (prescription) => {
+        if (!prescription.patientUsername) return;
+
+        try {
+          const response = await axios.get(
+            `${API_BASE_URL}/api/get-patient-name/${encodeURIComponent(prescription.patientUsername)}`
+          );
+          updatedNames[prescription._id] = response.data.fullName || "Unknown";
+        } catch (error) {
+          console.error(`❌ Error fetching name for ${prescription.patientUsername}:`, error);
+          updatedNames[prescription._id] = "Unknown";
+        }
+      })
+    );
+
+    setPatientNames(updatedNames);
+  };
+
+  const handleSaveFee = async (prescriptionId, doctorName) => {
+    const patientName = patientNames[prescriptionId] || "Unknown Patient";
+    const doctorFee = Number(fees[prescriptionId]?.doctorFee || 0);
+    const reportFee = Number(fees[prescriptionId]?.reportFee || 0);
+    const totalFee = doctorFee + clinicalFee + reportFee;
+
+    const billData = {
+      patientName,
+      doctorName,
+      doctorFee,
+      clinicalFee,
+      reportFee,
+      totalFee,
+    };
+
+    console.log("📤 Sending bill data:", billData); // Debugging log
+
+    try {
+      await axios.post(`${API_BASE_URL}/api/billing/save-fee`, billData);
+      alert("✅ Bill generated successfully!");
+    } catch (error) {
+      console.error("❌ Error generating bill:", error.response?.data || error.message);
+      alert("❌ Failed to generate bill.");
+    }
   };
 
   return (
-    <div className="clinical-home-container">
-      {/* Sidebar toggle button for mobile */}
-      <button className="sidebar-toggle" onClick={handleSidebarToggle}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-      
-      {/* Sidebar with collapsible class */}
-      <div 
-        className={`sidebar-wrapper ${sidebarVisible ? 'sidebar-visible' : ''}`}
-        onMouseEnter={() => setSidebarVisible(true)}
-        onMouseLeave={() => setSidebarVisible(false)}
-      >
-        <ClinicalSidebar handleLogout={handleLogout} location={location} />
-      </div>
-      
-      <main className="main-content">
-        <header className="header">
-          <div className="header-title">Billing System</div>
-          
-          <div className="profile">
-            <div className="notification-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-              </svg>
-              {notifications > 0 && (
-                <span className="notification-badge">
-                  {notifications}
-                </span>
-              )}
-            </div>
-            
-            <div className="profile-container">
-              <div className="profile-avatar">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-              </div>
-              <span className="profile-name">{clinicalStaffName || "Clinical Staff"}</span>
-            </div>
-            
-            <button className="logout-button" onClick={handleLogout}>
-              <svg className="logout-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                <polyline points="16 17 21 12 16 7"></polyline>
-                <line x1="21" y1="12" x2="9" y2="12"></line>
-              </svg>
-              Logout
-            </button>
-          </div>
-        </header>
-        
-        <div className="content-card">
-          <Bill />
-        </div>
-      </main>
+    <div className="bill-container">
+      <h2>Generate Bill</h2>
+      <h3>Prescriptions & Billing</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Doctor</th>
+            <th>Doctor Fee</th>
+            <th>Clinic Fee</th>
+            <th>Report Fee</th>
+            <th>Total Fee</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {prescriptions.map((prescription) => (
+            <tr key={prescription._id}>
+              <td>{patientNames[prescription._id] || "Loading..."}</td>
+              <td>{prescription.doctorName}</td>
+              <td>{fees[prescription._id]?.doctorFee || "-"}</td>
+              <td>{clinicalFee}</td>
+              <td>{fees[prescription._id]?.reportFee || "-"}</td>
+              <td>
+                {(
+                  (fees[prescription._id]?.doctorFee || 0) +
+                  clinicalFee +
+                  (fees[prescription._id]?.reportFee || 0)
+                ).toFixed(2)}
+              </td>
+              <td>
+                <button onClick={() => handleSaveFee(prescription._id, prescription.doctorName)}>
+                  Save Fee
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
-export default ClinicalHome;
+export default Bill;

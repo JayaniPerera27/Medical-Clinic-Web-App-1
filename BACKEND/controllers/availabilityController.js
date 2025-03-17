@@ -1,4 +1,4 @@
-const User = require('../models/user');
+const User = require('../models/User');
 
 // Add or update availability for a doctor
 exports.setAvailability = async (req, res) => {
