@@ -145,8 +145,12 @@ import Prescriptions from "./components/Prescriptions";
 import NewPrescription from "./components/NewPrescription";
 import OldPrescriptions from "./components/OldPrescriptions";
 import Availability from "./components/Availability";
-
 import DoctorAppointments from "./components/DoctorAppointments";
+
+import ClinicalSettings from './components/ClinicalSettings';
+import BillHistory from "./components/BillHistory";
+//import ClinicalReports from "./components/ClinicalReports";
+import Bill from "./components/Bill";
 
 
 const decodeToken = (token) => {
@@ -203,10 +207,7 @@ function App() {
     </ProtectedRoute>
   }
 />
- 
-    
-
-       
+      
         <Route
           path="/settings"
           element={
@@ -255,6 +256,32 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+<Route
+          path="/clinical-settings"
+          element={
+            <ProtectedRoute>
+              <ClinicalSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/billing"
+          element={
+            <ProtectedRoute>
+              <Bill />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bill-history"
+          element={
+            <ProtectedRoute>
+              <BillHistory />
+            </ProtectedRoute>
+          }
+        />
+       
 
         {/* 404 Route */}
         <Route

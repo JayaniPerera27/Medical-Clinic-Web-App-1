@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-image: url('../assets/login.JPG');
+  background-image: url("../assets/login.JPG");
   background-size: cover;
   background-position: center;
 }
@@ -17,7 +17,8 @@ body {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-h2, h3 {
+h2,
+h3 {
   margin: 0 0 20px;
   color: #333;
 }
@@ -30,7 +31,8 @@ h2, h3 {
   margin-right: 10px;
 }
 
-input[type="email"], input[type="password"] {
+input[type="email"],
+input[type="password"] {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
@@ -39,7 +41,8 @@ input[type="email"], input[type="password"] {
   transition: border-color 0.3s;
 }
 
-input[type="email"]:focus, input[type="password"]:focus {
+input[type="email"]:focus,
+input[type="password"]:focus {
   border-color: #007bff;
 }
 
@@ -87,5 +90,3 @@ p a {
 p a:hover {
   text-decoration: underline;
 }
-
-  
