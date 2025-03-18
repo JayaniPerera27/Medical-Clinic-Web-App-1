@@ -21,7 +21,6 @@ const Bill = () => {
       const prescriptionsData = response.data;
       setPrescriptions(prescriptionsData);
 
-      // Fetch doctor fees and patient names in parallel
       await Promise.all([
         fetchDoctorFees(prescriptionsData),
         fetchPatientNames(prescriptionsData),
@@ -105,8 +104,6 @@ const Bill = () => {
       totalFee,
     };
 
-    console.log("📤 Sending bill data:", billData); // Debugging log
-
     try {
       await axios.post(`${API_BASE_URL}/api/billing/save-fee`, billData);
       alert("✅ Bill generated successfully!");
@@ -117,53 +114,57 @@ const Bill = () => {
   };
 
   return (
-    <div className="bill-container">
-      <div className="sidebar-container">
-        <ClinicalSidebar />
-      </div>
-      <div className="content-container">
-        <h2>Generate Bill</h2>
-        <h3>Prescriptions & Billing</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Patient Name</th>
-              <th>Doctor</th>
-              <th>Doctor Fee</th>
-              <th>Clinic Fee</th>
-              <th>Report Fee</th>
-              <th>Total Fee</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {prescriptions.map((prescription) => (
-              <tr key={prescription._id}>
-                <td>{patientNames[prescription._id] || "Loading..."}</td>
-                <td>{prescription.doctorName}</td>
-                <td>{fees[prescription._id]?.doctorFee || "-"}</td>
-                <td>{clinicalFee}</td>
-                <td>{fees[prescription._id]?.reportFee || "-"}</td>
-                <td>
-                  {(
-                    (fees[prescription._id]?.doctorFee || 0) +
-                    clinicalFee +
-                    (fees[prescription._id]?.reportFee || 0)
-                  ).toFixed(2)}
-                </td>
-                <td>
-                  <button onClick={() => handleSaveFee(prescription._id, prescription.doctorName)}>
-                    Save Fee
-                  </button>
-                </td>
+    <div className="bill-page">
+      <ClinicalSidebar />
+      <div className="bill-content">
+        <div className="bill-header">
+          <h2>Generate Bill</h2>
+          <h3>Prescriptions & Billing</h3>
+        </div>
+        <div className="bill-table-container">
+          <table className="bill-table">
+            <thead>
+              <tr>
+                <th>Patient Name</th>
+                <th>Doctor</th>
+                <th>Doctor Fee</th>
+                <th>Clinic Fee</th>
+                <th>Report Fee</th>
+                <th>Total Fee</th>
+                <th>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {prescriptions.map((prescription) => (
+                <tr key={prescription._id}>
+                  <td>{patientNames[prescription._id] || "Loading..."}</td>
+                  <td>{prescription.doctorName}</td>
+                  <td>{fees[prescription._id]?.doctorFee || "-"}</td>
+                  <td>{clinicalFee}</td>
+                  <td>{fees[prescription._id]?.reportFee || "-"}</td>
+                  <td>
+                    {(
+                      (fees[prescription._id]?.doctorFee || 0) +
+                      clinicalFee +
+                      (fees[prescription._id]?.reportFee || 0)
+                    ).toFixed(2)}
+                  </td>
+                  <td>
+                    <button 
+                      className="save-fee-btn"
+                      onClick={() => handleSaveFee(prescription._id, prescription.doctorName)}
+                    >
+                      Save Fee
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
-  
 };
 
 export default Bill;
