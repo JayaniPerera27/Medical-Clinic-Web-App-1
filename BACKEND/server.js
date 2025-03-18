@@ -3,6 +3,18 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const availabilityRoutes = require("./routes/availabilityRoutes");
+const userRouter = require('./routes/userRouter');
+const doctorRoutes = require('./routes/doctorRoutes');
+
+const billRoutes = require("./routes/billRoutes");
+const clinicalStaffRoutes = require("./routes/clinicalStaffRoutes");
+const billHistoryRoutes = require("./routes/billHistory");
+const reportsRoutes = require("./routes/reports");
+const appointmentRoutes = require("./routes/appointment");
+const prescriptionsRoutes = require("./routes/prescriptions"); // Prescriptions
+const fetchPrescribingDoctors = require("./routes/fetchPrescribingDoctors");
+const patientRoutes = require('./routes/patientRoutes'); // Adjust the path as needed
+
 
 
 dotenv.config();
@@ -28,15 +40,21 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 // Routers
-const userRouter = require('./routes/userRouter');
-const doctorRoutes = require('./routes/doctorRoutes');
-
 
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
-
 app.use("/api/availability", availabilityRoutes); 
 
+app.use("/api", patientRoutes);
+app.use("/api/billing", billRoutes);
+app.use("/api/clinical-staff", clinicalStaffRoutes);
+app.use("/api/bill-history", billHistoryRoutes);
+app.use("/api/reports", reportsRoutes);
+app.use("/api/appointments", appointmentRoutes);
+app.use("/api/prescriptions", prescriptionsRoutes);  // Ensure this is included
+app.use("/api/availability", availabilityRoutes); 
+app.use("/api/users", fetchPrescribingDoctors);
+app.use("/api/users", userRouter);
 
 // Example route for Doctor Dashboard
 const authMiddleware = require('./middleware/authMiddleware');

@@ -11,7 +11,9 @@ const PrescriptionSchema = new mongoose.Schema({
             dosage: { type: String, required: true },
             instructions: { type: String, required: true }
         }
-    ]
+    ],
+    doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // Add doctorId
+patientId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // Add patientId
 });
 
 module.exports = mongoose.model("Prescription", PrescriptionSchema);
