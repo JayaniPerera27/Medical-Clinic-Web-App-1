@@ -39,6 +39,10 @@ mongoose.connect(process.env.MONGODB_URI, {
     console.error("Error connecting to MongoDB:", err);
 });
 
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
+
 // Routers
 
 app.use('/api/auth', userRouter);
