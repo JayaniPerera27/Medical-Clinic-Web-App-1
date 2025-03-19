@@ -43,22 +43,12 @@ const Bill = () => {
 
           updatedFees[prescription._id] = {
             doctorFee: response.data.doctorFee || 0,
-            reportFee: prescription.medicines.some((med) =>
-              med.instructions.toLowerCase().includes("get reports")
-            )
-              ? 1500
-              : 0,
             clinicFee: clinicalFee,
           };
         } catch (error) {
           console.error(`❌ Error fetching doctor fee for ${prescription.doctorName}:`, error);
           updatedFees[prescription._id] = {
             doctorFee: 0,
-            reportFee: prescription.medicines.some((med) =>
-              med.instructions.toLowerCase().includes("get reports")
-            )
-              ? 1500
-              : 0,
             clinicFee: clinicalFee,
           };
         }
@@ -97,15 +87,13 @@ const Bill = () => {
   const handleSaveFee = async (prescriptionId, doctorName) => {
     const patientName = patientNames[prescriptionId] || "Unknown Patient";
     const doctorFee = Number(fees[prescriptionId]?.doctorFee || 0);
-    const reportFee = Number(fees[prescriptionId]?.reportFee || 0);
-    const totalFee = doctorFee + clinicalFee + reportFee;
+    const totalFee = doctorFee + clinicalFee ;
 
     const billData = {
       patientName,
       doctorName,
       doctorFee,
       clinicalFee,
-      reportFee,
       totalFee,
     };
 
@@ -136,7 +124,6 @@ const Bill = () => {
                 <th>Doctor</th>
                 <th>Doctor Fee</th>
                 <th>Clinic Fee</th>
-                <th>Report Fee</th>
                 <th>Total Fee</th>
                 <th>Action</th>
               </tr>
@@ -148,12 +135,10 @@ const Bill = () => {
                   <td>{prescription.doctorName}</td>
                   <td>{fees[prescription._id]?.doctorFee || "-"}</td>
                   <td>{clinicalFee}</td>
-                  <td>{fees[prescription._id]?.reportFee || "-"}</td>
                   <td>
                     {(
                       (fees[prescription._id]?.doctorFee || 0) +
-                      clinicalFee +
-                      (fees[prescription._id]?.reportFee || 0)
+                      clinicalFee 
                     ).toFixed(2)}
                   </td>
                   <td>

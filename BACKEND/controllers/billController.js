@@ -1,6 +1,28 @@
 const Bill = require("../models/Bill");
+const User = require("../models/User"); // ✅ Import User model
 
-// Get all bills
+// ✅ Fetch doctor fee by doctor's name
+const getDoctorFee = async (req, res) => {
+    try {
+        const { doctorName } = req.params;
+        console.log("🔎 Searching doctor with name:", doctorName);
+
+        const doctor = await User.findOne({ fullName: doctorName, role: "Doctor" }, "doctorFee");
+
+        if (!doctor) {
+            console.log("❌ Doctor not found:", doctorName);
+            return res.status(404).json({ message: "Doctor not found" });
+        }
+
+        console.log("✅ Doctor fee found:", doctor.doctorFee);
+        res.status(200).json({ doctorFee: doctor.doctorFee });
+    } catch (error) {
+        console.error("❌ Error fetching doctor fee:", error);
+        res.status(500).json({ message: "Failed to fetch doctor fee", error: error.message });
+    }
+};
+
+// ✅ Fetch all bills
 const getAllBills = async (req, res) => {
     try {
         const bills = await Bill.find().populate("doctorId", "fullName specialization");
@@ -10,14 +32,14 @@ const getAllBills = async (req, res) => {
     }
 };
 
-// Save bill details
+// ✅ Save bill details
 const saveBillDetails = async (req, res) => {
     try {
         console.log("Received request body:", req.body);
 
         const { patientId, patientName, username, doctorId, doctorFee, reportFee, clinicFee } = req.body;
 
-        if (!patientId || !patientName || !username || !doctorId || doctorFee == null || reportFee == null || clinicFee == null) {
+        if (!patientId || !patientName || !username || !doctorId || doctorFee == null || clinicFee == null) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -29,7 +51,6 @@ const saveBillDetails = async (req, res) => {
             username,
             doctorId,
             doctorFee: Number(doctorFee),
-            reportFee: Number(reportFee),
             clinicFee: Number(clinicFee),
             totalFee,
         });
@@ -42,4 +63,4 @@ const saveBillDetails = async (req, res) => {
     }
 };
 
-module.exports = { getAllBills, saveBillDetails };
+module.exports = { getAllBills, saveBillDetails, getDoctorFee };
