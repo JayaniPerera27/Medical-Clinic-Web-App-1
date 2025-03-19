@@ -27,7 +27,7 @@ router.get("/users/doctor-fee/:doctorName", async (req, res) => {
 });
 
 // ✅ Save bill to `bills` collection
-router.post("/api/billing/save-fee", async (req, res) => {
+router.post("/save-fee", async (req, res) => {
     try {
         const { patientName, doctorName, doctorFee, clinicalFee, reportFee, totalFee } = req.body;
 
