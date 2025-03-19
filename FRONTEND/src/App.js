@@ -21,7 +21,7 @@ import DoctorAppointments from './components/DoctorAppointments';
 import ClinicalSettings from './components/ClinicalSettings';
 import BillHistory from './components/BillHistory';
 import Bill from './components/Bill';
-import Appointments from './components/Appointments';
+
 
 const decodeToken = (token) => {
   try {
@@ -126,14 +126,6 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminHome />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/appointments"
-          element={
-            <ProtectedRoute>
-              <Appointments />
             </ProtectedRoute>
           }
         />
