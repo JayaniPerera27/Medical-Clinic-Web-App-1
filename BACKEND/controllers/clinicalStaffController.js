@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('../models/User.js');
 
 // Fetch clinical staff details
 const getClinicalStaffDetails = async (req, res) => {

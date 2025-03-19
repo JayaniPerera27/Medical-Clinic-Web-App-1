@@ -1,5 +1,5 @@
 const Bill = require("../models/Bill");
-const User = require("../models/User"); // ✅ Import User model
+const User = require("../models/User.js"); // ✅ Import User model
 
 // ✅ Fetch doctor fee by doctor's name
 const getDoctorFee = async (req, res) => {
