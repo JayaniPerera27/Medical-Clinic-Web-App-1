@@ -73,6 +73,7 @@ app.get('/api/doctor/dashboard', authMiddleware(['Doctor']), async (req, res) =>
     }
 });
 
+
 // Health Check
 app.get('/api/health', (req, res) => {
     res.status(200).send('Server is healthy');
@@ -85,7 +86,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 8070;
+const PORT = process.env.PORT || 8070; //port number
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 });
