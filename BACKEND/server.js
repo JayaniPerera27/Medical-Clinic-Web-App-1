@@ -46,7 +46,8 @@ app.use('/api', doctorRoutes);
 app.use("/api/availability", availabilityRoutes); 
 
 app.use("/api", patientRoutes);
-app.use("/api/billing", billRoutes);
+//app.use("/api/billing", billRoutes);
+app.use("/api", billRoutes); // Ensure this is correctly registered
 app.use("/api/clinical-staff", clinicalStaffRoutes);
 app.use("/api/bill-history", billHistoryRoutes);
 app.use("/api/reports", reportsRoutes);
