@@ -1,133 +1,3 @@
-/*import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './components/Login';
-import Signup from './components/Signup';
-import DoctorHome from './components/DoctorHome';
-import ClinicalHome from './components/ClinicalHome';
-import AdminHome from './components/AdminHome';
-import Appointments from './components/Appointments'; // Appointments component
-import Settings from './components/Settings'; // Settings component
-import Dashboard from './components/Dashboard'; // Separate Dashboard component for Doctor
-
-// Helper function to decode JWT
-const decodeToken = (token) => {
-  try {
-    const base64Payload = token.split('.')[1];
-    const decodedPayload = atob(base64Payload);
-    return JSON.parse(decodedPayload);
-  } catch (error) {
-    console.error('Error decoding token:', error);
-    return null;
-  }
-};
-
-// Simulate authentication and token validation
-const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
-  if (!token) return false;
-
-  const decodedToken = decodeToken(token);
-  if (!decodedToken) return false;
-
-  // Check if token is expired
-  const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-  return decodedToken.exp && decodedToken.exp > currentTime;
-};
-
-// Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  return isAuthenticated() ? children : <Navigate to="/" />;
-};
-
-function App() {
-  return (
-    <Router>
-      <Routes>
-        
-        <Route path="/" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        
-        <Route
-          path="/doctor-home"
-          element={
-            <ProtectedRoute>
-              <DoctorHome />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/appointments"
-          element={
-            <ProtectedRoute>
-              <Appointments />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <ProtectedRoute>
-              <Settings />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-  path="/doctor-home/settings"
-  element={
-    <ProtectedRoute>
-      <Settings />
-    </ProtectedRoute>
-  }
-/>
-
-<Route
-  path="/doctor-home/appointments"
-  element={
-    <ProtectedRoute>
-      <Appointments />
-    </ProtectedRoute>
-  }
-/>
-
-
-        <Route
-          path="/clinical-home"
-          element={
-            <ProtectedRoute>
-              <ClinicalHome />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin-home"
-          element={
-            <ProtectedRoute>
-              <AdminHome />
-            </ProtectedRoute>
-          }
-        />
-
-        
-        <Route
-          path="*"
-          element={
-            <div style={{ textAlign: 'center', marginTop: '50px' }}>
-              <h1>404: Page Not Found</h1>
-              <p>The page you are looking for does not exist.</p>
-              <a href="/" style={{ color: 'blue', textDecoration: 'underline' }}>
-                Go to Home
-              </a>
-            </div>
-          }
-        />
-      </Routes>
-    </Router>
-  );
-}
-
-export default App;*/
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Login from './components/Login';
@@ -135,23 +5,23 @@ import Signup from './components/Signup';
 import DoctorHome from './components/DoctorHome';
 import ClinicalHome from './components/ClinicalHome';
 import AdminHome from './components/AdminHome';
-
+import PatientsPage from './components/PatientsPage'; // Import PatientsPage
+import DoctorsPage from './components/DoctorsPage'; // Import DoctorsPage
+import AppointmentsPage from './components/AppointmentsPage';
 import Settings from './components/Settings';
-import HomePage from "./components/HomePage";
-import AboutUs from "./pages/AboutUs";
+import HomePage from './components/HomePage';
+import AboutUs from './pages/AboutUs';
 import Dashboard from './components/Dashboard';
 import Services from './pages/Services';
-import Prescriptions from "./components/Prescriptions";
-import NewPrescription from "./components/NewPrescription";
-import OldPrescriptions from "./components/OldPrescriptions";
-import Availability from "./components/Availability";
-import DoctorAppointments from "./components/DoctorAppointments";
-
+import Prescriptions from './components/Prescriptions';
+import NewPrescription from './components/NewPrescription';
+import OldPrescriptions from './components/OldPrescriptions';
+import Availability from './components/Availability';
+import DoctorAppointments from './components/DoctorAppointments';
 import ClinicalSettings from './components/ClinicalSettings';
-import BillHistory from "./components/BillHistory";
-//import ClinicalReports from "./components/ClinicalReports";
-import Bill from "./components/Bill";
-
+import BillHistory from './components/BillHistory';
+import Bill from './components/Bill';
+import Appointments from './components/Appointments';
 
 const decodeToken = (token) => {
   try {
@@ -183,10 +53,10 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/about" element={<AboutUs />} />
-      <Route path="/services" element={<Services/>}/>
         {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -200,14 +70,13 @@ function App() {
           }
         />
         <Route
-  path="/doctor-appointments"
-  element={
-    <ProtectedRoute>
-      <DoctorAppointments /> 
-    </ProtectedRoute>
-  }
-/>
-      
+          path="/doctor-appointments"
+          element={
+            <ProtectedRoute>
+              <DoctorAppointments />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/settings"
           element={
@@ -216,30 +85,34 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/availability"
+          element={
+            <ProtectedRoute>
+              <Availability />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/prescriptions"
+          element={
+            <ProtectedRoute>
+              <Prescriptions />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/new-prescription/:username" element={<NewPrescription />} />
+        <Route path="/old-prescriptions/:username" element={<OldPrescriptions />} />
 
-<Route
-  path="/availability"
-  element={
-    <ProtectedRoute>
-      <Availability />
-    </ProtectedRoute>
-  }
-/>
-
-
-<Route
-  path="/prescriptions"
-  element={
-    <ProtectedRoute>
-      <Prescriptions />
-    </ProtectedRoute>
-  }
-/>
-<Route path="/new-prescription/:username" element={<NewPrescription />} />
-<Route path="/old-prescriptions/:username" element={<OldPrescriptions />} />
-
-
-        {/* Additional Routes */}
+        {/* Clinical System Routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <ClinicalHome />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/clinical-home"
           element={
@@ -256,12 +129,27 @@ function App() {
             </ProtectedRoute>
           }
         />
-
-<Route
+        <Route
+          path="/appointments"
+          element={
+            <ProtectedRoute>
+              <Appointments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/clinical-settings"
           element={
             <ProtectedRoute>
               <ClinicalSettings />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/bill"
+          element={
+            <ProtectedRoute>
+              <Bill />
             </ProtectedRoute>
           }
         />
@@ -281,7 +169,48 @@ function App() {
             </ProtectedRoute>
           }
         />
-       
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              {/* Replace with your actual Reports component when available */}
+              <div style={{ textAlign: 'center', marginTop: '50px' }}>
+                <h1>Reports</h1>
+                <p>Reports functionality coming soon.</p>
+              </div>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Patients Page Route */}
+        <Route
+          path="/patients"
+          element={
+            <ProtectedRoute>
+              <PatientsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Doctors Page Route */}
+        <Route
+          path="/doctors"
+          element={
+            <ProtectedRoute>
+              <DoctorsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Appointments Page Route */}
+        <Route
+          path="/appointments"
+          element={
+            <ProtectedRoute>
+              <AppointmentsPage />
+            </ProtectedRoute>
+          } 
+        />
 
         {/* 404 Route */}
         <Route

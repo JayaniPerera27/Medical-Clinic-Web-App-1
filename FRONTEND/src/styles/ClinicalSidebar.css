@@ -1,67 +1,170 @@
+/* ClinicalSidebar.css - Styling for the shared ClinicalSidebar component */
+
 .clinical-sidebar {
-  width: 250px;
-  height: 100vh;
-  background: linear-gradient(135deg, rgb(88, 184, 225), rgb(99, 152, 209));
-  color: white;
+  width: 260px;
+  min-height: 100vh;
+  background-color: #2c3e50;
+  color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  position: fixed;
-  left: 0;
-  top: 0;
+  transition: all 0.3s ease;
 }
 
-.clinical-sidebar-header {
+.sidebar-header {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-logo {
+  width: 40px;
+  height: 40px;
+  background-color: #3498db;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
   font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
+  margin-right: 1rem;
 }
 
-.clinical-sidebar-menu {
-  list-style-type: none;
+.sidebar-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sidebar-nav {
+  padding: 1rem 0;
+  flex: 1;
+}
+
+.nav-list {
+  list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1;
 }
 
-.clinical-sidebar-item {
-  padding: 12px 15px;
-  margin: 5px 0;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background 0.3s;
+.nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.nav-link {
   display: flex;
   align-items: center;
-}
-
-.clinical-sidebar-item:hover {
-  background-color: #34495e;
-}
-
-.clinical-sidebar-item a {
+  padding: 0.75rem 1.5rem;
+  color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
-  color: white;
+  transition: all 0.2s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.nav-link.active {
+  background-color: #3498db;
+  color: #fff;
+  border-left: 4px solid #fff;
+}
+
+.nav-icon {
+  margin-right: 0.75rem;
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-info {
   display: flex;
   align-items: center;
+  margin-bottom: 1rem;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background-color: #3498db;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.user-role {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.logout-btn {
+  display: block;
   width: 100%;
-}
-
-.clinical-sidebar-item .icon {
-  margin-right: 10px;
-  font-size: 1.2rem;
-}
-
-.logout-button {
-  margin-top: auto;
-  padding: 12px 15px;
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  border-radius: 4px;
+  padding: 0.6rem;
   text-align: center;
-  background-color: #e74c3c;
-  border-radius: 5px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.2s;
+  font-size: 0.9rem;
 }
 
-.logout-button:hover {
-  background-color: #c0392b;
+.logout-btn:hover {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+/* Toggle button for responsive design */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background-color: #2c3e50;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem;
+  z-index: 100;
+  cursor: pointer;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .clinical-sidebar {
+    position: fixed;
+    left: -280px;
+    z-index: 99;
+  }
+  
+  .clinical-sidebar.open {
+    left: 0;
+  }
+  
+  .sidebar-toggle {
+    display: block;
+  }
 }

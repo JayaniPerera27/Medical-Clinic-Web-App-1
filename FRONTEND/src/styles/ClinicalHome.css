@@ -1,0 +1,260 @@
+/* ClinicalHome.css - Styling for the ClinicalHome component */
+
+.clinical-home-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+  }
+  
+  .clinical-home-content {
+    flex: 1;
+    padding: 1.5rem;
+  }
+  
+  .dashboard-header {
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-header h2 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-header h3 {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    font-weight: normal;
+  }
+  
+  /* Loading Spinner */
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    color: #7f8c8d;
+    font-size: 1.1rem;
+  }
+  
+  /* Stats Cards */
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stat-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .patients-icon {
+    background-color: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+  }
+  
+  .doctors-icon {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+  }
+  
+  .appointments-icon {
+    background-color: rgba(155, 89, 182, 0.15);
+    color: #9b59b6;
+  }
+  
+  .prescriptions-icon {
+    background-color: rgba(230, 126, 34, 0.15);
+    color: #e67e22;
+  }
+  
+  .stat-details h3 {
+    font-size: 1.8rem;
+    margin: 0 0 0.3rem 0;
+    color: #2c3e50;
+  }
+  
+  .stat-details p {
+    margin: 0;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+  
+  /* Recent Section */
+  .recent-section {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+  
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .section-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.2rem;
+  }
+  
+  .view-all-link {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  
+  .view-all-link:hover {
+    text-decoration: underline;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .data-table th {
+    background-color: #f8f9fa;
+    text-align: left;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    color: #34495e;
+  }
+  
+  .data-table td {
+    padding: 0.8rem 1.5rem;
+    border-top: 1px solid #eaeaea;
+    color: #2c3e50;
+  }
+  
+  .data-table tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .no-data {
+    text-align: center;
+    color: #7f8c8d;
+    padding: 2rem !important;
+  }
+  
+  /* Status Badges */
+  .status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .status-scheduled {
+    background-color: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+  }
+  
+  .status-completed {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+  }
+  
+  .status-cancelled {
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+  }
+  
+  .status-pending {
+    background-color: rgba(241, 196, 15, 0.15);
+    color: #f1c40f;
+  }
+  
+  /* Quick Actions */
+  .quick-actions {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .quick-actions h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+    font-size: 1.2rem;
+  }
+  
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
+  .action-btn {
+    display: block;
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    padding: 0.8rem 1rem;
+    text-align: center;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid #eaeaea;
+  }
+  
+  .action-btn:hover {
+    background-color: #3498db;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 1200px) {
+    .stats-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .clinical-home-page {
+      flex-direction: column;
+    }
+    
+    .action-buttons {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .stats-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+      grid-template-columns: 1fr;
+    }
+  }

@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const availabilityRoutes = require("./routes/availabilityRoutes");
 const userRouter = require('./routes/userRouter');
 const doctorRoutes = require('./routes/doctorRoutes');
-
 const billRoutes = require("./routes/billRoutes");
 const clinicalStaffRoutes = require("./routes/clinicalStaffRoutes");
 const billHistoryRoutes = require("./routes/billHistory");
@@ -44,8 +43,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
 app.use("/api/availability", availabilityRoutes); 
-
-app.use("/api", patientRoutes);
+app.use("/api/patients", patientRoutes);
 app.use("/api/billing", billRoutes);
 app.use("/api", billRoutes); // Ensure this is correctly registered
 app.use("/api/clinical-staff", clinicalStaffRoutes);

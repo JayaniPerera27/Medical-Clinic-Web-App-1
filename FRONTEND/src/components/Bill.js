@@ -8,7 +8,6 @@ const API_BASE_URL = "http://localhost:8070";
 const Bill = () => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [fees, setFees] = useState({});
-  const [patientNames, setPatientNames] = useState({});
   const clinicalFee = 2000;
 
   useEffect(() => {
@@ -21,10 +20,8 @@ const Bill = () => {
       const prescriptionsData = response.data;
       setPrescriptions(prescriptionsData);
 
-      await Promise.all([
-        fetchDoctorFees(prescriptionsData),
-        fetchPatientNames(prescriptionsData),
-      ]);
+      // Fetch doctor fees
+      await fetchDoctorFees(prescriptionsData);
     } catch (error) {
       console.error("❌ Error fetching prescriptions:", error.response?.data || error.message);
     }
@@ -37,9 +34,18 @@ const Bill = () => {
     await Promise.all(
       prescriptionsData.map(async (prescription) => {
         try {
-          const response = await axios.get(
-            `${API_BASE_URL}/api/users/get-doctor-fee/${encodeURIComponent(prescription.doctorName.trim())}`
-          );
+          // Try the first endpoint format
+          let response;
+          try {
+            response = await axios.get(
+              `${API_BASE_URL}/api/users/get-doctor-fee/${encodeURIComponent(prescription.doctorName.trim())}`
+            );
+          } catch (e) {
+            // If first endpoint fails, try the alternative endpoint
+            response = await axios.get(
+              `${API_BASE_URL}/api/users/doctor-fee/${encodeURIComponent(prescription.doctorName.trim())}`
+            );
+          }
 
           updatedFees[prescription._id] = {
             doctorFee: response.data?.doctorFee || 0,
@@ -58,30 +64,9 @@ const Bill = () => {
     setFees(updatedFees);
   };
 
-  const fetchPatientNames = async (prescriptionsData) => {
-    const updatedNames = {};
-
-    await Promise.all(
-      prescriptionsData.map(async (prescription) => {
-        if (!prescription.patientUsername) return;
-
-        try {
-          const response = await axios.get(
-            `${API_BASE_URL}/api/get-patient-name/${encodeURIComponent(prescription.patientUsername)}`
-          );
-          updatedNames[prescription._id] = response.data.fullName || "Unknown";
-        } catch (error) {
-          console.error(`❌ Error fetching name for ${prescription.patientUsername}:`, error);
-          updatedNames[prescription._id] = "Unknown";
-        }
-      })
-    );
-
-    setPatientNames(updatedNames);
-  };
-
   const handleSaveFee = async (prescriptionId, doctorName) => {
-    const patientName = patientNames[prescriptionId] || "Unknown Patient";
+    const prescription = prescriptions.find((p) => p._id === prescriptionId);
+    const patientName = prescription.patientName || "Unknown Patient";
     const doctorFee = Number(fees[prescriptionId]?.doctorFee || 0);
     const totalFee = doctorFee + clinicalFee;
 
@@ -92,6 +77,8 @@ const Bill = () => {
       clinicalFee,
       totalFee,
     };
+
+    console.log("📤 Sending bill data:", billData); // Debugging log
 
     try {
       await axios.post(`${API_BASE_URL}/api/billing/save-fee`, billData);
@@ -125,18 +112,18 @@ const Bill = () => {
             <tbody>
               {prescriptions.map((prescription) => (
                 <tr key={prescription._id}>
-                  <td>{patientNames[prescription._id] || "Loading..."}</td>
+                  <td>{prescription.patientName || "Unknown"}</td>
                   <td>{prescription.doctorName}</td>
                   <td>{fees[prescription._id]?.doctorFee || "-"}</td>
                   <td>{clinicalFee}</td>
                   <td>
                     {(
                       (fees[prescription._id]?.doctorFee || 0) +
-                      clinicalFee 
+                      clinicalFee
                     ).toFixed(2)}
                   </td>
                   <td>
-                    <button 
+                    <button
                       className="save-fee-btn"
                       onClick={() => handleSaveFee(prescription._id, prescription.doctorName)}
                     >
