@@ -2,3 +2,8 @@ node_modules/
 node_modules/.cache/
 .env
 FRONTEND/node_modules/.cache/default-development/*.pack
+FRONTEND/node_modules/.cache/default-development/0.pack
+FRONTEND/node_modules/.cache/.eslintcache
+/FRONTEND/node_modules/.cache
+*.pack
+*.pack
