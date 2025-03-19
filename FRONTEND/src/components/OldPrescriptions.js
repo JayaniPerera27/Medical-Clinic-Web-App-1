@@ -14,7 +14,7 @@ const OldPrescriptionsPage = () => {
 
         const fetchPatientDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8070/api/patients/${username}`, {
+                const response = await axios.get(`http://localhost:3001/api/patients/${username}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 if (response.data.success) {
@@ -27,7 +27,7 @@ const OldPrescriptionsPage = () => {
 
         const fetchPrescriptions = async () => {
             try {
-                const response = await axios.get(`http://localhost:8070/api/prescriptions/${username}`, {
+                const response = await axios.get(`http://localhost:3001/api/prescriptions/${username}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setPrescriptions(response.data.prescriptions);
@@ -42,7 +42,7 @@ const OldPrescriptionsPage = () => {
 
     const deletePrescription = async (id) => {
         try {
-            await axios.delete(`http://localhost:8070/api/prescriptions/${id}`, {
+            await axios.delete(`http://localhost:3001/api/prescriptions/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             });
             setPrescriptions(prescriptions.filter((prescription) => prescription._id !== id));

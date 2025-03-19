@@ -7,7 +7,7 @@ function BillHistory() {
   const [bills, setBills] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8070";
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
   useEffect(() => {
     const fetchBillHistory = async () => {

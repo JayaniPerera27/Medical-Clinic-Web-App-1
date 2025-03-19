@@ -14,7 +14,7 @@ function DoctorHome() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8070";
+    const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
 
     useEffect(() => {
         const fetchAppointments = async () => {

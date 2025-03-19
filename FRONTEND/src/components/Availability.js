@@ -3,7 +3,7 @@ import axios from "axios";
 import Sidebar from './Sidebar';
 import "../styles/Availability.css";
 
-const API_BASE_URL = "http://localhost:8070/api/availability";
+const API_BASE_URL = "http://localhost:3001/api/availability";
 
 const Availability = () => {
     const [availability, setAvailability] = useState([]);

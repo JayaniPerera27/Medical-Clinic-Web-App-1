@@ -3,7 +3,7 @@ import axios from "axios";
 import "../styles/Bill.css";
 import ClinicalSidebar from "../components/ClinicalSidebar";
 
-const API_BASE_URL = "http://localhost:8070";
+const API_BASE_URL = "http://localhost:3001";
 
 const Bill = () => {
   const [prescriptions, setPrescriptions] = useState([]);

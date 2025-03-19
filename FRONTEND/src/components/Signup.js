@@ -64,13 +64,13 @@ function Signup() {
       return;
     }
 
-    let endpoint = "http://localhost:8070/api/auth/signup";
+    let endpoint = "http://localhost:3001/api/auth/signup";
     if (role === "Doctor") {
-      endpoint = "http://localhost:8070/api/auth/signup/doctors";
+      endpoint = "http://localhost:3001/api/auth/signup/doctors";
     } else if (role === "Clinical Staff") {
-      endpoint = "http://localhost:8070/api/auth/signup/clinical-staff";
+      endpoint = "http://localhost:3001/api/auth/signup/clinical-staff";
     } else if (role === "Admin") {
-      endpoint = "http://localhost:8070/api/auth/signup/admin";
+      endpoint = "http://localhost:3001/api/auth/signup/admin";
     }
 
     let payload = { ...rest, role, password };
