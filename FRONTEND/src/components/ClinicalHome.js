@@ -18,12 +18,17 @@ const ClinicalHome = () => {
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [userProfile, setUserProfile] = useState({
+    fullName: "",
+    profileImage: null
+  });
 
   useEffect(() => {
     fetchDashboardData();
     fetchRecentPatients();
     fetchUpcomingAppointments();
     fetchNotifications();
+    fetchUserProfile();
     
     // Update time every minute
     const timer = setInterval(() => {
@@ -32,6 +37,22 @@ const ClinicalHome = () => {
     
     return () => clearInterval(timer);
   }, []);
+
+  const fetchUserProfile = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${API_BASE_URL}/api/clinical-staff/settings`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      
+      setUserProfile({
+        fullName: response.data.fullName || "Clinical Staff",
+        profileImage: response.data.profileImage || null
+      });
+    } catch (error) {
+      console.error("Error fetching user profile:", error.response?.data || error.message);
+    }
+  };
 
   const fetchDashboardData = async () => {
     setLoading(true);
@@ -71,6 +92,10 @@ const ClinicalHome = () => {
   
     const navigateToAppointments = () => {
       navigate('/appointments');
+    };
+
+    const navigateToSettings = () => {
+      navigate('/clinical-settings');
     };
 
   // Mock data functions (replace with actual API calls)
@@ -156,6 +181,18 @@ const ClinicalHome = () => {
             <p className="current-datetime">{formattedDateTime}</p>
           </div>
           <div className="header-actions">
+            <div className="user-profile-section" onClick={navigateToSettings}>
+              <div className="user-profile-img">
+                {userProfile.profileImage ? (
+                  <img src={userProfile.profileImage} alt="Profile" />
+                ) : (
+                  <div className="profile-placeholder">👤</div>
+                )}
+              </div>
+              <div className="user-name">
+                {userProfile.fullName}
+              </div>
+            </div>
             <button className="action-button refresh-button" onClick={fetchDashboardData}>
               <span className="button-icon">🔄</span> Refresh Data
             </button>

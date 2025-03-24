@@ -2,14 +2,13 @@ const express = require("express");
 const router = express.Router();
 const Bill = require("../models/Bill");
 const BillHistory = require("../models/BillHistory");
-const { getDoctorFee } = require("../controllers/billController");
-const User = require("../models/User"); // Ensure you import the User model
+const User = require("../models/User");
+const mongoose = require("mongoose");
 
 // ✅ Route to fetch doctor's fee by doctor name
 router.get("/users/doctor-fee/:doctorName", async (req, res) => {
     try {
         const doctorName = decodeURIComponent(req.params.doctorName).trim(); // Decode URL encoding
-
         console.log("🔍 Fetching doctor fee for:", doctorName); // Debugging log
 
         // ✅ Find doctor in the `users` collection
@@ -29,24 +28,38 @@ router.get("/users/doctor-fee/:doctorName", async (req, res) => {
 // ✅ Save bill to `bills` collection
 router.post("/save-fee", async (req, res) => {
     try {
-        const { patientName, doctorName, doctorFee, clinicalFee, reportFee, totalFee } = req.body;
-
-        const newBill = new Bill({
-            patientName,
-            doctorName,
-            doctorFee,
-            clinicalFee,
-            totalFee,
-        });
-
-        await newBill.save();
-        res.status(201).json({ message: "Bill saved successfully" });
+      console.log("📥 Received bill data:", req.body);
+  
+      const { patientId, patientName, username, doctorId, doctorName, doctorFee, clinicalFee, totalFee } = req.body;
+  
+      // Validate required fields
+      if (!patientId || !patientName || !username || !doctorId || !doctorName || 
+          isNaN(doctorFee) || isNaN(clinicalFee) || isNaN(totalFee)) {
+        console.error("❌ Missing or invalid fields in request:", req.body);
+        return res.status(400).json({ message: "All fields are required and must be valid" });
+      }
+  
+      // Create new bill
+      const newBill = new Bill({
+        patientId,
+        patientName,
+        username,
+        doctorId,
+        doctorName,
+        doctorFee,
+        clinicalFee,
+        totalFee,
+      });
+  
+      await newBill.save();
+      console.log("✅ Bill saved successfully:", newBill);
+      res.status(201).json({ message: "Bill saved successfully" });
     } catch (error) {
-        console.error("Error saving bill:", error);
-        res.status(500).json({ error: "Internal server error" });
+      console.error("❌ Error saving bill:", error);
+      res.status(500).json({ message: "Internal server error", error: error.message });
     }
-});
-
+  });
+  
 // ✅ Get all saved bills
 router.get("/history", async (req, res) => {
     try {
@@ -64,7 +77,7 @@ router.get("/history", async (req, res) => {
             }
             acc[bill.patientName].push({
                 billId: bill._id,
-                doctorName: bill.doctorId?.fullName || "Unknown",
+                doctorName: bill.doctorId?.fullName || bill.doctorName || "Unknown",
                 doctorFee: bill.doctorFee,
                 clinicFee: bill.clinicFee,
                 totalFee: bill.totalFee,
@@ -83,10 +96,14 @@ router.get("/history", async (req, res) => {
 
 // ✅ Move all bills to `billHistory` collection
 router.post("/move-to-history", async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
-        const allBills = await Bill.find().populate("doctorId", "fullName");
+        const allBills = await Bill.find().populate("doctorId", "fullName").session(session);
 
         if (allBills.length === 0) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(400).json({ message: "No bills found to move." });
         }
 
@@ -99,13 +116,17 @@ router.post("/move-to-history", async (req, res) => {
             date: new Date(),
         }));
 
-        await BillHistory.insertMany(historyEntries);
-        await Bill.deleteMany(); // Clear `bills` collection after moving
+        await BillHistory.insertMany(historyEntries, { session });
+        await Bill.deleteMany({}, { session });
 
+        await session.commitTransaction();
+        session.endSession();
         res.json({ message: "Bills moved to history successfully" });
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         console.error("Error moving bills to history:", error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: "Internal server error", error: error.message });
     }
 });
 

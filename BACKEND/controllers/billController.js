@@ -35,32 +35,57 @@ const getAllBills = async (req, res) => {
 // ✅ Save bill details
 const saveBillDetails = async (req, res) => {
     try {
-        console.log("Received request body:", req.body);
+        console.log("📥 Received bill data:", req.body);
 
-        const { patientId, patientName, username, doctorId, doctorFee, reportFee, clinicFee } = req.body;
+// Ensure all required fields are provided
+if (!req.body.patientId || !req.body.doctorId) {
+    console.error("❌ Missing or invalid patientId/doctorId:", req.body);
+    return res.status(400).json({ error: "Invalid patient or doctor information" });
+}
 
-        if (!patientId || !patientName || !username || !doctorId || doctorFee == null || clinicFee == null) {
-            return res.status(400).json({ message: "All fields are required" });
+// Ensure patientId and doctorId are MongoDB ObjectIDs
+const mongoose = require("mongoose");
+if (!mongoose.Types.ObjectId.isValid(req.body.patientId) || !mongoose.Types.ObjectId.isValid(req.body.doctorId)) {
+    console.error("❌ Invalid ObjectID format:", req.body);
+    return res.status(400).json({ error: "Invalid ObjectID format for patient or doctor" });
+}
+
+
+// Debugging: Check if patientId or doctorId is invalid
+if (!req.body.patientId || !req.body.doctorId) {
+    console.error("❌ Missing or invalid patientId/doctorId:", req.body);
+    return res.status(400).json({ error: "Invalid patient or doctor information" });
+}
+
+
+        const { patientId, patientName, username, doctorId, doctorName, doctorFee, clinicalFee, totalFee } = req.body;
+
+        // ✅ Validate required fields
+        if (!patientId || !patientName || !username || !doctorId || !doctorName || doctorFee == null || clinicalFee == null || totalFee == null) {
+            console.error("❌ Missing fields:", req.body);
+            return res.status(400).json({ error: "All fields are required" });
         }
 
-        const totalFee = Number(doctorFee) + Number(reportFee) + Number(clinicFee);
-
+        // ✅ Create and save bill
         const newBill = new Bill({
             patientId,
             patientName,
             username,
             doctorId,
-            doctorFee: Number(doctorFee),
-            clinicFee: Number(clinicFee),
+            doctorName,
+            doctorFee,
+            clinicalFee,
             totalFee,
         });
 
         await newBill.save();
+        console.log("✅ Bill saved successfully:", newBill);
         res.status(201).json({ message: "Bill saved successfully", bill: newBill });
     } catch (error) {
-        console.error("Error saving bill:", error.message);
-        res.status(500).json({ message: "Error saving bill", error: error.message });
+        console.error("❌ Error saving bill:", error);
+        res.status(500).json({ error: "Internal server error", details: error.message });
     }
 };
+
 
 module.exports = { getAllBills, saveBillDetails, getDoctorFee };

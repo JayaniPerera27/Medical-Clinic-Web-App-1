@@ -7,7 +7,6 @@ const BillSchema = new mongoose.Schema({
     username: { type: String, required: true },
     doctorId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Assuming doctors are stored in `users` collection
     doctorFee: { type: Number, required: true },
-    reportFee: { type: Number, required: true },
     clinicFee: { type: Number, required: true },
     totalFee: { type: Number, required: true },
     date: { type: Date, default: Date.now },

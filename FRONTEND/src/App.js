@@ -8,6 +8,7 @@ import AdminHome from './components/AdminHome';
 import PatientsPage from './components/PatientsPage'; // Import PatientsPage
 import DoctorsPage from './components/DoctorsPage'; // Import DoctorsPage
 import AppointmentsPage from './components/AppointmentsPage';
+import Notifications from './components/NotificationsPage';
 import Settings from './components/Settings';
 import HomePage from './components/HomePage';
 import AboutUs from './pages/AboutUs';
@@ -200,6 +201,16 @@ function App() {
           element={
             <ProtectedRoute>
               <AppointmentsPage />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Notifications Page Route */}
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute>
+              <Notifications />
             </ProtectedRoute>
           } 
         />

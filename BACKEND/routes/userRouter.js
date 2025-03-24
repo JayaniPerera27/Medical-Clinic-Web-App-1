@@ -38,5 +38,21 @@ router.get("/doctors", async (req, res) => {
     }
   });
   
+  // Get doctor's fee by name
+router.get("/get-doctor-fee/:doctorName", async (req, res) => {
+  try {
+    const doctorName = decodeURIComponent(req.params.doctorName);
+    const doctor = await User.findOne({ fullName: doctorName, role: "Doctor" });
+
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+
+    res.status(200).json({ doctorFee: doctor.doctorFee || 0 });
+  } catch (error) {
+    console.error("Error fetching doctor fee:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 module.exports = router;
