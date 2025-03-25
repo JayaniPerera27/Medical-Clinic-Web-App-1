@@ -10,6 +10,7 @@ import "../styles/Bill.css";
 import { Link } from "react-router-dom";
 import { History } from "lucide-react";
 
+
 const API_BASE_URL = "http://localhost:8070";
 
 const Bill = () => {
@@ -120,9 +121,11 @@ const Bill = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50">
       <ClinicalSidebar />
-      <div className="flex-1 flex flex-col p-6 overflow-auto">
+      <div className="flex-1 flex flex-col p-6">
+        
+        
         <Card className="w-full shadow-md">
           <CardHeader className="bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
             <CardTitle className="text-2xl font-bold flex items-center">
@@ -144,7 +147,7 @@ const Bill = () => {
                 <p className="text-sm">New prescriptions will appear here when available</p>
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-md border">
+              <div className="flex-1 flex flex-col p-6">
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-100">
@@ -201,12 +204,12 @@ const Bill = () => {
           </CardContent>
           <div className="p-4 border-t flex justify-end">
           <Link 
-            to="/billing-history" 
-            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-          >
-            <History className="mr-2" size={16} />
-            View Billing History
-          </Link>
+  to="/billing-history" 
+  className="view-history-link inline-flex items-center"
+>
+  <History className="mr-2" size={16} />
+  View Billing History
+</Link>
         </div>
         </Card>
       </div>

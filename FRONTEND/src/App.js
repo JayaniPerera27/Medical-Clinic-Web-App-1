@@ -157,7 +157,7 @@ function App() {
           }
         /> */}
         <Route
-          path="/bill-history"
+          path="/billing-history"
           element={
             <ProtectedRoute>
               <BillHistory />

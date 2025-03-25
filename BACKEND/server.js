@@ -47,7 +47,7 @@ app.use("/api/patients", patientRoutes);
 app.use("/api/billing", billRoutes);
 app.use("/api", billRoutes); // Ensure this is correctly registered
 app.use("/api/clinical-staff", clinicalStaffRoutes);
-app.use("/api/bill-history", billHistoryRoutes);
+app.use("/api/bills", billHistoryRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/prescriptions", prescriptionsRoutes);  // Ensure this is included

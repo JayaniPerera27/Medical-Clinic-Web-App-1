@@ -5,24 +5,26 @@ const Bill = require("../models/Bill"); // Assuming you have a Bill model
 
 // Get all billing history with optional patient/doctor filtering
 router.get("/history", async (req, res) => {
-  try {
-    const { patientId, doctorId } = req.query;
-    let query = {};
-    
-    if (patientId) query.patientId = patientId;
-    if (doctorId) query.doctorId = doctorId;
-
-    const history = await BillHistory.find(query)
-      .populate('patientId', 'name')
-      .populate('doctorId', 'fullName')
-      .sort({ createdAt: -1 });
-
-    res.status(200).json(history);
-  } catch (error) {
-    console.error("Error fetching billing history:", error);
-    res.status(500).json({ message: "Failed to fetch billing history", error: error.message });
-  }
-});
+    try {
+      const { patientId, doctorId } = req.query;
+      let query = {};
+  
+      if (patientId) query.patientId = patientId;
+      if (doctorId) query.doctorId = doctorId;
+  
+      // Fetch from bills collection directly
+      const history = await Bill.find(query)
+        .sort({ createdAt: -1 });
+  
+      res.status(200).json(history);
+    } catch (error) {
+      console.error("Error fetching billing history:", error);
+      res.status(500).json({ 
+        message: "Failed to fetch billing history", 
+        error: error.message 
+      });
+    }
+  });
 
 // Move bill from active bills to history (when paid)
 router.post("/archive", async (req, res) => {
@@ -43,7 +45,7 @@ router.post("/archive", async (req, res) => {
       doctorName: bill.doctorName,
       doctorFee: bill.doctorFee,
       reportFee: bill.reportFee,
-      clinicFee: bill.clinicFee,
+      clinicalFee: bill.clinicalFee,
       totalFee: bill.totalFee,
       prescriptions: bill.prescriptions
     });

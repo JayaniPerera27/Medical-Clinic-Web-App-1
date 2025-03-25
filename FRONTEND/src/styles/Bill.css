@@ -277,6 +277,7 @@ button:disabled {
 .view-history-link:hover {
   background-color: #2980b9;
 }
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .flex {

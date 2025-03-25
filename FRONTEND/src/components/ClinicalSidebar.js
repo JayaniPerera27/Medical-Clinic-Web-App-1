@@ -93,9 +93,9 @@ const ClinicalSidebar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/reports" className={getNavLinkClass("/reports")}>
+              <Link to="/billing-history" className={getNavLinkClass("/reports")}>
                 <span className="nav-icon">📈</span>
-                Reports
+                Billing History
               </Link>
             </li>
             <li className="nav-item">
