@@ -105,6 +105,17 @@ function Signup() {
 
   return (
     <div className="signup-container">
+      {/* Navbar */}
+                  <nav className="navbar">
+                    <div className="logo">Medical Clinic</div>
+                    <ul className="nav-links">
+                      <li><Link to="/">Home</Link></li>
+                      <li><Link to="/about">About Us</Link></li>
+                      <li><Link to="/services">Services</Link></li>
+                      <li><Link to="/signup" className="signup-btn">Signup</Link></li>
+                      <li><Link to="/login" className="login-btn">Login</Link></li>
+                    </ul>
+                  </nav>
       <h2>Create an Account</h2>
 
       <form onSubmit={handleSignup}>

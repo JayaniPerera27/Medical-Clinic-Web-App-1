@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../styles/Login.css';
+import { Link } from "react-router-dom";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -63,6 +64,17 @@ function Login() {
 
   return (
     <div className="login-container">
+      {/* Navbar */}
+            <nav className="navbar">
+              <div className="logo">Medical Clinic</div>
+              <ul className="nav-links">
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/about">About Us</Link></li>
+                <li><Link to="/services">Services</Link></li>
+                <li><Link to="/signup" className="signup-btn">Signup</Link></li>
+                <li><Link to="/login" className="login-btn">Login</Link></li>
+              </ul>
+            </nav>
       <h2>Welcome Back!</h2>
       <h3>Login Page</h3>
       <form onSubmit={handleLogin}>

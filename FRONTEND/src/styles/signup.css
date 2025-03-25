@@ -1,162 +1,169 @@
+/* General Body Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif; /* Changed font for a more professional look */
+  background-image: url("../assets/login.JPG");
+  background-size: cover;
+  background-position: center;
+  color: #333; /* Ensured text is consistent */
+}
+
+/* Signup Container */
 .signup-container {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 30px;
-  border-radius: 10px;
-  width: 400px;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Lighter background for better readability */
+  padding: 40px;
+  border-radius: 12px;
+  width: 450px; /* Slightly wider container for better balance */
   margin: 100px auto;
   text-align: center;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Stronger shadow for a modern touch */
 }
 
 h2 {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 24px;
-  font-weight: bold;
+  margin: 0 0 30px;
+  color: #1a1a1a;
+  font-size: 26px; /* Larger header */
+  font-weight: 600; /* Stronger emphasis on the header */
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="tel"], /* Added styling for phone number input */
-select {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  transition: border-color 0.3s ease;
-}
-
-input:focus,
-select:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-.checkbox-group {
-  text-align: left;
-  margin: 10px 0;
-}
-
-.checkbox-group label {
-  margin-right: 10px;
-  font-size: 14px;
-}
-
-.checkbox-group input {
-  margin-right: 5px;
-}
-
+/* Role Selection */
 .role-selection {
+  margin-bottom: 25px;
   display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.role-selection input[type="radio"] {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
 }
 
 .role-selection label {
+  font-size: 15px;
+  color: #333;
+}
+
+/* Input Fields */
+input[type="email"],
+input[type="password"],
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px; /* Increased margin for spacing */
+  border: 1px solid #ccc;
+  border-radius: 8px; /* Slightly rounder corners for input fields */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Added smooth focus transition */
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.4); /* Added subtle focus shadow */
+}
+
+/* Select Dropdown */
+select {
+  -webkit-appearance: none; /* Remove default dropdown arrow in Safari */
+  -moz-appearance: none; /* Remove default dropdown arrow in Firefox */
+  appearance: none; /* Remove default dropdown arrow */
+  background-color: #fff;
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"%3E%3Cpath fill="none" d="M8 11l-4-4h8z"/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+/* Show Password */
+.show-password {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 20px; /* Increased space for better visual flow */
+}
+
+.show-password label {
   font-size: 14px;
-  cursor: pointer;
   color: #555;
 }
 
-input[type="radio"] {
-  margin-right: 5px;
-}
-
+/* Submit Button */
 button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  border-radius: 8px; /* More rounded button */
   font-size: 16px;
-  font-weight: bold;
-  margin-top: 10px;
-  transition: background-color 0.3s ease;
+  font-weight: 600; /* Increased font weight for prominence */
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
 button:hover {
   background-color: #0056b3;
+  transform: translateY(-2px); /* Added subtle lift effect */
 }
 
+/* Error and Success Messages */
 .error {
   color: red;
-  font-size: 14px;
   margin-top: 10px;
 }
 
 .success {
   color: green;
-  font-size: 14px;
   margin-top: 10px;
+  font-weight: 500;
 }
 
-p {
-  color: #555;
-  font-size: 14px;
-}
-
-p a {
-  color: #007bff;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-p a:hover {
-  text-decoration: underline;
-}
-
-/* For the select dropdown styling */
-select {
-  appearance: none;
-  background-color: white;
-  cursor: pointer;
-}
-
-select::-ms-expand {
-  display: none;
-}
-
-/* Media Query for Responsive Design */
-@media (max-width: 480px) {
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
   .signup-container {
-    width: 90%;
-    padding: 20px;
+    width: 85%;
+    margin: 40px auto;
+    padding: 25px;
   }
 
   h2 {
-    font-size: 18px;
+    font-size: 24px;
   }
 
-  button {
+  h3 {
     font-size: 14px;
   }
 
-  p {
-    font-size: 12px;
+  .role-selection {
+    flex-direction: column;
+    padding: 0;
   }
-}
 
-.role-selection {
-  margin-bottom: 20px;
-  display: flex;
-  gap: 10px;
-}
+  .role-selection label {
+    margin-bottom: 10px;
+  }
 
-.login-link {
-  color: blue;
-  cursor: pointer;
-  text-decoration: underline;
+  input[type="email"],
+  input[type="password"],
+  input[type="text"],
+  input[type="tel"],
+  input[type="number"],
+  button {
+    padding: 10px;
+  }
 }
