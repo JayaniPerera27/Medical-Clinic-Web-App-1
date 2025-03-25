@@ -26,39 +26,45 @@ router.get("/users/doctor-fee/:doctorName", async (req, res) => {
 });
 
 // ✅ Save bill to `bills` collection
+// routes/billRoutes.js
 router.post("/save-fee", async (req, res) => {
     try {
-      console.log("📥 Received bill data:", req.body);
-  
-      const { patientId, patientName, username, doctorId, doctorName, doctorFee, clinicalFee, totalFee } = req.body;
-  
-      // Validate required fields
-      if (!patientId || !patientName || !username || !doctorId || !doctorName || 
-          isNaN(doctorFee) || isNaN(clinicalFee) || isNaN(totalFee)) {
-        console.error("❌ Missing or invalid fields in request:", req.body);
-        return res.status(400).json({ message: "All fields are required and must be valid" });
-      }
-  
-      // Create new bill
-      const newBill = new Bill({
-        patientId,
-        patientName,
-        username,
-        doctorId,
-        doctorName,
-        doctorFee,
-        clinicalFee,
-        totalFee,
-      });
-  
-      await newBill.save();
-      console.log("✅ Bill saved successfully:", newBill);
-      res.status(201).json({ message: "Bill saved successfully" });
+        console.log("📥 Raw request body:", req.body);
+
+        const { patientId, patientName, username, doctorId, doctorName, doctorFee, clinicalFee, totalFee } = req.body;
+
+        // Basic validation
+        if (!patientId || !patientName || !doctorId || !doctorName) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+
+        const newBill = new Bill({
+            patientId,
+            patientName,
+            username,
+            doctorId,
+            doctorName,
+            doctorFee: Number(doctorFee) || 0,
+            clinicalFee: Number(clinicalFee) || 0,
+            totalFee: Number(totalFee) || 0,
+        });
+
+        await newBill.save();
+        console.log("💾 Saved bill:", newBill);
+        return res.status(201).json({ 
+            success: true,
+            message: "Bill saved successfully" 
+          })
+        
     } catch (error) {
-      console.error("❌ Error saving bill:", error);
-      res.status(500).json({ message: "Internal server error", error: error.message });
+        console.error("💥 Save error:", error);
+        return res.status(500).json({ 
+            message: "Failed to save bill",
+            error: error.message,
+            receivedData: req.body // Include for debugging
+        });
     }
-  });
+});
   
 // ✅ Get all saved bills
 router.get("/history", async (req, res) => {

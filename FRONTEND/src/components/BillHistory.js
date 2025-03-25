@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ClinicalSidebar from "../components/ClinicalSidebar";
-import "../styles/BillHistory.css"; // Import the CSS file
+import "../styles/BillHistory.css";
+import { useNavigate } from "react-router-dom";
 
 function BillHistory() {
   const [bills, setBills] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:8070";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBillHistory = async () => {
@@ -17,8 +20,6 @@ function BillHistory() {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
-        console.log("Billing History API Response:", response.data);
-
         if (Array.isArray(response.data)) {
           setBills(response.data);
         } else {
@@ -27,7 +28,7 @@ function BillHistory() {
         setError(null);
       } catch (error) {
         console.error("Error fetching bills:", error);
-        setError("Failed to load billing history. Please try again later.");
+        setError(error.response?.data?.message || "Failed to load billing history. Please try again later.");
       } finally {
         setIsLoading(false);
       }
@@ -43,21 +44,55 @@ function BillHistory() {
     }).format(amount);
   };
 
+  const formatDate = (dateString) => {
+    const options = { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const filteredBills = bills.filter(bill => 
+    bill.patientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    bill.doctorName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleRowClick = (billId) => {
+    navigate(`/bill-details/${billId}`);
+  };
+
   return (
     <div className="bill-history-container">
       <div className="clinicalsidebar-container">
         <ClinicalSidebar />
       </div>
       <div className="bill-history-content">
-        <h1 className="bill-history-title">Billing History</h1>
+        <div className="bill-history-header">
+          <h1 className="bill-history-title">Billing History</h1>
+          <div className="search-container">
+            <input
+              type="text"
+              placeholder="Search by patient or doctor..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+          </div>
+        </div>
+
         {isLoading ? (
           <div className="spinner-container">
             <div className="spinner"></div>
           </div>
         ) : error ? (
           <div className="error-message">{error}</div>
-        ) : bills.length === 0 ? (
-          <div className="text-center text-gray-500">No billing records found.</div>
+        ) : filteredBills.length === 0 ? (
+          <div className="no-records-message">
+            {searchTerm ? "No matching records found." : "No billing records found."}
+          </div>
         ) : (
           <div className="bill-history-table-container">
             <table className="bill-history-table">
@@ -73,15 +108,19 @@ function BillHistory() {
                 </tr>
               </thead>
               <tbody>
-                {bills.map((bill, index) => (
-                  <tr key={bill._id || index}>
-                    <td>{bill.patientName || "Unknown Patient"}</td>
-                    <td>{bill.doctorId?.fullName || "Unknown Doctor"}</td>
-                    <td>{formatCurrency(bill.doctorFee || 0)}</td>
-                    <td>{formatCurrency(bill.reportFee || 0)}</td>
-                    <td>{formatCurrency(bill.clinicFee || 0)}</td>
-                    <td className="font-semibold">{formatCurrency(bill.totalFee || 0)}</td>
-                    <td>{bill.createdAt ? new Date(bill.createdAt).toLocaleString() : "N/A"}</td>
+                {filteredBills.map((bill) => (
+                  <tr 
+                    key={bill._id} 
+                    onClick={() => handleRowClick(bill._id)}
+                    className="clickable-row"
+                  >
+                    <td>{bill.patientName}</td>
+                    <td>{bill.doctorName}</td>
+                    <td>{formatCurrency(bill.doctorFee)}</td>
+                    <td>{formatCurrency(bill.reportFee)}</td>
+                    <td>{formatCurrency(bill.clinicFee)}</td>
+                    <td className="total-fee">{formatCurrency(bill.totalFee)}</td>
+                    <td>{formatDate(bill.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>

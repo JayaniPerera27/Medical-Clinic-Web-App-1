@@ -4,9 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card.jsx";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table.jsx";
 import { Button } from "./ui/button.jsx";
 import { Loader2, FilePlus, AlertCircle } from "lucide-react";
-import { useToast } from "./ui/use-toast.jsx";
+import { toast } from 'sonner';
 import ClinicalSidebar from "../components/ClinicalSidebar";
 import "../styles/Bill.css";
+import { Link } from "react-router-dom";
+import { History } from "lucide-react";
 
 const API_BASE_URL = "http://localhost:8070";
 
@@ -16,7 +18,6 @@ const Bill = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [processing, setProcessing] = useState({});
   const clinicalFee = 2000;
-  const { toast } = useToast();
 
   useEffect(() => {
     fetchPrescriptions();
@@ -25,52 +26,37 @@ const Bill = () => {
   const fetchPrescriptions = async () => {
     setIsLoading(true);
     try {
-        const response = await axios.get(`${API_BASE_URL}/api/prescriptions`);
-        console.log("📥 Fetched Prescriptions:", response.data); // ✅ Debugging log
+      const response = await axios.get(`${API_BASE_URL}/api/prescriptions`);
+      console.log("📥 Fetched Prescriptions:", response.data);
 
-        const prescriptionsData = response.data.map((p) => ({
-            ...p,
-            doctorId: p.doctorId || null, // Ensure doctorId is valid
-            patientId: p.patientId || null, // Ensure patientId is valid
-        }));
-
-        const updatedPrescriptions = prescriptionsData.map((p) => ({
-          ...p,
-          doctorId: p.doctorId || null,
-          patientId: p.patientId || null,
+      const updatedPrescriptions = response.data.map((p) => ({
+        ...p,
+        doctorId: p.doctorId || null,
+        patientId: p.patientId || null
       }));
-      
+
       setPrescriptions(updatedPrescriptions);
-      
-        await fetchDoctorFees(prescriptionsData);
+      await fetchDoctorFees(updatedPrescriptions);
     } catch (error) {
-        console.error("❌ Error fetching prescriptions:", error.response?.data || error.message);
-        toast({
-            title: "Error fetching prescriptions",
-            description: error.response?.data || error.message,
-            variant: "destructive",
-        });
+      console.error("❌ Error fetching prescriptions:", error);
+      toast.error(error.response?.data?.message || "Failed to fetch prescriptions");
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-};
+  };
 
-
-  // Fetch doctor fees from users collection
   const fetchDoctorFees = async (prescriptionsData) => {
     const updatedFees = {};
 
     await Promise.all(
       prescriptionsData.map(async (prescription) => {
         try {
-          // Try the first endpoint format
           let response;
           try {
             response = await axios.get(
               `${API_BASE_URL}/api/users/get-doctor-fee/${encodeURIComponent(prescription.doctorName.trim())}`
             );
           } catch (e) {
-            // If first endpoint fails, try the alternative endpoint
             response = await axios.get(
               `${API_BASE_URL}/api/users/doctor-fee/${encodeURIComponent(prescription.doctorName.trim())}`
             );
@@ -96,86 +82,39 @@ const Bill = () => {
   const handleSaveFee = async (prescriptionId) => {
     setProcessing((prev) => ({ ...prev, [prescriptionId]: true }));
 
-    const prescription = prescriptions.find((p) => p._id === prescriptionId);
-    
-    if (!prescription) {
-        toast({
-            title: "Error",
-            description: "Prescription data is missing.",
-            variant: "destructive",
-        });
-        setProcessing(prev => ({ ...prev, [prescriptionId]: false }));
-        return;
-    }
-
-    const username = prescription?.patientUsername || "N/A"; 
-    const patientName = prescription?.patientName || "Unknown";
-    const doctorName = prescription?.doctorName || "Unknown"; 
-    const patientId = prescription?.patientId && prescription.patientId !== "N/A" ? prescription.patientId : null;
-    const doctorId = prescription?.doctorId && prescription.doctorId !== "N/A" ? prescription.doctorId : null;
-
-    const doctorFee = Number(fees[prescriptionId]?.doctorFee || 0);
-    const totalFee = doctorFee + clinicalFee;
-
-    if (!patientId || !doctorId || !doctorName || doctorFee == null) {
-        toast({
-            title: "Error",
-            description: "Invalid patient or doctor information. Cannot generate bill.",
-            variant: "destructive",
-        });
-        setProcessing(prev => ({ ...prev, [prescriptionId]: false }));
-        return;
-    }
-
-    const billData = {
-        patientId,
-        patientName,
-        username,
-        doctorId,
-        doctorName,
-        doctorFee,
-        clinicalFee,
-        totalFee,
-    };
-
-    console.log("📤 Sending bill data:", billData);
-
     try {
-        const response = await axios.post(`${API_BASE_URL}/api/billing/save-fee`, billData);
+      const prescription = prescriptions.find((p) => p._id === prescriptionId);
+      if (!prescription) {
+        throw new Error("Prescription not found");
+      }
 
-        toast({
-            title: "Success",
-            description: "Bill generated successfully!",
-            variant: "success",
-        });
+      const billData = {
+        patientId: prescription.patientId || "unknown",
+        patientName: prescription.patientName || "Unknown Patient",
+        username: prescription.patientUsername || "unknown",
+        doctorId: prescription.doctorId || "unknown",
+        doctorName: prescription.doctorName || "Unknown Doctor",
+        doctorFee: fees[prescription._id]?.doctorFee || 0,
+        clinicalFee: clinicalFee,
+        totalFee: (fees[prescription._id]?.doctorFee || 0) + clinicalFee,
+      };
 
+      console.log("📤 Sending bill data:", billData);
+      await axios.post(`${API_BASE_URL}/api/billing/save-fee`, billData);
+      toast.success("Bill generated successfully!");
     } catch (error) {
-        console.error("❌ Error generating bill:", error);
-
-        // ✅ Ensure only strings are displayed in the alert
-        const errorMessage = error.response?.data?.message 
-            ? JSON.stringify(error.response.data.message)
-            : "Failed to generate bill.";
-
-        toast({
-            title: "Error",
-            description: errorMessage,
-            variant: "destructive",
-        });
-
-        // ✅ Prevent `[object Object] OK` pop-up
-        alert(errorMessage);
-
+      const errorMessage = error.response?.data?.message || error.message;
+      console.error("❌ Bill save failed:", errorMessage);
+      toast.error(errorMessage);
     } finally {
-        setProcessing((prev) => ({ ...prev, [prescriptionId]: false }));
+      setProcessing((prev) => ({ ...prev, [prescriptionId]: false }));
     }
-};
-
+  };
 
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'LKR',
       minimumFractionDigits: 2
     }).format(amount);
   };
@@ -260,6 +199,15 @@ const Bill = () => {
               </div>
             )}
           </CardContent>
+          <div className="p-4 border-t flex justify-end">
+          <Link 
+            to="/billing-history" 
+            className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            <History className="mr-2" size={16} />
+            View Billing History
+          </Link>
+        </div>
         </Card>
       </div>
     </div>

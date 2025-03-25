@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { Toaster } from 'sonner';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import DoctorHome from './components/DoctorHome';
@@ -52,6 +53,7 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
+    <>
     <Router>
       <Routes>
         {/* Public Routes */}
@@ -146,14 +148,14 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
+        {/* <Route
           path="/billing"
           element={
             <ProtectedRoute>
               <Bill />
             </ProtectedRoute>
           }
-        />
+        /> */}
         <Route
           path="/bill-history"
           element={
@@ -230,6 +232,24 @@ function App() {
         />
       </Routes>
     </Router>
+
+          {/* Toaster should be outside Router but inside the main fragment */}
+
+          <Toaster 
+          position="top-right"
+          richColors
+          expand={true}
+          closeButton
+          toastOptions={{
+            duration: 3000,
+            style: {
+              fontSize: '14px',
+              maxWidth: '500px'
+            }
+          }}
+        />
+      </>
+      
   );
 }
 

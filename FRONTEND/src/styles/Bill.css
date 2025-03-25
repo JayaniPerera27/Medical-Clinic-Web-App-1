@@ -253,6 +253,30 @@ button:disabled {
   font-variant-numeric: tabular-nums;
 }
 
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 12px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 4px;
+}
+
+.view-history-link {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.view-history-link:hover {
+  background-color: #2980b9;
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .flex {
