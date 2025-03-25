@@ -29,14 +29,14 @@
   
   .header-title-section h3 {
     font-size: 16px;
-    color: #7f8c8d;
-    font-weight: 400;
+    color: rgb(111, 29, 12);
+    font-weight: 500;
     margin: 0 0 5px 0;
   }
   
   .current-datetime {
     font-size: 14px;
-    color: #95a5a6;
+    color: rgb(24, 24, 24);
     margin: 0;
   }
   
