@@ -7,7 +7,11 @@ import DoctorHome from './components/DoctorHome';
 import ClinicalHome from './components/ClinicalHome';
 import AdminHome from './components/AdminHome';
 import PatientsPage from './components/PatientsPage'; // Import PatientsPage
+import PatientViewPage from './components/PatientViewPage'; // Import PatientViewPage
+import PatientEditPage from "./components/PatientEditPage";
 import DoctorsPage from './components/DoctorsPage'; // Import DoctorsPage
+import DoctorViewPage from './components/DoctorViewPage';
+import DoctorEditPage from './components/DoctorEditPage';
 import AppointmentsPage from './components/AppointmentsPage';
 import Notifications from './components/NotificationsPage';
 import Settings from './components/Settings';
@@ -186,6 +190,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/patients/:id" element={<PatientViewPage />} />
+
+        <Route path="/patients/edit/:id" element={<PatientEditPage />} />
 
         {/* Doctors Page Route */}
         <Route
@@ -196,6 +203,8 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+<Route path="/doctors/:id" element={<DoctorViewPage />} />
 
         {/* Appointments Page Route */}
         <Route

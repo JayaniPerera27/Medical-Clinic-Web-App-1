@@ -235,7 +235,7 @@ const ClinicalHome = () => {
                 <div className="stat-icon appointments-icon">📅</div>
                 <div className="stat-details">
                   <h3>{upcomingAppointments.length}</h3>
-                  <p>Today's Appointments</p>
+                  <p>Appointments</p>
                 </div>
               </div>
             </div>

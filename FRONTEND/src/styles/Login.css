@@ -1,3 +1,4 @@
+/* General Body Styles */
 body {
   margin: 0;
   padding: 0;
@@ -7,6 +8,7 @@ body {
   background-position: center;
 }
 
+/* Login Container */
 .login-container {
   background: rgba(255, 255, 255, 0.8);
   padding: 30px;
@@ -23,14 +25,32 @@ h3 {
   color: #333;
 }
 
+h3 {
+  font-size: 18px;
+  color: #555;
+}
+
+/* Role Selection */
 .role-selection {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.role-selection input {
-  margin-right: 10px;
+.role-selection input[type="radio"] {
+  margin-right: 5px;
+  width: 16px; /* Smaller radio button */
+  height: 16px; /* Smaller radio button */
 }
 
+.role-selection label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Input Fields */
 input[type="email"],
 input[type="password"] {
   width: 100%;
@@ -46,6 +66,24 @@ input[type="password"]:focus {
   border-color: #007bff;
 }
 
+.show-password {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding-left: 0; /* Ensure no padding pushes it right */
+  justify-content: flex-start; /* Align everything to the left */
+}
+
+.show-password input[type="checkbox"] {
+  margin-right: 8px; /* Space between the checkbox and label */
+}
+
+.show-password label {
+  font-size: 14px; /* Optional: Adjust font size if needed */
+  margin-left: 0; /* No extra space on the left side */
+}
+
+/* Submit Button */
 button {
   width: 100%;
   padding: 10px;
@@ -61,13 +99,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-.show-password {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-bottom: 15px;
-}
-
+/* Error and Success Messages */
 .error {
   color: red;
 }
@@ -78,6 +110,64 @@ button:hover {
   font-weight: bold;
 }
 
+/* Navbar */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+  background: linear-gradient(135deg, #0089a7, #005f6b);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: bold;
+  color: white;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-links li {
+  margin: 0 20px;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ffd700;
+}
+
+.nav-links .signup-btn,
+.nav-links .login-btn {
+  background-color: white;
+  color: #0089a7;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.nav-links .signup-btn:hover,
+.nav-links .login-btn:hover {
+  background-color: #005f6b;
+  color: white;
+}
+
+/* Forgot Password and Register Links */
 p {
   color: #333;
 }
@@ -89,4 +179,16 @@ p a {
 
 p a:hover {
   text-decoration: underline;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .login-container {
+    width: 80%;
+    margin: 50px auto;
+  }
+
+  .navbar {
+    padding: 15px 30px;
+  }
 }

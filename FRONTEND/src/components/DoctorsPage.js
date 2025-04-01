@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../styles/DoctorsPage.css"; // Create this CSS file for styling
+import "../styles/DoctorsPage.css"; 
 import ClinicalSidebar from "../components/ClinicalSidebar";
+import { toast } from "react-toastify"; // You'll need to install this package
 
 const API_BASE_URL = "http://localhost:8070";
 
@@ -11,6 +12,7 @@ const DoctorsPage = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState(null);
 
   useEffect(() => {
     fetchDoctors();
@@ -34,9 +36,30 @@ const DoctorsPage = () => {
     setSearchQuery(e.target.value);
   };
 
+  const handleDeleteDoctor = async (doctorId) => {
+    // Set the ID of the doctor to delete for confirmation
+    setDeleteConfirm(doctorId);
+  };
+
+  const confirmDeleteDoctor = async () => {
+    if (!deleteConfirm) return;
+    
+    try {
+      await axios.delete(`${API_BASE_URL}/api/users/doctors/${deleteConfirm}`);
+      toast.success("Doctor deleted successfully");
+      // Refresh the doctor list
+      fetchDoctors();
+      // Close the confirmation dialog
+      setDeleteConfirm(null);
+    } catch (error) {
+      console.error("Error deleting doctor:", error.response?.data || error.message);
+      toast.error("Failed to delete doctor. Please try again.");
+    }
+  };
+
   // Filter doctors based on search query
   const filteredDoctors = doctors.filter((doctor) => {
-    const fullName = doctor.fullName || ""; // Use the correct field name: fullName
+    const fullName = doctor.fullName || ""; 
     return fullName.toLowerCase().includes(searchQuery.toLowerCase());
   });
 
@@ -54,9 +77,9 @@ const DoctorsPage = () => {
               onChange={handleSearch}
             />
           </div>
-          <Link to="/doctors/new" className="add-doctor-btn">
+          {/* <Link to="/doctors/new" className="add-doctor-btn">
             Add New Doctor
-          </Link>
+          </Link> */}
         </div>
 
         {loading ? (
@@ -88,7 +111,7 @@ const DoctorsPage = () => {
                       <td>{doctor.specialization || "N/A"}</td>
                       <td>{doctor.yearsOfExperience || "N/A"}</td>
                       <td>{doctor.medicalLicenseNumber || "N/A"}</td>
-                      <td>{doctor.doctorFee ? `$${doctor.doctorFee}` : "N/A"}</td>
+                      <td>{doctor.doctorFee ? `LKR${doctor.doctorFee}` : "N/A"}</td>
                       <td>
                         <Link to={`/doctors/${doctor._id}`} className="action-btn view-btn">
                           View
@@ -114,6 +137,30 @@ const DoctorsPage = () => {
                 )}
               </tbody>
             </table>
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {deleteConfirm && (
+          <div className="delete-modal">
+            <div className="delete-modal-content">
+              <h3>Confirm Delete</h3>
+              <p>Are you sure you want to delete this doctor? This action cannot be undone.</p>
+              <div className="delete-modal-actions">
+                <button 
+                  className="cancel-btn" 
+                  onClick={() => setDeleteConfirm(null)}
+                >
+                  Cancel
+                </button>
+                <button 
+                  className="confirm-delete-btn" 
+                  onClick={confirmDeleteDoctor}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
