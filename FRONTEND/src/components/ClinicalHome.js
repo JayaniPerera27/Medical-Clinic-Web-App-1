@@ -196,9 +196,9 @@ const ClinicalHome = () => {
             <button className="action-button refresh-button" onClick={fetchDashboardData}>
               <span className="button-icon">🔄</span> Refresh Data
             </button>
-            <button className="action-button help-button">
+            {/* <button className="action-button help-button">
               <span className="button-icon">❓</span> Help
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -231,13 +231,13 @@ const ClinicalHome = () => {
                   <p>Clinical Staff</p>
                 </div>
               </div>
-              <div className="stat-card">
+              {/* <div className="stat-card">
                 <div className="stat-icon appointments-icon">📅</div>
                 <div className="stat-details">
                   <h3>{upcomingAppointments.length}</h3>
                   <p>Appointments</p>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             <div className="dashboard-content">
@@ -277,7 +277,7 @@ const ClinicalHome = () => {
                   </div>
                 </div>
               </div>
-
+{/* 
               <div className="dashboard-section">
                 <h3 className="section-title">Upcoming Appointments</h3>
                 <div className="appointments-list">
@@ -298,9 +298,9 @@ const ClinicalHome = () => {
                     <a href="/appointments">Manage Appointments →</a>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="dashboard-section">
+              {/* <div className="dashboard-section">
                 <h3 className="section-title">Notifications</h3>
                 <div className="notifications-list">
                   {notifications.map(notification => (
@@ -318,10 +318,10 @@ const ClinicalHome = () => {
                     <a href="/notifications">View All Notifications →</a>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
-            <div className="quick-actions">
+            {/* <div className="quick-actions">
               <h3 className="section-title">Quick Actions</h3>
               <div className="quick-action-buttons">
                 <button className="quick-action-button">
@@ -341,7 +341,7 @@ const ClinicalHome = () => {
                   <span>Reports</span>
                 </button>
               </div>
-            </div>
+            </div> */}
           </>
         )}
       </div>

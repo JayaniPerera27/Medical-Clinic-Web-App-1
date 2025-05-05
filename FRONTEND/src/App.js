@@ -12,7 +12,9 @@ import PatientEditPage from "./components/PatientEditPage";
 import DoctorsPage from './components/DoctorsPage'; // Import DoctorsPage
 import DoctorViewPage from './components/DoctorViewPage';
 import DoctorEditPage from './components/DoctorEditPage';
-import AppointmentsPage from './components/AppointmentsPage';
+// import AppointmentsPage from './components/AppointmentsPage';
+// import AppointmentForm from './components/AppointmentForm';
+// import AppointmentDetails from "./components/AppointmentDetails";
 import Notifications from './components/NotificationsPage';
 import Settings from './components/Settings';
 import HomePage from './components/HomePage';
@@ -205,16 +207,13 @@ function App() {
         />
 
 <Route path="/doctors/:id" element={<DoctorViewPage />} />
-
-        {/* Appointments Page Route */}
-        <Route
-          path="/appointments"
-          element={
-            <ProtectedRoute>
-              <AppointmentsPage />
-            </ProtectedRoute>
-          } 
-        />
+{/* <Route path="/appointments" element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
+        
+        <Route path="/appointments/new" element={<ProtectedRoute><AppointmentForm /></ProtectedRoute>} />
+        
+        <Route path="/appointments/:id" element={<ProtectedRoute><AppointmentDetails /></ProtectedRoute>} />
+        
+        <Route path="/appointments/edit/:id" element={<ProtectedRoute><AppointmentForm /></ProtectedRoute>} /> */}
 
         {/* Notifications Page Route */}
         <Route

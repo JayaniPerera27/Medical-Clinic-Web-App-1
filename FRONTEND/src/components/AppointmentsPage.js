@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import "../styles/AppointmentsPage.css"; // Create this CSS file for styling
+import "../styles/AppointmentsPage.css";
 import ClinicalSidebar from "../components/ClinicalSidebar";
 
 const API_BASE_URL = "http://localhost:8070";
@@ -32,6 +32,19 @@ const AppointmentsPage = () => {
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
+  };
+
+  const handleDeleteAppointment = async (id) => {
+    if (window.confirm("Are you sure you want to delete this appointment?")) {
+      try {
+        await axios.delete(`${API_BASE_URL}/api/appointments/${id}`);
+        // Refresh appointments after deletion
+        fetchAppointments();
+      } catch (error) {
+        console.error("❌ Error deleting appointment:", error.response?.data || error.message);
+        setError("Failed to delete appointment. Please try again later.");
+      }
+    }
   };
 
   // Filter appointments based on search query

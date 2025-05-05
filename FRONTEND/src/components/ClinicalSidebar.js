@@ -80,12 +80,12 @@ const ClinicalSidebar = () => {
                 Patients
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link to="/doctors" className={getNavLinkClass("/doctors")}>
                 <span className="nav-icon">👨‍⚕️</span>
                 Doctors
               </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
               <Link to="/bill" className={getNavLinkClass("/bill")}>
                 <span className="nav-icon">💰</span>
