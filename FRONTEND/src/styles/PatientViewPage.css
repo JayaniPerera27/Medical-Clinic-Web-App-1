@@ -107,7 +107,7 @@
     margin-top: 0;
     margin-bottom: 20px;
     color: #333;
-    font-size: 1.5rem;
+    font-size: 1.9rem;
   }
   
   .patient-details-grid {
@@ -125,11 +125,11 @@
     font-weight: 600;
     color: #757575;
     margin-bottom: 4px;
-    font-size: 0.9rem;
+    font-size: 1.5rem;
   }
   
   .detail-value {
-    font-size: 1rem;
+    font-size: 1.7rem;
     color: #333;
   }
   
@@ -149,7 +149,7 @@
   }
   
   .report-generated-time {
-    font-size: 0.9rem;
+    font-size: 1.4rem;
     color: #757575;
     margin-bottom: 20px;
   }
@@ -184,11 +184,11 @@
   .report-detail-label {
     font-weight: 600;
     color: #757575;
-    font-size: 0.85rem;
+    font-size: 1.5rem;
   }
   
   .report-detail-value {
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: #333;
   }
   
