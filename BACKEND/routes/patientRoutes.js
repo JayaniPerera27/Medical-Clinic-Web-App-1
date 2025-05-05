@@ -44,5 +44,24 @@ router.get("/get-patient-name/:username", async (req, res) => {
   }
 });
 
+// ✅ GET Count of Patients
+router.get("/count", async (req, res) => {
+  try {
+    const count = await Patient.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+});
+
+// ✅ GET All Patients
+router.get("/", async (req, res) => {
+  try {
+    const patients = await Patient.find();
+    res.json(patients);
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+});
 
 module.exports = router;

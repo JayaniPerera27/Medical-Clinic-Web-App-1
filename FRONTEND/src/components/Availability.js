@@ -200,8 +200,10 @@ const Availability = () => {
                         <option key={day} value={day}>{day}</option>
                     ))}
                 </select>
-                <input type="time" name="startTime" value={newSlot.startTime} onChange={handleInputChange} />
-                <input type="time" name="endTime" value={newSlot.endTime} onChange={handleInputChange} />
+                <h5>Start Time</h5>
+                <input type="time" name="startTime" value={newSlot.startTime} onChange={handleInputChange} ></input>
+                <h5>End Time</h5>
+                <input type="time" name="endTime" value={newSlot.endTime} onChange={handleInputChange} ></input>
                 <input type="number" name="maxPatients" placeholder="Max Patients" value={newSlot.maxPatients} onChange={handleInputChange} />
                 <button className="add-btn" onClick={addAvailability} disabled={loading}>Add</button>
             </div>

@@ -7,10 +7,12 @@ const bcrypt = require("bcryptjs");
 // ✅ GET Clinical Staff Details (Already exists)
 router.get("/settings", authMiddleware(["Clinical Staff"]), async (req, res) => {
     try {
+        console.log("Fetching clinical staff details for user ID:", req.user.userId); // Log the user ID
         const staff = await User.findById(req.user.userId).select("-password");
         if (!staff) return res.status(404).json({ error: "Clinical Staff not found" });
         res.json(staff);
     } catch (error) {
+        console.error("Error fetching clinical staff details:", error); // Log the error
         res.status(500).json({ error: "Server error" });
     }
 });

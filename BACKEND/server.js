@@ -5,7 +5,6 @@ const dotenv = require('dotenv');
 const availabilityRoutes = require("./routes/availabilityRoutes");
 const userRouter = require('./routes/userRouter');
 const doctorRoutes = require('./routes/doctorRoutes');
-
 const billRoutes = require("./routes/billRoutes");
 const clinicalStaffRoutes = require("./routes/clinicalStaffRoutes");
 const billHistoryRoutes = require("./routes/billHistory");
@@ -23,7 +22,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: ["http://localhost:3000", "https://medical-clinic-frontend.vercel.app"],
+    origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }));
@@ -39,21 +38,16 @@ mongoose.connect(process.env.MONGODB_URI, {
     console.error("Error connecting to MongoDB:", err);
 });
 
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
-
 // Routers
 
 app.use('/api/auth', userRouter);
 app.use('/api', doctorRoutes);
 app.use("/api/availability", availabilityRoutes); 
-
-app.use("/api", patientRoutes);
-//app.use("/api/billing", billRoutes);
+app.use("/api/patients", patientRoutes);
+app.use("/api/billing", billRoutes);
 app.use("/api", billRoutes); // Ensure this is correctly registered
 app.use("/api/clinical-staff", clinicalStaffRoutes);
-app.use("/api/bill-history", billHistoryRoutes);
+app.use("/api/bills", billHistoryRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/prescriptions", prescriptionsRoutes);  // Ensure this is included
@@ -77,7 +71,6 @@ app.get('/api/doctor/dashboard', authMiddleware(['Doctor']), async (req, res) =>
     }
 });
 
-
 // Health Check
 app.get('/api/health', (req, res) => {
     res.status(200).send('Server is healthy');
@@ -90,7 +83,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 3001; //port number
+const PORT = process.env.PORT || 8070;
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 });
