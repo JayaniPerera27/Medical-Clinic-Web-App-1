@@ -69,9 +69,6 @@ const PatientsPage = () => {
               onChange={handleSearch}
             />
           </div>
-          {/* <Link to="/patients/new" className="add-patient-btn">
-            Add New Patient
-          </Link> */}
         </div>
 
         {loading ? (
@@ -106,9 +103,6 @@ const PatientsPage = () => {
                         <Link to={`/patients/${patient._id}`} className="action-btn view-btn">
                           View
                         </Link>
-                        {/* <Link to={`/patients/edit/${patient._id}`} className="action-btn edit-btn">
-                          Edit
-                        </Link> */}
                         <button
                           className="action-btn delete-btn"
                           onClick={() => handleDeletePatient(patient._id)}

@@ -1,135 +1,126 @@
+/* PatientsPage.css */
+
 .patients-page {
   display: flex;
-  min-height: 100vh;
-  background-color: #f5f5f5;
+  height: 100vh;
 }
 
 .patients-content {
   flex: 1;
-  padding: 20px;
-  margin-left: 280px; /* Match exactly with sidebar width */
-  transition: margin-left 0.3s ease;
-  width: calc(100% - 280px); /* Set width to remaining space */
-}
-
-/* When sidebar is closed */
-.clinical-sidebar:not(.open) + .patients-content {
-  margin-left: 0;
-  width: 100%;
+  padding: 1rem;
+  overflow-y: auto;
 }
 
 .patients-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.patients-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 400px;
 }
 
 .search-bar input {
-  padding: 8px;
-  width: 300px;
+  width: 100%;
+  padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
 .add-patient-btn {
-  padding: 8px 16px;
-  background-color: #007bff;
+  padding: 0.5rem 1rem;
+  background-color: #4CAF50;
   color: white;
-  text-decoration: none;
+  border: none;
   border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-.add-patient-btn:hover {
-  background-color: #0056b3;
-}
-
+/* Updated styles to reduce space and align table to the left */
 .patients-table-container {
   overflow-x: auto;
+  margin-top: 0.5rem; /* Reduced margin to decrease space */
   width: 100%;
+  padding-left: 0; /* Align to the left */
 }
 
 .patients-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
-  table-layout: fixed;
+  margin-left: 0; /* Align to the left */
 }
 
 .patients-table th,
 .patients-table td {
-  padding: 12px;
+  padding: 0.75rem;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
 .patients-table th {
-  background-color: #007bff;
+  background-color: #4baed1;
   color: white;
+  font-weight: bold;
 }
 
 .patients-table tr:hover {
-  background-color: #f1f1f1;
+  background-color: #f5f5f5;
 }
 
 .action-btn {
-  padding: 4px 8px;
-  margin-right: 8px;
-  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.25rem;
+  border: none;
   border-radius: 4px;
-  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 0.875rem;
+  display: inline-block;
 }
 
 .view-btn {
-  background-color: #28a745;
+  background-color: #4CAF50;
   color: white;
-}
-
-.view-btn:hover {
-  background-color: #218838;
 }
 
 .edit-btn {
-  background-color: #ffc107;
-  color: black;
-}
-
-.edit-btn:hover {
-  background-color: #e0a800;
+  background-color: #2196F3;
+  color: white;
 }
 
 .delete-btn {
-  background-color: #dc3545;
+  background-color: #f44336;
   color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
-}
-
-.no-data {
-  text-align: center;
-  padding: 20px;
-  color: #888;
 }
 
 .loading-spinner,
-.error-message {
+.error-message,
+.no-data {
+  padding: 1rem;
   text-align: center;
-  padding: 20px;
-  font-size: 18px;
 }
 
 .error-message {
-  color: #dc3545;
+  color: red;
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
-  .patients-content {
-    margin-left: 0;
-    width: 100%;
-  }
+/* Additional styles to reduce vertical spacing */
+.patients-content h2 {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Adjust the sidebar width if needed */
+.clinical-sidebar {
+  width: 200px;
+  min-width: 200px;
 }
