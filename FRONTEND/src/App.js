@@ -4,16 +4,22 @@ import { Toaster } from 'sonner';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import DoctorHome from './components/DoctorHome';
-//import ClinicalHome from './components/ClinicalHome';
+import ClinicalHome from './components/ClinicalHome';
 import AdminHome from './components/AdminHome';
 import PatientsPage from './components/PatientsPage'; // Import PatientsPage
-//import DoctorsPage from './components/DoctorsPage'; // Import DoctorsPage
-//import AppointmentsPage from './components/AppointmentsPage';
+import PatientViewPage from './components/PatientViewPage'; // Import PatientViewPage
+import PatientEditPage from "./components/PatientEditPage";
+import DoctorsPage from './components/DoctorsPage'; // Import DoctorsPage
+import DoctorViewPage from './components/DoctorViewPage';
+import DoctorEditPage from './components/DoctorEditPage';
+// import AppointmentsPage from './components/AppointmentsPage';
+// import AppointmentForm from './components/AppointmentForm';
+// import AppointmentDetails from "./components/AppointmentDetails";
 import Notifications from './components/NotificationsPage';
 import Settings from './components/Settings';
 import HomePage from './components/HomePage';
 import AboutUs from './pages/AboutUs';
-//import Dashboard from './components/Dashboard';
+import Dashboard from './components/Dashboard';
 import Services from './pages/Services';
 import Prescriptions from './components/Prescriptions';
 import NewPrescription from './components/NewPrescription';
@@ -108,22 +114,22 @@ function App() {
         <Route path="/old-prescriptions/:username" element={<OldPrescriptions />} />
 
         {/* Clinical System Routes */}
-        {/* <Route
+        <Route
           path="/dashboard"
           element={
             <ProtectedRoute>
               <ClinicalHome />
             </ProtectedRoute>
           }
-        /> */}
-        {/* <Route
+        />
+        <Route
           path="/clinical-home"
           element={
             <ProtectedRoute>
               <ClinicalHome />
             </ProtectedRoute>
           }
-        /> */}
+        />
         <Route
           path="/admin-home"
           element={
@@ -186,26 +192,28 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/patients/:id" element={<PatientViewPage />} />
 
-        
-        {/* <Route
+        <Route path="/patients/edit/:id" element={<PatientEditPage />} />
+
+        {/* Doctors Page Route */}
+        <Route
           path="/doctors"
           element={
             <ProtectedRoute>
               <DoctorsPage />
             </ProtectedRoute>
           }
-        /> */}
+        />
 
+<Route path="/doctors/:id" element={<DoctorViewPage />} />
+{/* <Route path="/appointments" element={<ProtectedRoute><AppointmentsPage /></ProtectedRoute>} />
         
-        {/* <Route
-          path="/appointments"
-          element={
-            <ProtectedRoute>
-              <AppointmentsPage />
-            </ProtectedRoute>
-          } 
-        /> */}
+        <Route path="/appointments/new" element={<ProtectedRoute><AppointmentForm /></ProtectedRoute>} />
+        
+        <Route path="/appointments/:id" element={<ProtectedRoute><AppointmentDetails /></ProtectedRoute>} />
+        
+        <Route path="/appointments/edit/:id" element={<ProtectedRoute><AppointmentForm /></ProtectedRoute>} /> */}
 
         {/* Notifications Page Route */}
         <Route

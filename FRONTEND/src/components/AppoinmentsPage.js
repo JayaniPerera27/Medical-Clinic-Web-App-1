@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "../styles/AppointmentsPage.css"; // Create this CSS file for styling
 import ClinicalSidebar from "../components/ClinicalSidebar";
 
-const API_BASE_URL = "http://localhost:8070";
+const API_BASE_URL = "http://localhost:3001";
 
 const AppointmentsPage = () => {
   const [appointments, setAppointments] = useState([]);
