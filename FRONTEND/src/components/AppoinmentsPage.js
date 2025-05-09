@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../styles/AppointmentsPage.css"; // Create this CSS file for styling
-import ClinicalSidebar from "../components/ClinicalSidebar";
+import ClinicalSidebar from "./ClinicalSidebar";
 
 //const API_BASE_URL = "http://localhost:3001";
 

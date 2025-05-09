@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ClinicalSidebar from "../components/ClinicalSidebar";
+import ClinicalSidebar from "./ClinicalSidebar";
 import "../styles/BillHistory.css";
 import { useNavigate } from "react-router-dom";
 import { Loader2, AlertCircle, ChevronDown, ChevronRight } from "lucide-react";

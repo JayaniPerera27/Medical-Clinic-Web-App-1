@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "../styles/DoctorsPage.css"; 
-import ClinicalSidebar from "../components/ClinicalSidebar";
+import ClinicalSidebar from "./ClinicalSidebar";
 import { toast } from "react-toastify"; // You'll need to install this package
 
 //const API_BASE_URL = "http://localhost:3001";

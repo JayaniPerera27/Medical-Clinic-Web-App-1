@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Button } from "./ui/button.jsx";
 import { Loader2, FilePlus, AlertCircle } from "lucide-react";
 import { toast } from 'sonner';
-import ClinicalSidebar from "../components/ClinicalSidebar";
+import ClinicalSidebar from "./ClinicalSidebar.js";
 import "../styles/Bill.css";
 import { Link } from "react-router-dom";
 import { History } from "lucide-react";

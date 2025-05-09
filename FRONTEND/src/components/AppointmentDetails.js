@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import ClinicalSidebar from '../components/ClinicalSidebar';
+import ClinicalSidebar from './ClinicalSidebar';
 import '../styles/AppointmentDetails.css';
 
 const API_BASE_URL = "https://medical-clinic-web-app-backend.vercel.app";

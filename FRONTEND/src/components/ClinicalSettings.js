@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import ClinicalSidebar from "../components/ClinicalSidebar";
+import ClinicalSidebar from "./ClinicalSidebar";
 import "../styles/ClinicalSettings.css";
 import { FaUser, FaEnvelope, FaPhone, FaKey, FaCamera } from "react-icons/fa";
 
