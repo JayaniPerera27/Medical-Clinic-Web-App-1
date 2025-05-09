@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
-const authMiddleware = require("../middleware/authMiddleware");
+const clinicalMiddleware = require("../middleware/clinicalMiddleware");
 const bcrypt = require("bcryptjs");
 
 // ✅ GET Clinical Staff Details (Already exists)
-router.get("/settings", authMiddleware(["Clinical Staff"]), async (req, res) => {
+router.get("/settings", clinicalMiddleware(["Clinical Staff"]), async (req, res) => {
     try {
         console.log("Fetching clinical staff details for user ID:", req.user.userId); // Log the user ID
         const staff = await User.findById(req.user.userId).select("-password");
@@ -18,7 +18,7 @@ router.get("/settings", authMiddleware(["Clinical Staff"]), async (req, res) => 
 });
 
 // ✅ UPDATE Clinical Staff Profile (Fix for 404)
-router.put("/settings/update", authMiddleware(["Clinical Staff"]), async (req, res) => {
+router.put("/settings/update", clinicalMiddleware(["Clinical Staff"]), async (req, res) => {
     try {
         const { fullName, phoneNumber } = req.body;
         const updatedStaff = await User.findByIdAndUpdate(
@@ -36,7 +36,7 @@ router.put("/settings/update", authMiddleware(["Clinical Staff"]), async (req, r
 });
 
 // ✅ CHANGE Password (Fix for 404)
-router.put("/settings/change-password", authMiddleware(["Clinical Staff"]), async (req, res) => {
+router.put("/settings/change-password", clinicalMiddleware(["Clinical Staff"]), async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
         const staff = await User.findById(req.user.userId);
