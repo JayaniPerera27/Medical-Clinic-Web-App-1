@@ -44,7 +44,7 @@ const NewPrescriptionPage = () => {
 
     const savePrescription = async () => {
         try {
-            const response = await axios.post("http://localhost:3001/api/prescriptions/add", prescription, {
+            const response = await axios.post("https://medical-clinic-web-app-backend.vercel.app/api/prescriptions/add", prescription, {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
             });
 

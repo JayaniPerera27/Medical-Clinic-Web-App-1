@@ -28,7 +28,8 @@ function Login() {
     try {
       console.log("Sending login request:", { email, password, role }); // Debugging log
       const response = await axios.post(
-        "http://localhost:3001/api/auth/login",
+        //"http://localhost:3001/api/auth/login",
+        "https://medical-clinic-web-app-backend.vercel.app/api/auth/login",
         { email, password, role },
         { timeout: 10000 } // Set a timeout of 10 seconds
       );

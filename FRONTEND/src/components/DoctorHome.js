@@ -14,7 +14,8 @@ function DoctorHome() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+    //const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+    const API_BASE_URL = process.env.REACT_APP_API_URL ||"https://medical-clinic-web-app-backend.vercel.app";
 
     useEffect(() => {
         const fetchAppointments = async () => {

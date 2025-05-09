@@ -11,7 +11,7 @@ function BillHistory() {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedPatients, setExpandedPatients] = useState({});
-  const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3001";
+  const API_BASE_URL = process.env.REACT_APP_API_URL || "https://medical-clinic-web-app-backend.vercel.app";
   const navigate = useNavigate();
 
   useEffect(() => {

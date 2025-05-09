@@ -4,7 +4,8 @@ import axios from "axios";
 import "../styles/PatientViewPage.css";
 import ClinicalSidebar from "../components/ClinicalSidebar";
 
-const API_BASE_URL = "http://localhost:3001";
+//const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "https://medical-clinic-web-app-backend.vercel.app";
 
 const PatientViewPage = () => {
   const { id } = useParams();

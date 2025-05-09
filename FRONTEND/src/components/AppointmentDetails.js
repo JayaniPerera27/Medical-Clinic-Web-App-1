@@ -4,7 +4,7 @@ import axios from 'axios';
 import ClinicalSidebar from '../components/ClinicalSidebar';
 import '../styles/AppointmentDetails.css';
 
-const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "https://medical-clinic-web-app-backend.vercel.app";
 
 const AppointmentDetails = () => {
   const { id } = useParams();

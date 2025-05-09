@@ -35,7 +35,7 @@ function Settings() {
       }
 
       try {
-        const response = await fetch('http://localhost:3001/api/doctors/profile', {
+        const response = await fetch('https://medical-clinic-web-app-backend.vercel.app/api/doctors/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -89,7 +89,7 @@ function Settings() {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/doctors/update-profile', {
+      const response = await fetch('https://medical-clinic-web-app-backend.vercel.app/api/doctors/update-profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -120,7 +120,7 @@ function Settings() {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/doctors/change-password', {
+      const response = await fetch('https://medical-clinic-web-app-backend.vercel.app/api/doctors/change-password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

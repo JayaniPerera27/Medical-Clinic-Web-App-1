@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import "../styles/AppointmentsPage.css"; // Create this CSS file for styling
 import ClinicalSidebar from "../components/ClinicalSidebar";
 
-const API_BASE_URL = "http://localhost:3001";
+//const API_BASE_URL = "http://localhost:3001";
+
+const API_BASE_URL = "https://medical-clinic-web-app-backend.vercel.app";
 
 const AppointmentsPage = () => {
   const [appointments, setAppointments] = useState([]);

@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"; // Import for navigation
 import "../styles/ClinicalHome.css";
 import ClinicalSidebar from "../components/ClinicalSidebar";
 
-const API_BASE_URL = "http://localhost:3001";
+//const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "https://medical-clinic-web-app-backend.vercel.app"; // Base URL for API
 
 const ClinicalHome = () => {
   const navigate = useNavigate(); // Initialize navigation hook

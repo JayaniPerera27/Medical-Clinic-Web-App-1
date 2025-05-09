@@ -30,7 +30,7 @@ function ClinicalSettings() {
     const fetchStaffData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:3001/api/clinical-staff/settings", {
+        const response = await axios.get("http://medical-clinic-web-app-backend.vercel.app/api/clinical-staff/settings", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStaffData(response.data);
@@ -96,7 +96,7 @@ function ClinicalSettings() {
 
       // Make sure to set the correct headers for FormData
       await axios.put(
-        "http://localhost:3001/api/clinical-staff/settings/update", 
+        "http://medical-clinic-web-app-backend.vercel.app/api/clinical-staff/settings/update", 
         formData, 
         {
           headers: { 
@@ -127,7 +127,7 @@ function ClinicalSettings() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put("http://localhost:3001/api/clinical-staff/settings/change-password", passwords, {
+      await axios.put("http://medical-clinic-web-app-backend.vercel.app/api/clinical-staff/settings/change-password", passwords, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setMessage("Password updated successfully!");

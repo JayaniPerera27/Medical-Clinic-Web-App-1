@@ -64,13 +64,13 @@ function Signup() {
       return;
     }
 
-    let endpoint = "http://localhost:3001/api/auth/signup";
+    let endpoint = "https://medical-clinic-web-app-backend.vercel.app/api/auth/signup";
     if (role === "Doctor") {
-      endpoint = "http://localhost:3001/api/auth/signup/doctors";
+      endpoint = "https://medical-clinic-web-app-backend.vercel.app/api/auth/signup/doctors";
     } else if (role === "Clinical Staff") {
-      endpoint = "http://localhost:3001/api/auth/signup/clinical-staff";
+      endpoint = "https://medical-clinic-web-app-backend.vercel.app/api/auth/signup/clinical-staff";
     } else if (role === "Admin") {
-      endpoint = "http://localhost:3001/api/auth/signup/admin";
+      endpoint = "https://medical-clinic-web-app-backend.vercel.app/api/auth/signup/admin";
     }
 
     let payload = { ...rest, role, password };

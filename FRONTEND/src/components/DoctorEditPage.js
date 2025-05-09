@@ -5,7 +5,7 @@ import "../styles/DoctorEditPage.css";
 import ClinicalSidebar from "../components/ClinicalSidebar";
 import { toast } from "react-toastify";
 
-const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "http://medical-clinic-web-app-backend.vercel.app";
 
 const DoctorEditPage = () => {
   const { id } = useParams();

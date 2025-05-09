@@ -4,7 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/PatientsPage.css";
 import ClinicalSidebar from "../components/ClinicalSidebar";
 
-const API_BASE_URL = "http://localhost:3001";
+//const API_BASE_URL = "http://localhost:3001";
+const API_BASE_URL = "https://medical-clinic-web-app-backend.vercel.app";
 
 const PatientsPage = () => {
   const [patients, setPatients] = useState([]);

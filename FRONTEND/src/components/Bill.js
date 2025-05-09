@@ -11,7 +11,9 @@ import { Link } from "react-router-dom";
 import { History } from "lucide-react";
 
 
-const API_BASE_URL = "http://localhost:3001";
+//const API_BASE_URL = "http://localhost:3001";
+
+const API_BASE_URL = "https://medical-clinic-web-app-backend.vercel.app";
 
 const Bill = () => {
   const [prescriptions, setPrescriptions] = useState([]);
